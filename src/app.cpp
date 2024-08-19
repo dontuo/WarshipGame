@@ -5,13 +5,12 @@ App::App(){}
 
 void App::Init()
 {
-
+    InitWindow(800, 600, "lol");
+    SetTargetFPS(60);
 }
 
 void App::Run()
 {
-    InitWindow(800, 600, "lol");
-    SetTargetFPS(60);
     while(!WindowShouldClose())
     {
         DrawMenu();    
