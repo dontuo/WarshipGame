@@ -1,8 +1,19 @@
-#include "raylib.h"
+#include "app.h"
 
 int main()
 {
-   InitWindow(800, 600, "raylib [core] example - 2d camera mouse zoom");
+
+    App app;
+    try
+    {
+        app.Init();
+        app.Run();
+    }
+    catch(std::runtime_error &e) 
+    {
+        std::cout << "error:" << e.what() << '\n';
+        return -1;
+    }
  
     return 0;
 }
