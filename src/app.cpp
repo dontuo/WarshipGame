@@ -34,9 +34,9 @@ EndDrawing();
 void App::DrawMenu()
 {
 BeginDrawing();
-    ClearBackground(WHITE);
-    DrawText("Warship Game",GetScreenWidth() / 3.5f, GetScreenHeight() / 3, 50, Color{0,0,0,255});
-    DrawText("Play",GetScreenWidth() / 3.f, GetScreenHeight() / 2, 50, Color{0,0,0,255});
+    ClearBackground(DARKGRAY);
+    DrawText("Warship Game",GetScreenWidth() / 3.5f, GetScreenHeight() / 3, 50, WHITE);
+    DrawText("Play",GetScreenWidth() / 2.f, GetScreenHeight() / 2, 50, WHITE);
     GetScreenWidth();
     GetScreenHeight();
 EndDrawing();
