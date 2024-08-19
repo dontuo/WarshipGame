@@ -1,0 +1,44 @@
+#include "app.h"
+#include "raylib.h"
+#include <raymath.h>
+App::App(){}
+
+void App::Init()
+{
+
+}
+
+void App::Run()
+{
+    InitWindow(800, 600, "lol");
+    SetTargetFPS(60);
+    while(!WindowShouldClose())
+    {
+        DrawMenu();    
+    }
+}
+
+void App::Draw()
+{
+BeginDrawing();
+    static Vector2 size{10,10};
+    static Vector2 position{GetMousePosition()};
+
+    position = Vector2Lerp(position,GetMousePosition(), 0.1f);
+    size.x += GetMouseWheelMove() * 5;
+    size.y += GetMouseWheelMove() * 5;
+    ClearBackground(DARKGRAY);
+    DrawRectangleV(position ,size, Color{255,255,255, 255});
+EndDrawing();
+};
+
+void App::DrawMenu()
+{
+BeginDrawing();
+    ClearBackground(WHITE);
+    DrawText("Warship Game",GetScreenWidth() / 3.5f, GetScreenHeight() / 3, 50, Color{0,0,0,255});
+    DrawText("Play",GetScreenWidth() / 3.f, GetScreenHeight() / 2, 50, Color{0,0,0,255});
+    GetScreenWidth();
+    GetScreenHeight();
+EndDrawing();
+};
