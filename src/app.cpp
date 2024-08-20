@@ -13,28 +13,39 @@ void App::Run()
 {
     while(!WindowShouldClose())
     {
-        DrawMenu();    
+        if(!ShouldDrawMenu)
+            DrawMenu();
+        else
+            Draw();
     }
 }
 
 void App::Draw()
 {
-BeginDrawing();
-    static Vector2 size{10,10};
-    static Vector2 position{GetMousePosition()};
+       {
+    BeginDrawing();
+        static Vector2 size{10,10};
+        static Vector2 position{GetMousePosition()};
 
-    position = Vector2Lerp(position,GetMousePosition(), 0.1f);
-    size.x += GetMouseWheelMove() * 5;
-    size.y += GetMouseWheelMove() * 5;
-    ClearBackground(DARKGRAY);
-    DrawRectangleV(position ,size, Color{255,255,255, 255});
-EndDrawing();
+        position = Vector2Lerp(position,GetMousePosition(), 0.1f);
+        size.x += GetMouseWheelMove() * 5;
+        size.y += GetMouseWheelMove() * 5;
+        ClearBackground(DARKGRAY);
+        DrawRectangleV(position ,size, Color{255,255,255, 255});
+    EndDrawing();
+}
 };
 
 void App::DrawMenu()
 {
 BeginDrawing();
     ClearBackground(DARKGRAY);
+    if(CheckCollisionPointRec(GetMousePosition(), Rectangle{10,10,30,30}))
+    {
+        DrawRectangleRec(Rectangle{10,10,30,30}, WHITE);
+        if(IsMouseButtonPressed(MOUSE_BUTTON_LEFT))
+            ShouldDrawMenu = 1;
+    }
     DrawText("Warship Game",GetScreenWidth() / 3.5f, GetScreenHeight() / 3, 50, WHITE);
     DrawText("Play",GetScreenWidth() / 2.f, GetScreenHeight() / 2, 50, WHITE);
     GetScreenWidth();

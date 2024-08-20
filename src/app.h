@@ -15,4 +15,6 @@ public:
     void Draw();
 
     void DrawMenu();
+private:
+    bool ShouldDrawMenu = 0; 
 };
