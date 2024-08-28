@@ -1,7 +1,7 @@
 #pragma once
 #include <raylib.h>
        
-void DrawGrid(int row, int column, int size, int offsetX, int offsetY);
+void DrawGrid(int row, int column, int size, int offsetX, int offsetY, Color color);
 
 class Grid
 {
