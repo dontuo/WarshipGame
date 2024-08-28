@@ -3,8 +3,10 @@
 #include <iostream>
 #include <stdexcept>
 #include <math.h>
+#include <vector>
 #include "button.h"
-
+#include "grid.h"
+#include "board.h"
 
 class App
 {
@@ -14,14 +16,32 @@ public:
 
     void Run();
 
-    void Draw();
+private:
+    void GameDraw(Board &board);
+    void UpdateGame();
+    void GameInputHandler(Board &board);
+    
+    void UpdateMenu();
+    void DrawMenu(Button &menuButton);
+    void MenuInputHandler(Button &menuButton);
 
-    void DrawMenu();
 private:
     bool mShouldDrawMenu = 0;
     
     Texture2D mCrosshairTexture;
-    Texture2D mShip1Texture;
+    //Texture2D mShip1Texture;
+
+    std::vector<Vector2> mShip1 {4};
+    std::vector<Vector2> mShip2 {3};
+    std::vector<Vector2> mShip3 {2};
+    std::vector<Vector2> mShip4 {1};
+
+    
+    Vector2 *mFollowMouse = nullptr;
+
+     
+
     int mWindowWidth = 1280;
     int mWindowHeight = 720;
+
 };

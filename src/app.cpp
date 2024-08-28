@@ -1,82 +1,249 @@
 #include "app.h"
-#include "button.h"
+#include "board.h"
+#include "cell.h"
+#include "grid.h"
+#include "raymath.h"
+#include "ship.h"
+#include <raylib.h>
 #include <stdexcept>
 
 App::App(){}
 
 void App::Init()
 {
+    // TODO a resizable window in future updates
+    //SetConfigFlags(FLAG_WINDOW_RESIZABLE);
     InitWindow(mWindowWidth, mWindowHeight, "Warship game");
-    SetTargetFPS(60);
+    SetTargetFPS(120);
 
     mCrosshairTexture = LoadTexture("textures/crosshair.png");
-    mShip1Texture = LoadTexture("textures/ship_1.png");
-
+    //mShip1Texture = LoadTexture("textures/ship_1.png");
+    
     if(!IsTextureReady(mCrosshairTexture))
     {
         throw std::runtime_error("failed to load crosshair texture");
     }
     HideCursor();
+
+    SetRandomSeed(3);
+    GetRandomValue(1,10);
+
+    for(int i = 0; i < mShip1.size(); i++)
+    {
+        static int x = mWindowWidth - 500;
+        static int y = 150;
+        mShip1[i].x = x;
+        mShip1[i].y = y;
+
+        x += 100;
+    }
+    for(int i = 0; i < mShip2.size(); i++)
+    {
+        static int x = mWindowWidth - 500;
+        static int y = 225;
+        mShip2[i].x = x;
+        mShip2[i].y = y;
+
+        x += 100 + 44;
+    }
+
+    for(int i = 0; i < mShip3.size(); i++)
+    {
+        static int x = mWindowWidth - 500;
+        static int y = 300;
+        mShip3[i].x = x;
+        mShip3[i].y = y;
+
+        x += 100 + 44 * 2;
+    }
+
+    for(int i = 0; i < mShip4.size(); i++)
+    {
+        static int x = mWindowWidth - 500;
+        static int y = 375;
+        mShip4[i].x = x;
+        mShip4[i].y = y;
+
+        x += 100 + 44 * 3;
+    }
+
+
+    LoadTextures();
 }
 
 void App::Run()
 {
-
     while(!WindowShouldClose())
     {
-        if(!mShouldDrawMenu)
-            DrawMenu();
+        if(mShouldDrawMenu)
+        {
+            UpdateMenu();         
+        }
         else
-            Draw();
+        {
+            
+            UpdateGame();
+            /*int row = 10;
+            int column = 10;
+            int size = 40;
+            static int offsetX = 100;
+            static int offsetY = 250;*/
+        }
     }
 }
 
-void App::Draw()
+void App::UpdateGame()
 {
+    
+    static Grid grid(10, 10, 45, 100, 250);
+        
+    static Board board(100,250);
+    
+    //board.PrintCells();
+    GameDraw(board);
+    GameInputHandler(board);
+}
+
+void App::GameDraw(Board &board)
+{
+    //mMenuButton({Rectangle{GetScreenWidth() / 2.f - 2,GetScreenHeight() / 2.f + 3,109,49});
     BeginDrawing();
         ClearBackground(DARKGRAY);
-        
-        int row = 10;
-        int column = 10;
-        int size = 40;
-        static int offsetX = 50;
-        static int offsetY = 250;
-       
-        for(int x = 0; x <= row; x++)
-            DrawLine(x * size + offsetX,offsetY,x * size + offsetX, column * size + offsetY, WHITE);
-    
-        for(int y = 0; y <= column; y++)
-            DrawLine(offsetX - 1,y * size + offsetY,row * size + offsetX,y * size + offsetY,WHITE);
-        
-        if(IsMouseButtonDown(MOUSE_BUTTON_LEFT))
-            offsetX++;
-        if(IsMouseButtonDown(MOUSE_BUTTON_RIGHT))
-            offsetY++;
 
+        board.Draw(0); 
+        
+        
+        //grid.Draw();
+        //DrawTexture(mShip1Texture, GetMouseX(), GetMouseY(), RED);
+        //DrawTexture(mShip1Texture, mWindowWidth - 500, 100, WHITE);
+        //DrawTexture(mShip1Texture, mWindowWidth - 400, 100, WHITE);
+        //DrawTexture(mShip1Texture, mWindowWidth - 300, 100, WHITE);
+        
+        //DrawTextureV(mShip1Texture, GetMousePosition(),WHITE);
+        
+        for(int i = 0; i < mShip1.size(); i++)
+            DrawShip(CellState::BOAT_1, mShip1[i].x, mShip1[i].y, WHITE);
+        for(int i = 0; i < mShip2.size(); i++)
+            DrawShip(CellState::BOAT_2, mShip2[i].x, mShip2[i].y,WHITE);
+
+        for(int i = 0; i < mShip3.size(); i++)
+            DrawShip(CellState::BOAT_3, mShip3[i].x, mShip3[i].y, WHITE);
+        
+        for(int i = 0; i < mShip4.size(); i++)
+            DrawShip(CellState::BOAT_4, mShip4[i].x, mShip4[i].y, WHITE);
+
+        {
+        
+    }
+
+        DrawText("Player1",20,0,50,WHITE);
         DrawTexture(mCrosshairTexture, GetMouseX() - 10, GetMouseY() - 10,WHITE);
     EndDrawing();
 };
 
-void App::DrawMenu()
+void App::GameInputHandler(Board &board)
 {
-    static Button button(Rectangle{GetScreenWidth() / 2.f - 2,GetScreenHeight() / 2.f + 3,109,49});
+    /*if(IsMouseButtonPressed(MOUSE_BUTTON_LEFT))
+    {
+        if (x >= 10)
+        {
+            y++;
+            x = 0;
+        }
+        board.PlaceShip(static_cast<CellState>(type), Vector2{x,y});
+        
+        
+
+        x++;
+        if(type >= CellState::ELEMENT_COUNT - 1)
+            type = CellState::EMPTY;
+        else
+        type++;
+        //y++;
+    }*/
+    
+    if(mFollowMouse == nullptr)
+    {
+        if(IsMouseButtonPressed(MOUSE_BUTTON_LEFT))
+        {
+            for(int i = 0; i < mShip1.size(); i++)
+            {
+                if(CheckCollisionPointRec(GetMousePosition(), Rectangle{mShip1[i].x,mShip1[i].y,44,44}))
+                {
+                    //mShip1[i] = GetMousePosition();
+                    DrawText("Collide!", 10, 10, 50, RED);
+                    DrawShip(CellState::BOAT_1, mShip1[i].x, mShip1[i].y, BLUE);
+                    mFollowMouse = &mShip1[i];
+                }
+            }
+
+
+        }
+        
+    }
+    else
+    {
+        //for(int i = 0; i < 10; i++)
+        //{
+        //    if(CheckCollisionPointRec(GetMousePosition(), Rectangle{i * 44 + 100 ,i * 44 + 250,44,44}))
+        //        std::cout <<  "Colide!!";
+        //}
+    }
+
+    if(IsMouseButtonPressed(MOUSE_BUTTON_LEFT))
+    {
+        for(int x = 0; x < 10; x++)
+            for(int y = 0; y < 10; y++)
+            {
+                if(board.CheckCollision(GetMousePosition(), Vector2{x,y}))
+                    board.PlaceShip(CellState::BOAT_1, Vector2{x,y});
+                    //DrawRectangle(x * 45 + 100, y * 45 + 251,44,44,WHITE);
+            }
+    }
+
+        if(mFollowMouse != nullptr)
+    {
+        //mFollowMouse->x = GetMouseX() - 22;
+        //mFollowMouse->y = GetMouseY() - 22;
+        Vector2 mousePos = GetMousePosition();
+
+        mousePos.x -= 22;
+        mousePos.y -= 22;
+
+        *mFollowMouse = GetSplinePointLinear(mousePos, *mFollowMouse, 0.7f);
+    }
+}
+
+
+
+void App::DrawMenu(Button &menuButton)
+{
     BeginDrawing();
     ClearBackground(DARKGRAY);
-
-    if(button.IsMouseOverButton())
-    {
-        button.Draw(DARKBLUE);
-    }
-    if(button.IsButtonPressed(MOUSE_BUTTON_LEFT))
-    {
-        mShouldDrawMenu = 1;
-    }
+    
+    if(menuButton.IsMouseOverButton())
+        menuButton.Draw(DARKBLUE);
 
     DrawText("Warship Game",GetScreenWidth() / 3.5f, GetScreenHeight() / 3, 50, WHITE);
     DrawText("Play",GetScreenWidth() / 2.f, GetScreenHeight() / 2, 50, WHITE);
-    
 
     DrawTexture(mCrosshairTexture, GetMouseX() - 10, GetMouseY() - 10,WHITE);
 
     EndDrawing();
 };
+
+
+void App::MenuInputHandler(Button &menuButton)
+{
+    if(menuButton.IsButtonPressed(MOUSE_BUTTON_LEFT))
+    {
+        mShouldDrawMenu = 0;
+    }
+}
+
+void App::UpdateMenu()
+{
+    static Button menuButton(Rectangle{GetScreenWidth() / 2.f - 2,GetScreenHeight() / 2.f + 3,109,49});
+    MenuInputHandler(menuButton);
+    DrawMenu(menuButton);
+}
