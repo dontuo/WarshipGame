@@ -1,6 +1,7 @@
 #include "app.h"
 #include "button.h"
 #include <stdexcept>
+#include "grid.h"
 
 App::App(){}
 
@@ -35,23 +36,9 @@ void App::Draw()
 {
     BeginDrawing();
         ClearBackground(DARKGRAY);
-        
-        int row = 10;
-        int column = 10;
-        int size = 40;
-        static int offsetX = 50;
-        static int offsetY = 250;
-       
-        for(int x = 0; x <= row; x++)
-            DrawLine(x * size + offsetX,offsetY,x * size + offsetX, column * size + offsetY, WHITE);
-    
-        for(int y = 0; y <= column; y++)
-            DrawLine(offsetX - 1,y * size + offsetY,row * size + offsetX,y * size + offsetY,WHITE);
-        
-        if(IsMouseButtonDown(MOUSE_BUTTON_LEFT))
-            offsetX++;
-        if(IsMouseButtonDown(MOUSE_BUTTON_RIGHT))
-            offsetY++;
+
+        Grid grid(10, 10, 45, 100, 250, WHITE);
+        grid.Draw();
 
         DrawTexture(mCrosshairTexture, GetMouseX() - 10, GetMouseY() - 10,WHITE);
     EndDrawing();
