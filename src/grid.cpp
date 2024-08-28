@@ -4,13 +4,13 @@ Grid::Grid(int row, int column, int size, int offsetX, int offsetY)
     :mRow(row),mColumn(column),mSize(size),mOffsetX(offsetX),mOffsetY(offsetY)
 {}
 
-void DrawGrid(int row, int column, int size, int offsetX, int offsetY)
+void DrawGrid(int row, int column, int size, int offsetX, int offsetY, Color color)
 {
     for(int x = 0; x <= row; x++)
-        DrawLine(x * size + offsetX,offsetY,x * size + offsetX, column * size + offsetY, WHITE);
+        DrawLine(x * size + offsetX,offsetY,x * size + offsetX, column * size + offsetY, color);
     
     for(int y = 0; y <= column; y++)
-        DrawLine(offsetX - 1,y * size + offsetY,row * size + offsetX,y * size + offsetY,WHITE);
+        DrawLine(offsetX - 1,y * size + offsetY,row * size + offsetX,y * size + offsetY, color);
 }
 
 void Grid::Draw()
