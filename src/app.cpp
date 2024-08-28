@@ -17,7 +17,6 @@ void App::Init()
     SetTargetFPS(120);
 
     mCrosshairTexture = LoadTexture("textures/crosshair.png");
-    //mShip1Texture = LoadTexture("textures/ship_1.png");
     
     if(!IsTextureReady(mCrosshairTexture))
     {
