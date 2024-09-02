@@ -5,7 +5,13 @@
 
 static std::vector<Texture2D> textures(CellState::ELEMENT_COUNT);
 
-
 void DrawShip(CellState type, int offsetX, int offsetY, Color color);
 
 void LoadTextures();
+
+
+struct Ship
+{
+    Vector2 mPos;
+    CellState mCellState;
+};
