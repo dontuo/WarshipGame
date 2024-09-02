@@ -26,43 +26,60 @@ void App::Init()
 
     SetRandomSeed(3);
     GetRandomValue(1,10);
-
-    for(int i = 0; i < mShip1.size(); i++)
+    
+    // boat 1 by 1, 4 pieces only: #
+    for(int i = 0; i < 4; i++)
     {
         static int x = mWindowWidth - 500;
         static int y = 150;
-        mShip1[i].x = x;
-        mShip1[i].y = y;
+
+        mShips.push_back(Ship{Vector2{x,y}, CellState::BOAT_1});
+        //mShips[i].mPos = Vector2{x,y};
+        //mShips[i].mCellState = CellState::BOAT_1;
+        //mShip1[i].x = x
+        //mShip1[i].y = y;
 
         x += 100;
     }
-    for(int i = 0; i < mShip2.size(); i++)
+
+    // boat 1 by 2, 3 pieces only: ##
+    for(int i = 0; i < 3; i++)
     {
         static int x = mWindowWidth - 500;
         static int y = 225;
-        mShip2[i].x = x;
-        mShip2[i].y = y;
-
+        //mShip2[i].x = x;
+        //mShip2[i].y = y;
+        mShips.push_back(Ship{Vector2{x,y}, CellState::BOAT_2});
+        //mShips[i].mPos = Vector2{x,y};
+        //mShips[i].mCellState = CellState::BOAT_2;
         x += 100 + 44;
     }
 
-    for(int i = 0; i < mShip3.size(); i++)
+    // boat 1 by 3, 2 pieces only: ###
+    for(int i = 0; i < 2; i++)
     {
         static int x = mWindowWidth - 500;
         static int y = 300;
-        mShip3[i].x = x;
-        mShip3[i].y = y;
+        //mShip3[i].x = x;
+        //mShip3[i].y = y;
+        mShips.push_back(Ship{Vector2{x,y}, CellState::BOAT_3});
+        //mShips[i].mPos = Vector2{x,y};
+        //mShips[i].mCellState = CellState::BOAT_3;
 
         x += 100 + 44 * 2;
     }
 
-    for(int i = 0; i < mShip4.size(); i++)
+    // boat 1 by 4, 1 pieces only: ####
+    for(int i = 0; i < 1; i++)
     {
         static int x = mWindowWidth - 500;
         static int y = 375;
         mShip4[i].x = x;
         mShip4[i].y = y;
-
+        
+        mShips.push_back(Ship{Vector2{x,y}, CellState::BOAT_4});
+        //mShips[i].mPos = Vector2{x,y};
+        //mShips[i].mCellState = CellState::BOAT_4;
         x += 100 + 44 * 3;
     }
 
@@ -120,6 +137,13 @@ void App::GameDraw(Board &board)
         
         //DrawTextureV(mShip1Texture, GetMousePosition(),WHITE);
         
+        for (int i = 0; i < mShips.size(); i++)
+        {
+            Vector2 pos = mShips[i].mPos;
+            CellState type = mShips[i].mCellState;
+            DrawShip(type, pos.x, pos.y, WHITE);
+        }
+        /*
         for(int i = 0; i < mShip1.size(); i++)
             DrawShip(CellState::BOAT_1, mShip1[i].x, mShip1[i].y, WHITE);
         for(int i = 0; i < mShip2.size(); i++)
@@ -130,7 +154,7 @@ void App::GameDraw(Board &board)
         
         for(int i = 0; i < mShip4.size(); i++)
             DrawShip(CellState::BOAT_4, mShip4[i].x, mShip4[i].y, WHITE);
-
+        */
         {
         
     }
@@ -161,26 +185,25 @@ void App::GameInputHandler(Board &board)
         //y++;
     }*/
     
-    if(mFollowMouse == nullptr)
     {
-        if(IsMouseButtonPressed(MOUSE_BUTTON_LEFT))
+        //if(IsMouseButtonPressed(MOUSE_BUTTON_LEFT))
         {
-            for(int i = 0; i < mShip1.size(); i++)
+            for(int i = 0; i < mShips.size(); i++)
             {
-                if(CheckCollisionPointRec(GetMousePosition(), Rectangle{mShip1[i].x,mShip1[i].y,44,44}))
+                Vector2 pos = mShips[i].mPos;
+                CellState type = mShips[i].mCellState;
+                if(CheckCollisionPointRec(GetMousePosition(), Rectangle{pos.x,pos.y,44,44}))
                 {
                     //mShip1[i] = GetMousePosition();
                     DrawText("Collide!", 10, 10, 50, RED);
-                    DrawShip(CellState::BOAT_1, mShip1[i].x, mShip1[i].y, BLUE);
-                    mFollowMouse = &mShip1[i];
+                    mCurrShipId = i;
                 }
             }
-
 
         }
         
     }
-    else
+    //else
     {
         //for(int i = 0; i < 10; i++)
         //{
@@ -195,21 +218,22 @@ void App::GameInputHandler(Board &board)
             for(int y = 0; y < 10; y++)
             {
                 if(board.CheckCollision(GetMousePosition(), Vector2{x,y}))
-                    board.PlaceShip(CellState::BOAT_1, Vector2{x,y});
+                    board.PlaceShip(mShips[mCurrShipId].mCellState, Vector2{x,y});
                     //DrawRectangle(x * 45 + 100, y * 45 + 251,44,44,WHITE);
             }
     }
 
-        if(mFollowMouse != nullptr)
+    if(mCurrShipId != -1)
     {
         //mFollowMouse->x = GetMouseX() - 22;
         //mFollowMouse->y = GetMouseY() - 22;
         Vector2 mousePos = GetMousePosition();
-
+        
+        Vector2 &shipPos = mShips[mCurrShipId].mPos; 
         mousePos.x -= 22;
         mousePos.y -= 22;
-
-        *mFollowMouse = GetSplinePointLinear(mousePos, *mFollowMouse, 0.7f);
+        
+        shipPos = GetSplinePointLinear(mousePos, shipPos, 0.7f);
     }
 }
 

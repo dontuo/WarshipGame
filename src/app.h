@@ -7,6 +7,7 @@
 #include "button.h"
 #include "grid.h"
 #include "board.h"
+#include "ship.h"
 
 class App
 {
@@ -35,9 +36,10 @@ private:
     std::vector<Vector2> mShip2 {3};
     std::vector<Vector2> mShip3 {2};
     std::vector<Vector2> mShip4 {1};
-
+        
+    std::vector<Ship> mShips{4 + 3 + 2 + 1};
     
-    Vector2 *mFollowMouse = nullptr;
+    int mCurrShipId = -1;
 
      
 
