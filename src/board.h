@@ -24,14 +24,4 @@ public:
     Vector2 mOffset;
     
     Texture2D mTextures[CellState::ELEMENT_COUNT];
-    Texture2D mMissedTexture;
-    Texture2D mBoat1Texture;
-    Texture2D mBoat2Texture;
-    Texture2D mBoat3Texture;
-    Texture2D mBoat4Texture;
-    Texture2D mBoat1HitTexture;
-    Texture2D mBoat2HitTexture;
-    Texture2D mBoat3HitTexture;
-    Texture2D mBoat4HitTexture;
-    Texture2D mHitTexture;
 };

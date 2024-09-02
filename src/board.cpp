@@ -19,39 +19,12 @@ Board::Board(int offsetX, int offsetY)
     mTextures[CellState::BOAT_4_HITTED] = LoadTexture("textures/ship_4_hitted.png"); 
     mTextures[CellState::HIT] = LoadTexture("textures/hit.png"); 
     mTextures[CellState::MISSED] = LoadTexture("textures/miss.png"); 
-    /*
-    mBoat1Texture = LoadTexture("textures/ship_1.png");
-    mBoat2Texture = LoadTexture("textures/ship_2.png");
-    mBoat3Texture = LoadTexture("textures/ship_3.png");
-    mBoat4Texture = LoadTexture("textures/ship_4.png");
-
-    mMissedTexture = LoadTexture("textures/miss.png");
-    mHitTexture = LoadTexture("textures/hit.png");
-
-    mBoat1HitTexture = LoadTexture("textures/ship_1_hitted.png");
-    mBoat2HitTexture = LoadTexture("textures/ship_2_hitted.png");;
-    mBoat3HitTexture = LoadTexture("textures/ship_3_hitted.png");;
-    mBoat4HitTexture = LoadTexture("textures/ship_4_hitted.png");
-    */
 }
 
 
 Board::Board(Vector2 offset)
     :mOffset(offset)
 {
-/*
-    mBoat1Texture = LoadTexture("textures/ship_1.png");
-    mBoat2Texture = LoadTexture("textures/ship_2.png");
-    mBoat3Texture = LoadTexture("textures/ship_3.png");
-    mBoat4Texture = LoadTexture("textures/ship_4.png");
-    mMissedTexture = LoadTexture("textures/miss.png");
-    mHitTexture = LoadTexture("textures/hit.png");
-    
-    mBoat1HitTexture = LoadTexture("textures/ship_1_hitted.png");
-    mBoat2HitTexture = LoadTexture("textures/ship_2_hitted.png");;
-    mBoat3HitTexture = LoadTexture("textures/ship_3_hitted.png");;
-    mBoat4HitTexture = LoadTexture("textures/ship_4_hitted.png");
-   */ 
     mTextures[CellState::EMPTY] = LoadTexture("textures/empty.png"); 
     mTextures[CellState::BOAT_1] = LoadTexture("textures/ship_1.png"); 
     mTextures[CellState::BOAT_2] = LoadTexture("textures/ship_2.png"); 
