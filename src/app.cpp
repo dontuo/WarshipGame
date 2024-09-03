@@ -186,7 +186,7 @@ void App::GameInputHandler(Board &board)
     }*/
     
     {
-        //if(IsMouseButtonPressed(MOUSE_BUTTON_LEFT))
+        if(IsMouseButtonPressed(MOUSE_BUTTON_LEFT))
         {
             for(int i = 0; i < mShips.size(); i++)
             {
@@ -194,6 +194,7 @@ void App::GameInputHandler(Board &board)
                 CellState type = mShips[i].mCellState;
                 if(CheckCollisionPointRec(GetMousePosition(), Rectangle{pos.x,pos.y,44,44}))
                 {
+                    
                     //mShip1[i] = GetMousePosition();
                     DrawText("Collide!", 10, 10, 50, RED);
                     mCurrShipId = i;
@@ -218,8 +219,48 @@ void App::GameInputHandler(Board &board)
             for(int y = 0; y < 10; y++)
             {
                 if(board.CheckCollision(GetMousePosition(), Vector2{x,y}))
-                    board.PlaceShip(mShips[mCurrShipId].mCellState, Vector2{x,y});
-                    //DrawRectangle(x * 45 + 100, y * 45 + 251,44,44,WHITE);
+                switch(mShips[mCurrShipId].mCellState)
+                {
+                    case CellState::BOAT_1:
+                        board.PlaceShip(mShips[mCurrShipId].mCellState, Vector2{x,y});
+                        mShips.erase(mShips.begin() + mCurrShipId);
+                        mCurrShipId = -1;
+                    break;
+
+                    case CellState::BOAT_2:
+                        if(x < 9)
+                        {
+                            board.PlaceShip(mShips[mCurrShipId].mCellState, Vector2{x,y});
+                            board.PlaceShip(mShips[mCurrShipId].mCellState, Vector2{x + 1,y});
+                            mShips.erase(mShips.begin() + mCurrShipId);
+                            mCurrShipId = -1;
+                        }
+                    break;
+
+                    case CellState::BOAT_3:
+                        if(x < 8)
+                        {
+                            board.PlaceShip(mShips[mCurrShipId].mCellState, Vector2{x,y});
+                            board.PlaceShip(mShips[mCurrShipId].mCellState, Vector2{x + 1,y});
+                            board.PlaceShip(mShips[mCurrShipId].mCellState, Vector2{x + 2,y});
+                            mShips.erase(mShips.begin() + mCurrShipId);
+                            mCurrShipId = -1;
+                        }
+                    break;
+                    
+                    case CellState::BOAT_4:
+                        if(x < 7)
+                        {
+                            board.PlaceShip(mShips[mCurrShipId].mCellState, Vector2{x,y});
+                            board.PlaceShip(mShips[mCurrShipId].mCellState, Vector2{x + 1,y});
+                            board.PlaceShip(mShips[mCurrShipId].mCellState, Vector2{x + 2,y});
+                            board.PlaceShip(mShips[mCurrShipId].mCellState, Vector2{x + 3,y});
+                            mShips.erase(mShips.begin() + mCurrShipId);
+                            mCurrShipId = -1;
+                        }
+                    break;
+                }
+                //DrawRectangle(x * 45 + 100, y * 45 + 251,44,44,WHITE);
             }
     }
 
