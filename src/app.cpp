@@ -205,13 +205,11 @@ void App::GameInputHandler(Board &board)
         
     }
     //else
-    {
         //for(int i = 0; i < 10; i++)
         //{
         //    if(CheckCollisionPointRec(GetMousePosition(), Rectangle{i * 44 + 100 ,i * 44 + 250,44,44}))
         //        std::cout <<  "Colide!!";
         //}
-    }
 
     if(IsMouseButtonPressed(MOUSE_BUTTON_LEFT))
     {
