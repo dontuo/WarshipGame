@@ -12,13 +12,15 @@ public:
     Board(Vector2 offset);
 
     void Draw(bool Hide = 0);
+    
+    //void HightlighTheBoat(CellState type, Vector2 position);
 
     bool PlaceShip(CellState type, Vector2 position);
     
     bool CheckCollision(Vector2 pos, Vector2 cell);
     void PrintCells();
     bool CheckHit(Vector2 pos);
-
+    
     CellState mCells[10][10] = {CellState::EMPTY};
     
     Vector2 mOffset;
