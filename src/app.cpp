@@ -137,12 +137,45 @@ void App::GameDraw(Board &board)
         
         //DrawTextureV(mShip1Texture, GetMousePosition(),WHITE);
         
-        for (int i = 0; i < mShips.size(); i++)
-        {
-            Vector2 pos = mShips[i].mPos;
-            CellState type = mShips[i].mCellState;
-            DrawShip(type, pos.x, pos.y, WHITE);
-        }
+        
+        
+        if(mCurrShipId != -1)
+        for(int x = 0; x < 10; x++)
+            for(int y = 0; y < 10; y++)
+            {
+                if(board.CheckCollision(GetMousePosition(), Vector2{x,y}))
+                {
+                    switch(mShips[mCurrShipId].mCellState)
+                    {
+                        case CellState::BOAT_1:
+                            DrawShip(CellState::BOAT_1, x * 45 + board.mOffset.x, y * 45 + 1 + board.mOffset.y, RED);
+                        break;
+
+                        case CellState::BOAT_2:
+                            if(x < 9)
+                            {
+                                DrawShip(CellState::BOAT_2, x * 45 + board.mOffset.x, y * 45 + 1 + board.mOffset.y, RED);
+                            }
+                        break;
+
+                        case CellState::BOAT_3:
+                            if(x < 8)
+                            {
+                                DrawShip(CellState::BOAT_3, x * 45 + board.mOffset.x, y * 45 + 1 + board.mOffset.y, RED);
+                            }
+                        break;
+                        
+                        case CellState::BOAT_4:
+                            if(x < 7)
+                            {
+                                DrawShip(CellState::BOAT_4, x * 45 + board.mOffset.x, y * 45 + 1 + board.mOffset.y, RED);
+                            }
+                        break;
+                    }
+
+                    //DrawTexture(textures[);
+                }
+            }
         /*
         for(int i = 0; i < mShip1.size(); i++)
             DrawShip(CellState::BOAT_1, mShip1[i].x, mShip1[i].y, WHITE);
@@ -155,12 +188,15 @@ void App::GameDraw(Board &board)
         for(int i = 0; i < mShip4.size(); i++)
             DrawShip(CellState::BOAT_4, mShip4[i].x, mShip4[i].y, WHITE);
         */
+        for (int i = 0; i < mShips.size(); i++)
         {
-        
-    }
-
+            Vector2 pos = mShips[i].mPos;
+            CellState type = mShips[i].mCellState;
+            DrawShip(type, pos.x, pos.y, WHITE);
+        }
         DrawText("Player1",20,0,50,WHITE);
         DrawTexture(mCrosshairTexture, GetMouseX() - 10, GetMouseY() - 10,WHITE);
+        DrawTexture(textures[CellState::BOAT_1], 10,10, RED);
     EndDrawing();
 };
 
