@@ -1,5 +1,5 @@
 rm WarshipGame
-cmake CMakeLists.txt -DCMAKE_EXPORT_COMPILE_COMMANDS=ON
+cmake CMakeLists.txt -DCMAKE_EXPORT_COMPILE_COMMANDS=ON -DCMAKE_BUILD_TYPE=Debug
 
 make -j8
 
