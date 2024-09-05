@@ -4,6 +4,8 @@
 #include "cell.h"
 #include "grid.h"
 #include <iostream>
+#include <vector>
+
 
 class Board
 {

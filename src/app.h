@@ -8,6 +8,9 @@
 #include "grid.h"
 #include "board.h"
 #include "ship.h"
+#include "cell.h"
+
+
 
 class App
 {
@@ -30,12 +33,6 @@ private:
     bool mShouldDrawMenu = 0;
     
     Texture2D mCrosshairTexture;
-    //Texture2D mShip1Texture;
-
-    std::vector<Vector2> mShip1 {4};
-    std::vector<Vector2> mShip2 {3};
-    std::vector<Vector2> mShip3 {2};
-    std::vector<Vector2> mShip4 {1};
         
     std::vector<Ship> mShips{4 + 3 + 2 + 1};
     

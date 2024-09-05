@@ -1,5 +1,4 @@
 #include "ship.h"
-#include "cell.h"
 
 void LoadTextures()
 {
