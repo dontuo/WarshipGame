@@ -2,37 +2,12 @@
 
 Board::Board(int offsetX, int offsetY)
     :mOffset{Vector2{(float)offsetX,(float)offsetY}}
-{
-    mTextures[CellState::EMPTY] = LoadTexture("textures/empty.png"); 
-    mTextures[CellState::BOAT_1] = LoadTexture("textures/ship_1.png"); 
-    mTextures[CellState::BOAT_2] = LoadTexture("textures/ship_2.png"); 
-    mTextures[CellState::BOAT_3] = LoadTexture("textures/ship_3.png"); 
-    mTextures[CellState::BOAT_4] = LoadTexture("textures/ship_4.png"); 
-    mTextures[CellState::BOAT_1_HITTED] = LoadTexture("textures/ship_1_hitted.png"); 
-    mTextures[CellState::BOAT_2_HITTED] = LoadTexture("textures/ship_2_hitted.png"); 
-    mTextures[CellState::BOAT_3_HITTED] = LoadTexture("textures/ship_3_hitted.png"); 
-    mTextures[CellState::BOAT_4_HITTED] = LoadTexture("textures/ship_4_hitted.png"); 
-    mTextures[CellState::HIT] = LoadTexture("textures/hit.png"); 
-    mTextures[CellState::MISSED] = LoadTexture("textures/miss.png"); 
-}
+{}
 
 
 Board::Board(Vector2 offset)
     :mOffset(offset)
-{
-    mTextures[CellState::EMPTY] = LoadTexture("textures/empty.png"); 
-    mTextures[CellState::BOAT_1] = LoadTexture("textures/ship_1.png"); 
-    mTextures[CellState::BOAT_2] = LoadTexture("textures/ship_2.png"); 
-    mTextures[CellState::BOAT_3] = LoadTexture("textures/ship_3.png"); 
-    mTextures[CellState::BOAT_4] = LoadTexture("textures/ship_4.png"); 
-    mTextures[CellState::BOAT_1_HITTED] = LoadTexture("textures/ship_1_hitted.png"); 
-    mTextures[CellState::BOAT_2_HITTED] = LoadTexture("textures/ship_2_hitted.png"); 
-    mTextures[CellState::BOAT_3_HITTED] = LoadTexture("textures/ship_3_hitted.png"); 
-    mTextures[CellState::BOAT_4_HITTED] = LoadTexture("textures/ship_4_hitted.png"); 
-    mTextures[CellState::HIT] = LoadTexture("textures/hit.png"); 
-    mTextures[CellState::MISSED] = LoadTexture("textures/miss.png");
-}
-
+{}
 
 void Board::Draw(bool Hide)
 {
@@ -48,35 +23,35 @@ void Board::Draw(bool Hide)
                 {
                     
                     case CellState::EMPTY:
-                        DrawTexture(mTextures[CellState::EMPTY],mOffset.x + (45 * x), mOffset.y + (45 * y) + 1, WHITE);
+                        DrawTexture(textures[CellState::EMPTY],mOffset.x + (45 * x), mOffset.y + (45 * y) + 1, WHITE);
                     break;
 
-                    case CellState::BOAT_1_HITTED:
-                        DrawTexture(mTextures[CellState::BOAT_1_HITTED],mOffset.x + (45 * x), mOffset.y + (45 * y) + 1, WHITE);
+                    case CellState::SHIP_1_HITTED:
+                        DrawTexture(textures[CellState::SHIP_1_HITTED],mOffset.x + (45 * x), mOffset.y + (45 * y) + 1, WHITE);
                     break;
                     
-                    case CellState::BOAT_2_HITTED:
-                        DrawTexture(mTextures[CellState::BOAT_2_HITTED],mOffset.x + (45 * x), mOffset.y + (45 * y) + 1, WHITE);
+                    case CellState::SHIP_2_HITTED:
+                        DrawTexture(textures[CellState::SHIP_2_HITTED],mOffset.x + (45 * x), mOffset.y + (45 * y) + 1, WHITE);
                     break;
                 
-                    case CellState::BOAT_3_HITTED:
-                        DrawTexture(mTextures[CellState::BOAT_3_HITTED],mOffset.x + (45 * x), mOffset.y + (45 * y) + 1, WHITE);
+                    case CellState::SHIP_3_HITTED:
+                        DrawTexture(textures[CellState::SHIP_3_HITTED],mOffset.x + (45 * x), mOffset.y + (45 * y) + 1, WHITE);
                     break;
 
-                    case CellState::BOAT_4_HITTED:
-                        DrawTexture(mTextures[CellState::BOAT_4_HITTED],mOffset.x + (45 * x), mOffset.y + (45 * y) + 1, WHITE);
+                    case CellState::SHIP_4_HITTED:
+                        DrawTexture(textures[CellState::SHIP_4_HITTED],mOffset.x + (45 * x), mOffset.y + (45 * y) + 1, WHITE);
                     break;
 
                     case CellState::MISSED:
-                        DrawTexture(mTextures[CellState::MISSED],mOffset.x + (45 * x), mOffset.y + (45 * y) + 1, WHITE);
+                        DrawTexture(textures[CellState::MISSED],mOffset.x + (45 * x), mOffset.y + (45 * y) + 1, WHITE);
                     break;
 
                     case CellState::HIT:
-                        DrawTexture(mTextures[CellState::HIT],mOffset.x + (45 * x), mOffset.y + (45 * y) + 1, WHITE);
+                        DrawTexture(textures[CellState::HIT],mOffset.x + (45 * x), mOffset.y + (45 * y) + 1, WHITE);
                     break;
 
                     default:
-                        DrawTexture(mTextures[CellState::EMPTY],mOffset.x + (45 * x), mOffset.y + (45 * y) + 1, WHITE);
+                        DrawTexture(textures[CellState::EMPTY],mOffset.x + (45 * x), mOffset.y + (45 * y) + 1, WHITE);
                     break;
                 }
             }
@@ -91,47 +66,47 @@ void Board::Draw(bool Hide)
                 switch (mCells[x][y]) 
                 {
                     case CellState::EMPTY:
-                        DrawTexture(mTextures[CellState::EMPTY],mOffset.x + (45 * x), mOffset.y + (45 * y) + 1, WHITE);
+                        DrawTexture(textures[CellState::EMPTY],mOffset.x + (45 * x), mOffset.y + (45 * y) + 1, WHITE);
                     break;
 
-                    case CellState::BOAT_1:
-                        DrawTexture(mTextures[CellState::BOAT_1],mOffset.x + (45 * x), mOffset.y + (45 * y) + 1, WHITE);
+                    case CellState::SHIP_1:
+                        DrawTexture(textures[CellState::SHIP_1],mOffset.x + (45 * x), mOffset.y + (45 * y) + 1, WHITE);
                     break;
 
-                    case CellState::BOAT_2:
-                        DrawTexture(mTextures[CellState::BOAT_2],mOffset.x + (45 * x), mOffset.y + (45 * y) + 1, WHITE);
+                    case CellState::SHIP_2:
+                        DrawTexture(textures[CellState::SHIP_2],mOffset.x + (45 * x), mOffset.y + (45 * y) + 1, WHITE);
                     break;
 
-                    case CellState::BOAT_3:
-                        DrawTexture(mTextures[CellState::BOAT_3],mOffset.x + (45 * x), mOffset.y + (45 * y) + 1, WHITE);
+                    case CellState::SHIP_3:
+                        DrawTexture(textures[CellState::SHIP_3],mOffset.x + (45 * x), mOffset.y + (45 * y) + 1, WHITE);
                     break;
 
-                    case CellState::BOAT_4:
-                        DrawTexture(mTextures[CellState::BOAT_4],mOffset.x + (45 * x), mOffset.y + (45 * y) + 1, WHITE);
+                    case CellState::SHIP_4:
+                        DrawTexture(textures[CellState::SHIP_4],mOffset.x + (45 * x), mOffset.y + (45 * y) + 1, WHITE);
                     break;
                     
-                    case CellState::BOAT_1_HITTED:
-                        DrawTexture(mTextures[CellState::BOAT_1_HITTED],mOffset.x + (45 * x), mOffset.y + (45 * y) + 1, WHITE);
+                    case CellState::SHIP_1_HITTED:
+                        DrawTexture(textures[CellState::SHIP_1_HITTED],mOffset.x + (45 * x), mOffset.y + (45 * y) + 1, WHITE);
                     break;
                     
-                    case CellState::BOAT_2_HITTED:
-                        DrawTexture(mTextures[CellState::BOAT_2_HITTED],mOffset.x + (45 * x), mOffset.y + (45 * y) + 1, WHITE);
+                    case CellState::SHIP_2_HITTED:
+                        DrawTexture(textures[CellState::SHIP_2_HITTED],mOffset.x + (45 * x), mOffset.y + (45 * y) + 1, WHITE);
                     break;
                 
-                    case CellState::BOAT_3_HITTED:
-                        DrawTexture(mTextures[CellState::BOAT_3_HITTED],mOffset.x + (45 * x), mOffset.y + (45 * y) + 1, WHITE);
+                    case CellState::SHIP_3_HITTED:
+                        DrawTexture(textures[CellState::SHIP_3_HITTED],mOffset.x + (45 * x), mOffset.y + (45 * y) + 1, WHITE);
                     break;
 
-                    case CellState::BOAT_4_HITTED:
-                        DrawTexture(mTextures[CellState::BOAT_4_HITTED],mOffset.x + (45 * x), mOffset.y + (45 * y) + 1, WHITE);
+                    case CellState::SHIP_4_HITTED:
+                        DrawTexture(textures[CellState::SHIP_4_HITTED],mOffset.x + (45 * x), mOffset.y + (45 * y) + 1, WHITE);
                     break;
 
                     case CellState::MISSED:
-                        DrawTexture(mTextures[CellState::MISSED],mOffset.x + (45 * x), mOffset.y + (45 * y) + 1, WHITE);
+                        DrawTexture(textures[CellState::MISSED],mOffset.x + (45 * x), mOffset.y + (45 * y) + 1, WHITE);
                     break;
 
                     case CellState::HIT:
-                        DrawTexture(mTextures[CellState::HIT],mOffset.x + (45 * x), mOffset.y + (45 * y) + 1, WHITE);
+                        DrawTexture(textures[CellState::HIT],mOffset.x + (45 * x), mOffset.y + (45 * y) + 1, WHITE);
                     break;
 
                     default:
@@ -179,4 +154,15 @@ void Board::PrintCells()
 bool Board::CheckCollision(Vector2 pos, Vector2 cell)
 {
     return (CheckCollisionPointRec(pos,Rectangle{cell.x * 45 + mOffset.x, cell.y * 45 + mOffset.y, 44, 44}));
+}
+
+
+CellState Board::GetCellState(int x, int y)
+{
+    return mCells[x][y];
+}
+
+CellState Board::GetCellState(Vector2 pos)
+{
+    return mCells[pos.x][pos.y];
 }
