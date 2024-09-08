@@ -31,14 +31,15 @@ private:
 
 private:
     bool mShouldDrawMenu = 0;
-    
-    Texture2D mCrosshairTexture;
         
+    Texture2D mCrosshairTexture;
+    // storing what type of ship and their coordinates  
     std::vector<Ship> mShips{4 + 3 + 2 + 1};
     
     int mCurrShipId = -1;
-
-     
+    
+    // current cell id depend on cursor
+    Vector2 mCurrCursorCell = {-1,-1};
 
     int mWindowWidth = 1280;
     int mWindowHeight = 720;
