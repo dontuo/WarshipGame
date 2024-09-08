@@ -1,4 +1,5 @@
 #include "app.h"
+#include "cell.h"
 
 App::App(){}
 
@@ -10,7 +11,8 @@ void App::Init()
     SetTargetFPS(120);
 
     mCrosshairTexture = LoadTexture("textures/crosshair.png");
-    
+    LoadTextures();
+
     if(!IsTextureReady(mCrosshairTexture))
     {
         throw std::runtime_error("failed to load crosshair texture");
@@ -26,7 +28,7 @@ void App::Init()
         static int x = mWindowWidth - 500;
         static int y = 150;
 
-        mShips.push_back(Ship{Vector2{x,y}, CellState::BOAT_1});
+        mShips.push_back(Ship{Vector2{x,y}, CellState::SHIP_1});
 
         x += 100;
     }
@@ -37,7 +39,7 @@ void App::Init()
         static int x = mWindowWidth - 500;
         static int y = 225;
 
-        mShips.push_back(Ship{Vector2{x,y}, CellState::BOAT_2});
+        mShips.push_back(Ship{Vector2{x,y}, CellState::SHIP_2});
 
         x += 100 + 44;
     }
@@ -48,7 +50,7 @@ void App::Init()
         static int x = mWindowWidth - 500;
         static int y = 300;
 
-        mShips.push_back(Ship{Vector2{x,y}, CellState::BOAT_3});
+        mShips.push_back(Ship{Vector2{x,y}, CellState::SHIP_3});
 
         x += 100 + 44 * 2;
     }
@@ -59,26 +61,23 @@ void App::Init()
         static int x = mWindowWidth - 500;
         static int y = 375;
         
-        mShips.push_back(Ship{Vector2{x,y}, CellState::BOAT_4});
+        mShips.push_back(Ship{Vector2{x,y}, CellState::SHIP_4});
 
         x += 100 + 44 * 3;
     }
-
-
-    LoadTextures();
 }
-
+// running the app
 void App::Run()
 {
     while(!WindowShouldClose())
     {
         if(mShouldDrawMenu)
-        {
+        { // drawing menu untill play button is pressed
             UpdateMenu();         
         }
         else
         {
-            
+            // drawing game itself
             UpdateGame();
             /*int row = 10;
             int column = 10;
@@ -91,9 +90,7 @@ void App::Run()
 
 void App::UpdateGame()
 {
-    
-    static Grid grid(10, 10, 45, 100, 250);
-        
+    //static Grid grid(10, 10, 45, 100, 250);
     static Board board(100,250);
     
     GameDraw(board);
@@ -115,23 +112,23 @@ void App::GameDraw(Board &board)
                     {
                         switch(mShips[mCurrShipId].mCellState)
                         {
-                            case CellState::BOAT_1:
-                                DrawShip(CellState::BOAT_1, x * 45 + board.mOffset.x, y * 45 + 1 + board.mOffset.y, GREEN);
+                            case CellState::SHIP_1:
+                                DrawShip(CellState::SHIP_1, x * 45 + board.mOffset.x, y * 45 + 1 + board.mOffset.y, GREEN);
                             break;
 
-                            case CellState::BOAT_2:
+                            case CellState::SHIP_2:
                                 if(x < 9)
-                                    DrawShip(CellState::BOAT_2, x * 45 + board.mOffset.x, y * 45 + 1 + board.mOffset.y, GREEN);
+                                    DrawShip(CellState::SHIP_2, x * 45 + board.mOffset.x, y * 45 + 1 + board.mOffset.y, GREEN);
                             break;
 
-                            case CellState::BOAT_3:
+                            case CellState::SHIP_3:
                                 if(x < 8)
-                                    DrawShip(CellState::BOAT_3, x * 45 + board.mOffset.x, y * 45 + 1 + board.mOffset.y, GREEN);
+                                    DrawShip(CellState::SHIP_3, x * 45 + board.mOffset.x, y * 45 + 1 + board.mOffset.y, GREEN);
                             break;
                             
-                            case CellState::BOAT_4:
+                            case CellState::SHIP_4:
                                 if(x < 7)
-                                    DrawShip(CellState::BOAT_4, x * 45 + board.mOffset.x, y * 45 + 1 + board.mOffset.y, GREEN);
+                                    DrawShip(CellState::SHIP_4, x * 45 + board.mOffset.x, y * 45 + 1 + board.mOffset.y, GREEN);
                             break;
                         }
                     }
@@ -171,13 +168,13 @@ void App::GameInputHandler(Board &board)
                 if(board.CheckCollision(GetMousePosition(), Vector2{x,y}))
                 switch(mShips[mCurrShipId].mCellState)
                 {
-                    case CellState::BOAT_1:
+                    case CellState::SHIP_1:
                         board.PlaceShip(mShips[mCurrShipId].mCellState, Vector2{x,y});
                         mShips.erase(mShips.begin() + mCurrShipId);
                         mCurrShipId = -1;
                     break;
 
-                    case CellState::BOAT_2:
+                    case CellState::SHIP_2:
                         if(x < 9)
                         {
                             board.PlaceShip(mShips[mCurrShipId].mCellState, Vector2{x,y});
@@ -187,7 +184,7 @@ void App::GameInputHandler(Board &board)
                         }
                     break;
 
-                    case CellState::BOAT_3:
+                    case CellState::SHIP_3:
                         if(x < 8)
                         {
                             board.PlaceShip(mShips[mCurrShipId].mCellState, Vector2{x,y});
@@ -198,7 +195,7 @@ void App::GameInputHandler(Board &board)
                         }
                     break;
                     
-                    case CellState::BOAT_4:
+                    case CellState::SHIP_4:
                         if(x < 7)
                         {
                             board.PlaceShip(mShips[mCurrShipId].mCellState, Vector2{x,y});
