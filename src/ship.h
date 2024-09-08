@@ -2,9 +2,9 @@
 #include "cell.h"
 #include <raylib.h>
 #include <vector>
+#include <iostream>
 
-static std::vector<Texture2D> textures(CellState::ELEMENT_COUNT);
-
+extern Texture2D textures[];
 void DrawShip(CellState type, int offsetX, int offsetY, Color color);
 
 void LoadTextures();
