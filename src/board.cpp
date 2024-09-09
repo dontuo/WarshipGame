@@ -164,5 +164,5 @@ CellState Board::GetCellState(int x, int y)
 
 CellState Board::GetCellState(Vector2 pos)
 {
-    return mCells[pos.x][pos.y];
+    return mCells[static_cast<int>(pos.x)][static_cast<int>(pos.y)];
 }
