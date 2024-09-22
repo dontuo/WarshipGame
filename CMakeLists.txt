@@ -9,7 +9,7 @@ include_directories(libs/raylib/src)
 
 # Find all source files in the src directory
 file(GLOB SOURCES
-     "src/*.h"
+     "src/*.hpp"
      "src/*.cpp"
 )
 
