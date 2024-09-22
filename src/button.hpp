@@ -1,14 +1,15 @@
 #pragma once
-#include <raylib.h>
 #include <iostream>
+#include <raylib.h>
 
 class Button
 {
-public:
+  public:
     Button(Rectangle rect);
     bool IsButtonPressed(int MouseButton);
     bool IsMouseOverButton();
     void Draw(Color color);
-private:
+
+  private:
     Rectangle mRect;
 };

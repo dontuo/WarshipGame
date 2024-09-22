@@ -1,9 +1,6 @@
-#include "button.h"
+#include "button.hpp"
 
-
-
-Button::Button(Rectangle rect)
-    :mRect(rect)
+Button::Button(Rectangle rect) : mRect(rect)
 {
 }
 
@@ -14,9 +11,8 @@ bool Button::IsButtonPressed(int MouseButton)
 
 void Button::Draw(Color color)
 {
-    DrawRectangleRec(mRect,color);
+    DrawRectangleRec(mRect, color);
 }
-
 
 bool Button::IsMouseOverButton()
 {

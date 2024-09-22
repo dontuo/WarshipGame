@@ -1,4 +1,4 @@
-#include "app.h"
+#include "app.hpp"
 
 int main()
 {
@@ -9,11 +9,11 @@ int main()
         app.Init();
         app.Run();
     }
-    catch(std::runtime_error &e) 
+    catch (std::runtime_error &e)
     {
         std::cout << "error:" << e.what() << '\n';
         return -1;
     }
- 
+
     return 0;
 }
