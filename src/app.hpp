@@ -14,14 +14,14 @@ class App
 {
   public:
     App();
-    void Init();
 
     void Run();
 
   private:
-    void GameDraw(Board &board);
     void UpdateGame();
+    void DrawGame(Board &board);
     void GameInputHandler(Board &board);
+    void HandleShipPlacement(int x, int y, Board &board);
 
     void UpdateMenu();
     void DrawMenu(Button &menuButton);

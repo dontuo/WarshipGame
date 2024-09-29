@@ -1,4 +1,5 @@
 #include "app.hpp"
+#include "board.hpp"
 #include "cell.hpp"
 #include "raylib.h"
 
@@ -28,11 +29,11 @@ void App::UpdateGame()
     // static Grid grid(10, 10, 45, 100, 250);
     static Board board(100, 250);
 
-    GameDraw(board);
+    DrawGame(board);
     GameInputHandler(board);
 }
 
-void App::GameDraw(Board &board)
+void App::DrawGame(Board &board)
 {
     BeginDrawing();
     ClearBackground(DARKGRAY);
@@ -48,7 +49,7 @@ void App::GameDraw(Board &board)
                     switch (mShips[mCurrShipId].mCellState)
                     {
                         case CellState::SHIP_1:
-                            if (board.GetCellState(x, y) != CellState::EMPTY)
+                            if (!board.IsAreaEmpty(x, y, 1))
                                 DrawShip(CellState::SHIP_1, x * 45 + board.mOffset.x, y * 45 + 1 + board.mOffset.y,
                                          RED);
                             else
@@ -58,37 +59,33 @@ void App::GameDraw(Board &board)
 
                         case CellState::SHIP_2:
                             if (x < 9)
-                            {
-                                if (board.GetCellState(x, y) != CellState::EMPTY ||
-                                    board.GetCellState(x + 1, y) != CellState::EMPTY)
+                                if (!board.IsAreaEmpty(x, y, 2))
                                     DrawShip(CellState::SHIP_2, x * 45 + board.mOffset.x, y * 45 + 1 + board.mOffset.y,
                                              RED);
                                 else
                                     DrawShip(CellState::SHIP_2, x * 45 + board.mOffset.x, y * 45 + 1 + board.mOffset.y,
                                              GREEN);
-                            }
                             break;
 
                         case CellState::SHIP_3:
                             if (x < 8)
-                                if (!(board.GetCellState(x, y) != CellState::EMPTY ||
-                                      board.GetCellState(x + 1, y) != CellState::EMPTY ||
-                                      board.GetCellState(x + 2, y) != CellState::EMPTY))
+
+                                if (!board.IsAreaEmpty(x, y, 3))
+                                    DrawShip(CellState::SHIP_3, x * 45 + board.mOffset.x, y * 45 + 1 + board.mOffset.y,
+                                             RED);
+                                else
                                     DrawShip(CellState::SHIP_3, x * 45 + board.mOffset.x, y * 45 + 1 + board.mOffset.y,
                                              GREEN);
                             break;
 
                         case CellState::SHIP_4:
                             if (x < 7)
-                                if (!(board.GetCellState(x, y) != CellState::EMPTY ||
-                                      board.GetCellState(x + 1, y) != CellState::EMPTY ||
-                                      board.GetCellState(x + 2, y) != CellState::EMPTY ||
-                                      board.GetCellState(x + 3, y) != CellState::EMPTY))
-                                    DrawShip(CellState::SHIP_4, x * 45 + board.mOffset.x, y * 45 + 1 + board.mOffset.y,
-                                             GREEN);
-                                else
+                                if (!board.IsAreaEmpty(x, y, 4))
                                     DrawShip(CellState::SHIP_4, x * 45 + board.mOffset.x, y * 45 + 1 + board.mOffset.y,
                                              RED);
+                                else
+                                    DrawShip(CellState::SHIP_4, x * 45 + board.mOffset.x, y * 45 + 1 + board.mOffset.y,
+                                             GREEN);
                             break;
                     }
                 }
@@ -101,7 +98,6 @@ void App::GameDraw(Board &board)
         DrawShip(type, pos, WHITE);
     }
 
-    DrawFPS(100, 0);
     DrawText("Player1", 20, 0, 50, WHITE);
     DrawTexture(mCrosshairTexture, GetMouseX() - 10, GetMouseY() - 10, WHITE);
 
@@ -130,9 +126,10 @@ void App::GameInputHandler(Board &board)
                     switch (mShips[mCurrShipId].mCellState)
                     {
                         case CellState::SHIP_1:
-                            if (board.GetCellState(x, y) == CellState::EMPTY)
+                            if (board.IsAreaEmpty(x, y, 1))
                             {
-                                board.PlaceShip(mShips[mCurrShipId].mCellState, Vector2{x, y});
+                                HandleShipPlacement(x, y, board);
+                                // board.PlaceShip(mShips[mCurrShipId].mCellState, Vector2{x, y});
                                 mShips.erase(mShips.begin() + mCurrShipId);
                                 mCurrShipId = -1;
                             }
@@ -141,11 +138,11 @@ void App::GameInputHandler(Board &board)
                         case CellState::SHIP_2:
                             if (x < 9)
                             {
-                                if (!(board.GetCellState(x, y) != CellState::EMPTY ||
-                                      board.GetCellState(x + 1, y) != CellState::EMPTY))
+                                if (board.IsAreaEmpty(x, y, 2))
                                 {
-                                    board.PlaceShip(mShips[mCurrShipId].mCellState, Vector2{x, y});
-                                    board.PlaceShip(mShips[mCurrShipId].mCellState, Vector2{x + 1, y});
+                                    HandleShipPlacement(x, y, board);
+                                    // board.PlaceShip(mShips[mCurrShipId].mCellState, Vector2{x, y});
+                                    // board.PlaceShip(mShips[mCurrShipId].mCellState, Vector2{x + 1, y});
                                     mShips.erase(mShips.begin() + mCurrShipId);
                                     mCurrShipId = -1;
                                 }
@@ -155,13 +152,13 @@ void App::GameInputHandler(Board &board)
                         case CellState::SHIP_3:
                             if (x < 8)
                             {
-                                if (!(board.GetCellState(x, y) != CellState::EMPTY ||
-                                      board.GetCellState(x + 1, y) != CellState::EMPTY ||
-                                      board.GetCellState(x + 2, y) != CellState::EMPTY))
+                                if (board.IsAreaEmpty(x, y, 3))
                                 {
-                                    board.PlaceShip(mShips[mCurrShipId].mCellState, Vector2{x, y});
-                                    board.PlaceShip(mShips[mCurrShipId].mCellState, Vector2{x + 1, y});
-                                    board.PlaceShip(mShips[mCurrShipId].mCellState, Vector2{x + 2, y});
+
+                                    HandleShipPlacement(x, y, board);
+                                    // board.PlaceShip(mShips[mCurrShipId].mCellState, Vector2{x, y});
+                                    // board.PlaceShip(mShips[mCurrShipId].mCellState, Vector2{x + 1, y});
+                                    // board.PlaceShip(mShips[mCurrShipId].mCellState, Vector2{x + 2, y});
                                     mShips.erase(mShips.begin() + mCurrShipId);
                                     mCurrShipId = -1;
                                 }
@@ -171,15 +168,13 @@ void App::GameInputHandler(Board &board)
                         case CellState::SHIP_4:
                             if (x < 7)
                             {
-                                if (!(board.GetCellState(x, y) != CellState::EMPTY ||
-                                      board.GetCellState(x + 1, y) != CellState::EMPTY ||
-                                      board.GetCellState(x + 2, y) != CellState::EMPTY ||
-                                      board.GetCellState(x + 3, y) != CellState::EMPTY))
+                                if (board.IsAreaEmpty(x, y, 4))
                                 {
-                                    board.PlaceShip(mShips[mCurrShipId].mCellState, Vector2{x, y});
-                                    board.PlaceShip(mShips[mCurrShipId].mCellState, Vector2{x + 1, y});
-                                    board.PlaceShip(mShips[mCurrShipId].mCellState, Vector2{x + 2, y});
-                                    board.PlaceShip(mShips[mCurrShipId].mCellState, Vector2{x + 3, y});
+                                    HandleShipPlacement(x, y, board);
+                                    // board.PlaceShip(mShips[mCurrShipId].mCellState, Vector2{x, y});
+                                    // board.PlaceShip(mShips[mCurrShipId].mCellState, Vector2{x + 1, y});
+                                    // board.PlaceShip(mShips[mCurrShipId].mCellState, Vector2{x + 2, y});
+                                    // board.PlaceShip(mShips[mCurrShipId].mCellState, Vector2{x + 3, y});
                                     mShips.erase(mShips.begin() + mCurrShipId);
                                     mCurrShipId = -1;
                                 }
@@ -202,6 +197,31 @@ void App::GameInputHandler(Board &board)
     }
 }
 
+void App::HandleShipPlacement(int x, int y, Board &board)
+{
+    switch (mShips[mCurrShipId].mCellState)
+    {
+        case CellState::SHIP_1:
+            board.PlaceShip(mShips[mCurrShipId].mCellState, Vector2{x, y});
+            break;
+        case CellState::SHIP_2:
+            board.PlaceShip(mShips[mCurrShipId].mCellState, Vector2{x, y});
+            board.PlaceShip(mShips[mCurrShipId].mCellState, Vector2{x + 1, y});
+            break;
+        case CellState::SHIP_3:
+            board.PlaceShip(mShips[mCurrShipId].mCellState, Vector2{x, y});
+            board.PlaceShip(mShips[mCurrShipId].mCellState, Vector2{x + 1, y});
+            board.PlaceShip(mShips[mCurrShipId].mCellState, Vector2{x + 2, y});
+
+            break;
+        case CellState::SHIP_4:
+            board.PlaceShip(mShips[mCurrShipId].mCellState, Vector2{x, y});
+            board.PlaceShip(mShips[mCurrShipId].mCellState, Vector2{x + 1, y});
+            board.PlaceShip(mShips[mCurrShipId].mCellState, Vector2{x + 2, y});
+            board.PlaceShip(mShips[mCurrShipId].mCellState, Vector2{x + 3, y});
+            break;
+    }
+}
 void App::DrawMenu(Button &menuButton)
 {
     BeginDrawing();
@@ -234,10 +254,6 @@ void App::UpdateMenu()
 }
 
 App::App()
-{
-}
-
-void App::Init()
 {
     // TODO a resizable window in future updates
     // SetConfigFlags(FLAG_WINDOW_RESIZABLE);
@@ -302,5 +318,3 @@ void App::InitShips()
         x += 100 + 44 * 3;
     }
 }
-
-// running the app
