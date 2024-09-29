@@ -3,10 +3,9 @@
 int main()
 {
 
-    App app;
     try
     {
-        app.Init();
+        App app;
         app.Run();
     }
     catch (std::runtime_error &e)
