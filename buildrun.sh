@@ -7,6 +7,6 @@ if [ ! -f WarshipGame ]; then
     echo "Compile failed"
 else
     echo "Starting game: "
-    gdb WarshipGame
+    gf2 WarshipGame
 fi
 
