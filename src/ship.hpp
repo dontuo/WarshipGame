@@ -1,8 +1,10 @@
 #pragma once
 #include "cell.hpp"
-#include <iostream>
-#include <raylib.h>
+#include "global.hpp"
 #include <vector>
+#include <iostream>
+#include <raymath.h>
+#include <raylib.h>
 
 extern Texture2D textures[];
 
