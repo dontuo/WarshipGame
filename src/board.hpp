@@ -2,9 +2,11 @@
 #include "cell.hpp"
 #include "grid.hpp"
 #include "ship.hpp"
+#include "global.hpp"
 #include <iostream>
 #include <raylib.h>
 #include <vector>
+
 
 class Board
 {
@@ -21,11 +23,10 @@ class Board
     CellState GetCellState(int x, int y);
     CellState GetCellState(Vector2 pos);
 
-    bool CheckCollision(Vector2 pos, Vector2 cell);
-    void PrintCells();
+    bool IsAreaEmpty(int x, int y, int width, int height);
+    bool CheckCellCollision(Vector2 pos, Vector2 cell);
     bool CheckHit(Vector2 pos);
 
     CellState mCells[10][10] = {CellState::EMPTY};
-
     Vector2 mOffset;
 };

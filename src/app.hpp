@@ -1,7 +1,9 @@
 #include "board.hpp"
 #include "button.hpp"
 #include "cell.hpp"
+#include "global.hpp"
 #include "grid.hpp"
+#include "player.hpp"
 #include "ship.hpp"
 #include <iostream>
 #include <math.h>
@@ -19,28 +21,23 @@ class App
 
   private:
     void UpdateGame();
-    void DrawGame(Board &board);
-    void GameInputHandler(Board &board);
-    void HandleShipPlacement(int x, int y, Board &board);
+    void DrawGame();
+    void GameInputHandler();
 
     void UpdateMenu();
     void DrawMenu(Button &menuButton);
     void MenuInputHandler(Button &menuButton);
 
-  private:
     void InitShips();
 
-    bool mShouldDrawMenu = 0;
+    bool mShouldDrawMenu = 1;
 
     Texture2D mCrosshairTexture;
-    // storing what type of ship and their coordinates
-    std::vector<Ship> mShips{4 + 3 + 2 + 1};
-
-    int mCurrShipId = -1;
 
     // current cell id depend on cursor
     Vector2 mCurrCursorCell = {-1, -1};
 
-    int mWindowWidth = 1280;
-    int mWindowHeight = 720;
+    std::vector<Player> mPlayers{};
+
+    Player *mCurrPlayer;
 };
