@@ -1,4 +1,6 @@
 #include "app.hpp"
+#include "global.hpp"
+#include "raylib.h"
 
 void App::Run()
 {
@@ -51,7 +53,11 @@ void App::GameInputHandler()
                 if (mCurrPlayer->CheckCellCollision(GetMousePosition(), Vector2{x, y}))
                     mCurrPlayer->HandleShipPlacement(x, y);
     }
-
+    if(mCurrPlayer->mShips.size() == 0)
+    {
+        Button(Rectangle{Global::windowWidth - 227, Global::windowHeight - 75, 154, 52}).Draw(BLACK);
+        DrawText("Ready", Global::windowWidth - 225, Global::windowHeight - 75, 50 ,WHITE);
+    }
     mCurrPlayer->UpdateCurrShipPosition();
 }
 
