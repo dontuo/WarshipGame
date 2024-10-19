@@ -4,6 +4,7 @@ project(WarshipGame)
 set(CMAKE_CXX_STANDARD 17)
 
 #raylib 
+set(GLFW_BUILD_WAYLAND ON)
 add_subdirectory(libs/raylib)
 include_directories(libs/raylib/src)
 
@@ -18,5 +19,4 @@ add_executable(WarshipGame ${SOURCES})
 
 # Link the libraries
 target_link_libraries(${PROJECT_NAME} raylib)
-
 

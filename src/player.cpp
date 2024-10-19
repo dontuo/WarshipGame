@@ -1,4 +1,5 @@
 #include "player.hpp"
+#include "cell.hpp"
 
 Player::Player(std::string name) : mName(name), Board(0, 0)
 {
@@ -195,7 +196,28 @@ void Player::HandleShipSelection()
     {
         Vector2 pos = mShips[i].mPos;
         CellState type = mShips[i].mCellState;
-        if (CheckCollisionPointRec(GetMousePosition(), Rectangle{pos.x, pos.y, (Global::sizeOfTile - 1), (Global::sizeOfTile - 1)}))
-            mCurrShipId = i;
+
+        switch(type)
+        {
+            case CellState::SHIP_1:
+                if (CheckCollisionPointRec(GetMousePosition(), Rectangle{pos.x, pos.y, (Global::sizeOfTile - 1), (Global::sizeOfTile - 1)}))
+                    mCurrShipId = i;       
+            break;
+
+            case CellState::SHIP_2:
+                if (CheckCollisionPointRec(GetMousePosition(), Rectangle{pos.x, pos.y, (Global::sizeOfTile * 2 - 1), (Global::sizeOfTile - 1)}))
+                    mCurrShipId = i;
+            break;
+
+            case CellState::SHIP_3:
+                if (CheckCollisionPointRec(GetMousePosition(), Rectangle{pos.x, pos.y, (Global::sizeOfTile * 3 - 1), (Global::sizeOfTile - 1)}))
+                    mCurrShipId = i;
+            break;
+
+            case CellState::SHIP_4:
+                if (CheckCollisionPointRec(GetMousePosition(), Rectangle{pos.x, pos.y, (Global::sizeOfTile * 4 - 1), (Global::sizeOfTile - 1)}))
+                    mCurrShipId = i;
+            break;
+        }
     }
 }
