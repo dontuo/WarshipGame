@@ -1,12 +1,11 @@
 #pragma once
 #include "cell.hpp"
+#include "global.hpp"
 #include "grid.hpp"
 #include "ship.hpp"
-#include "global.hpp"
 #include <iostream>
 #include <raylib.h>
 #include <vector>
-
 
 class Board
 {

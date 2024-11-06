@@ -21,45 +21,45 @@ void Board::Draw(bool Hide)
                 switch (mCells[x][y])
                 {
 
-                    case CellState::EMPTY:
-                        DrawTexture(textures[CellState::EMPTY], mOffset.x + (Global::sizeOfTile * x),
-                                    mOffset.y + (Global::sizeOfTile * y) + 1, WHITE);
-                        break;
+                case CellState::EMPTY:
+                    DrawTexture(textures[CellState::EMPTY], mOffset.x + (Global::sizeOfTile * x),
+                                mOffset.y + (Global::sizeOfTile * y) + 1, WHITE);
+                    break;
 
-                    case CellState::SHIP_1_HITTED:
-                        DrawTexture(textures[CellState::SHIP_1_HITTED], mOffset.x + (Global::sizeOfTile * x),
-                                    mOffset.y + (Global::sizeOfTile * y) + 1, WHITE);
-                        break;
+                case CellState::SHIP_1_HITTED:
+                    DrawTexture(textures[CellState::SHIP_1_HITTED], mOffset.x + (Global::sizeOfTile * x),
+                                mOffset.y + (Global::sizeOfTile * y) + 1, WHITE);
+                    break;
 
-                    case CellState::SHIP_2_HITTED:
-                        DrawTexture(textures[CellState::SHIP_2_HITTED], mOffset.x + (Global::sizeOfTile * x),
-                                    mOffset.y + (Global::sizeOfTile * y) + 1, WHITE);
-                        break;
+                case CellState::SHIP_2_HITTED:
+                    DrawTexture(textures[CellState::SHIP_2_HITTED], mOffset.x + (Global::sizeOfTile * x),
+                                mOffset.y + (Global::sizeOfTile * y) + 1, WHITE);
+                    break;
 
-                    case CellState::SHIP_3_HITTED:
-                        DrawTexture(textures[CellState::SHIP_3_HITTED], mOffset.x + (Global::sizeOfTile * x),
-                                    mOffset.y + (Global::sizeOfTile * y) + 1, WHITE);
-                        break;
+                case CellState::SHIP_3_HITTED:
+                    DrawTexture(textures[CellState::SHIP_3_HITTED], mOffset.x + (Global::sizeOfTile * x),
+                                mOffset.y + (Global::sizeOfTile * y) + 1, WHITE);
+                    break;
 
-                    case CellState::SHIP_4_HITTED:
-                        DrawTexture(textures[CellState::SHIP_4_HITTED], mOffset.x + (Global::sizeOfTile * x),
-                                    mOffset.y + (Global::sizeOfTile * y) + 1, WHITE);
-                        break;
+                case CellState::SHIP_4_HITTED:
+                    DrawTexture(textures[CellState::SHIP_4_HITTED], mOffset.x + (Global::sizeOfTile * x),
+                                mOffset.y + (Global::sizeOfTile * y) + 1, WHITE);
+                    break;
 
-                    case CellState::MISSED:
-                        DrawTexture(textures[CellState::MISSED], mOffset.x + (Global::sizeOfTile * x),
-                                    mOffset.y + (Global::sizeOfTile * y) + 1, WHITE);
-                        break;
+                case CellState::MISSED:
+                    DrawTexture(textures[CellState::MISSED], mOffset.x + (Global::sizeOfTile * x),
+                                mOffset.y + (Global::sizeOfTile * y) + 1, WHITE);
+                    break;
 
-                    case CellState::HIT:
-                        DrawTexture(textures[CellState::HIT], mOffset.x + (Global::sizeOfTile * x),
-                                    mOffset.y + (Global::sizeOfTile * y) + 1, WHITE);
-                        break;
+                case CellState::HIT:
+                    DrawTexture(textures[CellState::HIT], mOffset.x + (Global::sizeOfTile * x),
+                                mOffset.y + (Global::sizeOfTile * y) + 1, WHITE);
+                    break;
 
-                    default:
-                        DrawTexture(textures[CellState::EMPTY], mOffset.x + (Global::sizeOfTile * x),
-                                    mOffset.y + (Global::sizeOfTile * y) + 1, WHITE);
-                        break;
+                default:
+                    DrawTexture(textures[CellState::EMPTY], mOffset.x + (Global::sizeOfTile * x),
+                                mOffset.y + (Global::sizeOfTile * y) + 1, WHITE);
+                    break;
                 }
             }
         }
@@ -72,65 +72,65 @@ void Board::Draw(bool Hide)
             {
                 switch (mCells[x][y])
                 {
-                    case CellState::EMPTY:
-                        DrawTexture(textures[CellState::EMPTY], mOffset.x + (Global::sizeOfTile * x),
-                                    mOffset.y + (Global::sizeOfTile * y) + 1, WHITE);
-                        break;
+                case CellState::EMPTY:
+                    DrawTexture(textures[CellState::EMPTY], mOffset.x + (Global::sizeOfTile * x),
+                                mOffset.y + (Global::sizeOfTile * y) + 1, WHITE);
+                    break;
 
-                    case CellState::SHIP_1:
-                        DrawTexture(textures[CellState::SHIP_1], mOffset.x + (Global::sizeOfTile * x),
-                                    mOffset.y + (Global::sizeOfTile * y) + 1, WHITE);
-                        break;
+                case CellState::SHIP_1:
+                    DrawTexture(textures[CellState::SHIP_1], mOffset.x + (Global::sizeOfTile * x),
+                                mOffset.y + (Global::sizeOfTile * y) + 1, WHITE);
+                    break;
 
-                    case CellState::SHIP_2:
-                        DrawTexture(textures[CellState::SHIP_2], mOffset.x + (Global::sizeOfTile * x),
-                                    mOffset.y + (Global::sizeOfTile * y) + 1, WHITE);
-                        break;
+                case CellState::SHIP_2:
+                    DrawTexture(textures[CellState::SHIP_2], mOffset.x + (Global::sizeOfTile * x),
+                                mOffset.y + (Global::sizeOfTile * y) + 1, WHITE);
+                    break;
 
-                    case CellState::SHIP_3:
-                        DrawTexture(textures[CellState::SHIP_3], mOffset.x + (Global::sizeOfTile * x),
-                                    mOffset.y + (Global::sizeOfTile * y) + 1, WHITE);
-                        break;
+                case CellState::SHIP_3:
+                    DrawTexture(textures[CellState::SHIP_3], mOffset.x + (Global::sizeOfTile * x),
+                                mOffset.y + (Global::sizeOfTile * y) + 1, WHITE);
+                    break;
 
-                    case CellState::SHIP_4:
-                        DrawTexture(textures[CellState::SHIP_4], mOffset.x + (Global::sizeOfTile * x),
-                                    mOffset.y + (Global::sizeOfTile * y) + 1, WHITE);
-                        break;
+                case CellState::SHIP_4:
+                    DrawTexture(textures[CellState::SHIP_4], mOffset.x + (Global::sizeOfTile * x),
+                                mOffset.y + (Global::sizeOfTile * y) + 1, WHITE);
+                    break;
 
-                    case CellState::SHIP_1_HITTED:
-                        DrawTexture(textures[CellState::SHIP_1_HITTED], mOffset.x + (Global::sizeOfTile * x),
-                                    mOffset.y + (Global::sizeOfTile * y) + 1, WHITE);
-                        break;
+                case CellState::SHIP_1_HITTED:
+                    DrawTexture(textures[CellState::SHIP_1_HITTED], mOffset.x + (Global::sizeOfTile * x),
+                                mOffset.y + (Global::sizeOfTile * y) + 1, WHITE);
+                    break;
 
-                    case CellState::SHIP_2_HITTED:
-                        DrawTexture(textures[CellState::SHIP_2_HITTED], mOffset.x + (Global::sizeOfTile * x),
-                                    mOffset.y + (Global::sizeOfTile * y) + 1, WHITE);
-                        break;
+                case CellState::SHIP_2_HITTED:
+                    DrawTexture(textures[CellState::SHIP_2_HITTED], mOffset.x + (Global::sizeOfTile * x),
+                                mOffset.y + (Global::sizeOfTile * y) + 1, WHITE);
+                    break;
 
-                    case CellState::SHIP_3_HITTED:
-                        DrawTexture(textures[CellState::SHIP_3_HITTED], mOffset.x + (Global::sizeOfTile * x),
-                                    mOffset.y + (Global::sizeOfTile * y) + 1, WHITE);
-                        break;
+                case CellState::SHIP_3_HITTED:
+                    DrawTexture(textures[CellState::SHIP_3_HITTED], mOffset.x + (Global::sizeOfTile * x),
+                                mOffset.y + (Global::sizeOfTile * y) + 1, WHITE);
+                    break;
 
-                    case CellState::SHIP_4_HITTED:
-                        DrawTexture(textures[CellState::SHIP_4_HITTED], mOffset.x + (Global::sizeOfTile * x),
-                                    mOffset.y + (Global::sizeOfTile * y) + 1, WHITE);
-                        break;
+                case CellState::SHIP_4_HITTED:
+                    DrawTexture(textures[CellState::SHIP_4_HITTED], mOffset.x + (Global::sizeOfTile * x),
+                                mOffset.y + (Global::sizeOfTile * y) + 1, WHITE);
+                    break;
 
-                    case CellState::MISSED:
-                        DrawTexture(textures[CellState::MISSED], mOffset.x + (Global::sizeOfTile * x),
-                                    mOffset.y + (Global::sizeOfTile * y) + 1, WHITE);
-                        break;
+                case CellState::MISSED:
+                    DrawTexture(textures[CellState::MISSED], mOffset.x + (Global::sizeOfTile * x),
+                                mOffset.y + (Global::sizeOfTile * y) + 1, WHITE);
+                    break;
 
-                    case CellState::HIT:
-                        DrawTexture(textures[CellState::HIT], mOffset.x + (Global::sizeOfTile * x),
-                                    mOffset.y + (Global::sizeOfTile * y) + 1, WHITE);
-                        break;
+                case CellState::HIT:
+                    DrawTexture(textures[CellState::HIT], mOffset.x + (Global::sizeOfTile * x),
+                                mOffset.y + (Global::sizeOfTile * y) + 1, WHITE);
+                    break;
 
-                    default:
-                        DrawRectangle(mOffset.x + (Global::sizeOfTile * x), mOffset.y + (Global::sizeOfTile * y) + 1,
-                                      (Global::sizeOfTile - 1), (Global::sizeOfTile - 1), WHITE);
-                        break;
+                default:
+                    DrawRectangle(mOffset.x + (Global::sizeOfTile * x), mOffset.y + (Global::sizeOfTile * y) + 1,
+                                  (Global::sizeOfTile - 1), (Global::sizeOfTile - 1), WHITE);
+                    break;
                 }
             }
         }
