@@ -44,21 +44,21 @@ void App::DrawGame()
 
 void App::GameInputHandler()
 {
-    if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT))
+    mCurrPlayer->UpdateCurrShip();
+    if (IsMouseButtonReleased(MOUSE_BUTTON_LEFT))
     {
-        mCurrPlayer->HandleShipSelection();
 
         for (int x = 0; x < 10; x++)
             for (int y = 0; y < 10; y++)
                 if (mCurrPlayer->CheckCellCollision(GetMousePosition(), Vector2{x, y}))
                     mCurrPlayer->HandleShipPlacement(x, y);
     }
-    if(mCurrPlayer->mShips.size() == 0)
+    if (mCurrPlayer->mShips.size() == 0)
     {
         Button(Rectangle{Global::windowWidth - 227, Global::windowHeight - 75, 154, 52}).Draw(BLACK);
-        DrawText("Ready", Global::windowWidth - 225, Global::windowHeight - 75, 50 ,WHITE);
+        DrawText("Ready", Global::windowWidth - 225, Global::windowHeight - 75, 50, WHITE);
     }
-    mCurrPlayer->UpdateCurrShipPosition();
+    mCurrPlayer->HandleShipSelection();
 }
 
 void App::DrawMenu(Button &menuButton)
