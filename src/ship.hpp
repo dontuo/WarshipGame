@@ -1,16 +1,18 @@
 #pragma once
 #include "cell.hpp"
 #include "global.hpp"
-#include <vector>
 #include <iostream>
-#include <raymath.h>
 #include <raylib.h>
-
+#include <raymath.h>
+#include <vector>
 extern Texture2D textures[];
 
-void DrawShip(CellState type, int offsetX, int offsetY, Color color);
-void DrawShip(CellState type, Vector2 offset, Color color);
+struct Ship;
+// void DrawShip(CellState type, int offsetX, int offsetY, Color color);
+// void DrawShip(CellState type, Vector2 offset, Color color);
 
+void DrawShip(Ship ship, Vector2 offset, Color color);
+void DrawShip(Ship ship, int offsetX, int offsetY, Color color);
 void LoadTextures();
 
 struct Ship

@@ -1,12 +1,11 @@
 #include "board.hpp"
 #include "cell.hpp"
+#include "global.hpp"
 #include "raymath.h"
 #include "ship.hpp"
-#include "global.hpp"
+#include <raylib.h>
 #include <string>
 #include <vector>
-#include <raylib.h>
-
 
 class Player : public Board
 {
@@ -20,12 +19,11 @@ class Player : public Board
 
     std::string mName;
     std::vector<Ship> mShips;
-    
 
     bool HandleShipPlacement(int x, int y);
     void HandleShipSelection();
 
-    void UpdateCurrShipPosition();
+    void UpdateCurrShip();
 
     int mCurrShipId = -1;
 };

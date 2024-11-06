@@ -1,4 +1,5 @@
 #include "ship.hpp"
+#include "raylib.h"
 
 Texture2D textures[CellState::ELEMENT_COUNT] = {};
 
@@ -16,7 +17,7 @@ void LoadTextures()
     textures[CellState::HIT] = LoadTexture("textures/hit.png");
     textures[CellState::MISSED] = LoadTexture("textures/miss.png");
 }
-
+/*
 void DrawShip(CellState type, int offsetX, int offsetY, Color color)
 {
     // TODO: maybe make it with for loop?
@@ -28,21 +29,136 @@ void DrawShip(CellState type, int offsetX, int offsetY, Color color)
 
         case CellState::SHIP_2:
             DrawTexture(textures[CellState::SHIP_2], offsetX, offsetY, color);
-            DrawTexture(textures[CellState::SHIP_2], offsetX + (Global::sizeOfTile - 1), offsetY, color);
-            break;
+            DrawTexture(textures[CellState::SHIP_2], offsetX +
+(Global::sizeOfTile - 1), offsetY, color); break;
 
         case CellState::SHIP_3:
             DrawTexture(textures[CellState::SHIP_3], offsetX, offsetY, color);
-            DrawTexture(textures[CellState::SHIP_3], offsetX + (Global::sizeOfTile - 1), offsetY, color);
-            DrawTexture(textures[CellState::SHIP_3], offsetX + (Global::sizeOfTile - 1) * 2, offsetY, color);
-            break;
+            DrawTexture(textures[CellState::SHIP_3], offsetX +
+(Global::sizeOfTile - 1), offsetY, color);
+            DrawTexture(textures[CellState::SHIP_3], offsetX +
+(Global::sizeOfTile - 1) * 2, offsetY, color); break;
 
         case CellState::SHIP_4:
+            DrawTexture(textures[CellState::SHIP_4], offsetX, offsetY, color);
+            DrawTexture(textures[CellState::SHIP_4], offsetX +
+(Global::sizeOfTile - 1), offsetY, color);
+            DrawTexture(textures[CellState::SHIP_4], offsetX +
+(Global::sizeOfTile - 1) * 2, offsetY, color);
+            DrawTexture(textures[CellState::SHIP_4], offsetX +
+(Global::sizeOfTile - 1) * 3, offsetY, color); break;
+    }
+}*/
+
+void DrawShip(Ship ship, Vector2 offset, Color color)
+{
+    auto &rotate = ship.rotate;
+    switch (ship.mCellState)
+    {
+    case CellState::SHIP_1:
+        DrawTexture(textures[CellState::SHIP_1], offset.x, offset.y, color);
+        break;
+
+    case CellState::SHIP_2:
+        if (!rotate)
+        {
+            DrawTexture(textures[CellState::SHIP_2], offset.x, offset.y, color);
+            DrawTexture(textures[CellState::SHIP_2], offset.x + (Global::sizeOfTile - 1), offset.y, color);
+        }
+        else
+        {
+            DrawTexture(textures[CellState::SHIP_2], offset.x, offset.y, color);
+            DrawTexture(textures[CellState::SHIP_2], offset.x, offset.y + (Global::sizeOfTile - 1), color);
+        }
+        break;
+
+    case CellState::SHIP_3:
+        if (!rotate)
+        {
+            DrawTexture(textures[CellState::SHIP_3], offset.x, offset.y, color);
+            DrawTexture(textures[CellState::SHIP_3], offset.x + (Global::sizeOfTile - 1), offset.y, color);
+            DrawTexture(textures[CellState::SHIP_3], offset.x + (Global::sizeOfTile - 1) * 2, offset.y, color);
+        }
+        else
+        {
+            DrawTexture(textures[CellState::SHIP_3], offset.x, offset.y, color);
+            DrawTexture(textures[CellState::SHIP_3], offset.x, offset.y + (Global::sizeOfTile - 1), color);
+            DrawTexture(textures[CellState::SHIP_3], offset.x, offset.y + (Global::sizeOfTile - 1) * 2, color);
+        }
+        break;
+
+    case CellState::SHIP_4:
+        if (!rotate)
+        {
+            DrawTexture(textures[CellState::SHIP_4], offset.x, offset.y, color);
+            DrawTexture(textures[CellState::SHIP_4], offset.x + (Global::sizeOfTile - 1), offset.y, color);
+            DrawTexture(textures[CellState::SHIP_4], offset.x + (Global::sizeOfTile - 1) * 2, offset.y, color);
+            DrawTexture(textures[CellState::SHIP_4], offset.x + (Global::sizeOfTile - 1) * 3, offset.y, color);
+        }
+        else
+        {
+            DrawTexture(textures[CellState::SHIP_4], offset.x, offset.y, color);
+            DrawTexture(textures[CellState::SHIP_4], offset.x, offset.y + (Global::sizeOfTile - 1), color);
+            DrawTexture(textures[CellState::SHIP_4], offset.x, offset.y + (Global::sizeOfTile - 1) * 2, color);
+            DrawTexture(textures[CellState::SHIP_4], offset.x, offset.y + (Global::sizeOfTile - 1) * 3, color);
+        }
+        break;
+    }
+}
+
+void DrawShip(Ship ship, int offsetX, int offsetY, Color color)
+{
+    auto &rotate = ship.rotate;
+    switch (ship.mCellState)
+    {
+    case CellState::SHIP_1:
+        DrawTexture(textures[CellState::SHIP_1], offsetX, offsetY, color);
+        break;
+
+    case CellState::SHIP_2:
+        if (!rotate)
+        {
+            DrawTexture(textures[CellState::SHIP_2], offsetX, offsetY, color);
+            DrawTexture(textures[CellState::SHIP_2], offsetX + (Global::sizeOfTile - 1), offsetY, color);
+        }
+        else
+        {
+            DrawTexture(textures[CellState::SHIP_2], offsetX, offsetY, color);
+            DrawTexture(textures[CellState::SHIP_2], offsetX, offsetY + (Global::sizeOfTile - 1), color);
+        }
+        break;
+
+    case CellState::SHIP_3:
+        if (!rotate)
+        {
+            DrawTexture(textures[CellState::SHIP_3], offsetX, offsetY, color);
+            DrawTexture(textures[CellState::SHIP_3], offsetX + (Global::sizeOfTile - 1), offsetY, color);
+            DrawTexture(textures[CellState::SHIP_3], offsetX + (Global::sizeOfTile - 1) * 2, offsetY, color);
+        }
+        else
+        {
+            DrawTexture(textures[CellState::SHIP_3], offsetX, offsetY, color);
+            DrawTexture(textures[CellState::SHIP_3], offsetX, offsetY + (Global::sizeOfTile - 1), color);
+            DrawTexture(textures[CellState::SHIP_3], offsetX, offsetY + (Global::sizeOfTile - 1) * 2, color);
+        }
+        break;
+
+    case CellState::SHIP_4:
+        if (!rotate)
+        {
             DrawTexture(textures[CellState::SHIP_4], offsetX, offsetY, color);
             DrawTexture(textures[CellState::SHIP_4], offsetX + (Global::sizeOfTile - 1), offsetY, color);
             DrawTexture(textures[CellState::SHIP_4], offsetX + (Global::sizeOfTile - 1) * 2, offsetY, color);
             DrawTexture(textures[CellState::SHIP_4], offsetX + (Global::sizeOfTile - 1) * 3, offsetY, color);
-            break;
+        }
+        else
+        {
+            DrawTexture(textures[CellState::SHIP_4], offsetX, offsetY, color);
+            DrawTexture(textures[CellState::SHIP_4], offsetX, offsetY + (Global::sizeOfTile - 1), color);
+            DrawTexture(textures[CellState::SHIP_4], offsetX, offsetY + (Global::sizeOfTile - 1) * 2, color);
+            DrawTexture(textures[CellState::SHIP_4], offsetX, offsetY + (Global::sizeOfTile - 1) * 3, color);
+        }
+        break;
     }
 }
 
@@ -50,26 +166,26 @@ void DrawShip(CellState type, Vector2 offset, Color color)
 {
     switch (type)
     {
-        case CellState::SHIP_1:
-            DrawTexture(textures[CellState::SHIP_1], offset.x, offset.y, color);
-            break;
+    case CellState::SHIP_1:
+        DrawTexture(textures[CellState::SHIP_1], offset.x, offset.y, color);
+        break;
 
-        case CellState::SHIP_2:
-            DrawTexture(textures[CellState::SHIP_2], offset.x, offset.y, color);
-            DrawTexture(textures[CellState::SHIP_2], offset.x + (Global::sizeOfTile - 1), offset.y, color);
-            break;
+    case CellState::SHIP_2:
+        DrawTexture(textures[CellState::SHIP_2], offset.x, offset.y, color);
+        DrawTexture(textures[CellState::SHIP_2], offset.x + (Global::sizeOfTile - 1), offset.y, color);
+        break;
 
-        case CellState::SHIP_3:
-            DrawTexture(textures[CellState::SHIP_3], offset.x, offset.y, color);
-            DrawTexture(textures[CellState::SHIP_3], offset.x + (Global::sizeOfTile - 1), offset.y, color);
-            DrawTexture(textures[CellState::SHIP_3], offset.x + (Global::sizeOfTile - 1) * 2, offset.y, color);
-            break;
+    case CellState::SHIP_3:
+        DrawTexture(textures[CellState::SHIP_3], offset.x, offset.y, color);
+        DrawTexture(textures[CellState::SHIP_3], offset.x + (Global::sizeOfTile - 1), offset.y, color);
+        DrawTexture(textures[CellState::SHIP_3], offset.x + (Global::sizeOfTile - 1) * 2, offset.y, color);
+        break;
 
-        case CellState::SHIP_4:
-            DrawTexture(textures[CellState::SHIP_4], offset.x, offset.y, color);
-            DrawTexture(textures[CellState::SHIP_4], offset.x + (Global::sizeOfTile - 1), offset.y, color);
-            DrawTexture(textures[CellState::SHIP_4], offset.x + (Global::sizeOfTile - 1) * 2, offset.y, color);
-            DrawTexture(textures[CellState::SHIP_4], offset.x + (Global::sizeOfTile - 1) * 3, offset.y, color);
-            break;
+    case CellState::SHIP_4:
+        DrawTexture(textures[CellState::SHIP_4], offset.x, offset.y, color);
+        DrawTexture(textures[CellState::SHIP_4], offset.x + (Global::sizeOfTile - 1), offset.y, color);
+        DrawTexture(textures[CellState::SHIP_4], offset.x + (Global::sizeOfTile - 1) * 2, offset.y, color);
+        DrawTexture(textures[CellState::SHIP_4], offset.x + (Global::sizeOfTile - 1) * 3, offset.y, color);
+        break;
     }
 }
