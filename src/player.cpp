@@ -101,7 +101,7 @@ void Player::Draw(int offsetX, int offsetY, bool hide = 0)
                     else
                     {
                         if (y < 11 - sizeOfShip)
-                            if (!IsAreaEmpty(x - 1, y - 1, 3, 3 + sizeOfShip))
+                            if (!IsAreaEmpty(x - 1, y - 1, 3, 2 + sizeOfShip))
                                 DrawShip(mShips[mCurrShipId], x * sizeOfTile + mOffset.x,
                                          y * sizeOfTile + 1 + mOffset.y, RED);
                             else
