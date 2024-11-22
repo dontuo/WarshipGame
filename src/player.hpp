@@ -20,7 +20,7 @@ class Player : public Board
     std::string mName;
     std::vector<Ship> mShips;
 
-    bool HandleShipPlacement(int x, int y);
+    void HandleShipPlacement(int x, int y);
     void HandleShipSelection();
 
     void UpdateCurrShip();

@@ -53,101 +53,64 @@ void Player::Draw(int offsetX, int offsetY, bool hide = 0)
 {
     mOffset.x = offsetX;
     mOffset.y = offsetY;
-    int rotate = mShips[mCurrShipId].rotate;
     Board::Draw(hide);
 
     using namespace Global; // for sizeOfTile
 
     if (mCurrShipId != -1)
+    {
+        int rotate = mShips[mCurrShipId].rotate;
+
+        int sizeOfShip = 0;
+
+        switch (mShips[mCurrShipId].mCellState)
+        {
+        case CellState::SHIP_1:
+            sizeOfShip = 1;
+            break;
+        case CellState::SHIP_2:
+            sizeOfShip = 2;
+            break;
+        case CellState::SHIP_3:
+            sizeOfShip = 3;
+            break;
+        case CellState::SHIP_4:
+            sizeOfShip = 4;
+            break;
+        }
+
         for (int x = 0; x < 10; x++)
             for (int y = 0; y < 10; y++)
             {
                 if (CheckCellCollision(GetMousePosition(), Vector2{x, y}))
                 {
-                    switch (mShips[mCurrShipId].mCellState)
+                    if (!rotate)
                     {
-                    case CellState::SHIP_1:
-                        if (!IsAreaEmpty(x - 1, y - 1, 3, 3))
-                            DrawShip(mShips[mCurrShipId], x * sizeOfTile + mOffset.x, y * sizeOfTile + 1 + mOffset.y,
-                                     RED);
-                        else
-                            DrawShip(mShips[mCurrShipId], x * sizeOfTile + mOffset.x, y * sizeOfTile + 1 + mOffset.y,
-                                     GREEN);
-                        break;
-
-                    case CellState::SHIP_2:
-                        if (!rotate)
-                        {
-                            if (x < 9)
-                                if (!IsAreaEmpty(x - 1, y - 1, 4, 3))
-                                    DrawShip(mShips[mCurrShipId], x * sizeOfTile + mOffset.x,
-                                             y * sizeOfTile + 1 + mOffset.y, RED);
-                                else
-                                    DrawShip(mShips[mCurrShipId], x * sizeOfTile + mOffset.x,
-                                             y * sizeOfTile + 1 + mOffset.y, GREEN);
-                        }
-                        else
-                        {
-                            if (y < 9)
-                                if (!IsAreaEmpty(x - 1, y - 1, 3, 4))
-                                    DrawShip(mShips[mCurrShipId], x * sizeOfTile + mOffset.x,
-                                             y * sizeOfTile + 1 + mOffset.y, RED);
-                                else
-                                    DrawShip(mShips[mCurrShipId], x * sizeOfTile + mOffset.x,
-                                             y * sizeOfTile + 1 + mOffset.y, GREEN);
-                        }
-                        break;
-
-                    case CellState::SHIP_3:
-                        if (!rotate)
-                        {
-                            if (x < 8)
-
-                                if (!IsAreaEmpty(x - 1, y - 1, 5, 3))
-                                    DrawShip(mShips[mCurrShipId], x * sizeOfTile + mOffset.x,
-                                             y * sizeOfTile + 1 + mOffset.y, RED);
-                                else
-                                    DrawShip(mShips[mCurrShipId], x * sizeOfTile + mOffset.x,
-                                             y * sizeOfTile + 1 + mOffset.y, GREEN);
-                        }
-                        else
-                        {
-                            if (y < 8)
-
-                                if (!IsAreaEmpty(x - 1, y - 1, 3, 5))
-                                    DrawShip(mShips[mCurrShipId], x * sizeOfTile + mOffset.x,
-                                             y * sizeOfTile + 1 + mOffset.y, RED);
-                                else
-                                    DrawShip(mShips[mCurrShipId], x * sizeOfTile + mOffset.x,
-                                             y * sizeOfTile + 1 + mOffset.y, GREEN);
-                        }
-                        break;
-
-                    case CellState::SHIP_4:
-                        if (!rotate)
-                        {
-                            if (x < 7)
-                                if (!IsAreaEmpty(x - 1, y - 1, 6, 3))
-                                    DrawShip(mShips[mCurrShipId], x * sizeOfTile + mOffset.x,
-                                             y * sizeOfTile + 1 + mOffset.y, RED);
-                                else
-                                    DrawShip(mShips[mCurrShipId], x * sizeOfTile + mOffset.x,
-                                             y * sizeOfTile + 1 + mOffset.y, GREEN);
-                        }
-                        else
-                        {
-                            if (y < 7)
-                                if (!IsAreaEmpty(x - 1, y - 1, 3, 6))
-                                    DrawShip(mShips[mCurrShipId], x * sizeOfTile + mOffset.x,
-                                             y * sizeOfTile + 1 + mOffset.y, RED);
-                                else
-                                    DrawShip(mShips[mCurrShipId], x * sizeOfTile + mOffset.x,
-                                             y * sizeOfTile + 1 + mOffset.y, GREEN);
-                        }
-                        break;
+                        if (x < 11 - sizeOfShip)
+                            if (!IsAreaEmpty(x - 1, y - 1, 2 + sizeOfShip, 3))
+                            {
+                                DrawShip(mShips[mCurrShipId], x * sizeOfTile + mOffset.x,
+                                         y * sizeOfTile + 1 + mOffset.y, RED);
+                            }
+                            else
+                            {
+                                DrawShip(mShips[mCurrShipId], x * sizeOfTile + mOffset.x,
+                                         y * sizeOfTile + 1 + mOffset.y, GREEN);
+                            }
+                    }
+                    else
+                    {
+                        if (y < 11 - sizeOfShip)
+                            if (!IsAreaEmpty(x - 1, y - 1, 3, 3 + sizeOfShip))
+                                DrawShip(mShips[mCurrShipId], x * sizeOfTile + mOffset.x,
+                                         y * sizeOfTile + 1 + mOffset.y, RED);
+                            else
+                                DrawShip(mShips[mCurrShipId], x * sizeOfTile + mOffset.x,
+                                         y * sizeOfTile + 1 + mOffset.y, GREEN);
                     }
                 }
             }
+    }
 
     for (int i = 0; i < mShips.size(); i++)
     {
@@ -157,32 +120,40 @@ void Player::Draw(int offsetX, int offsetY, bool hide = 0)
     }
 }
 
-bool Player::HandleShipPlacement(int x, int y)
+void Player::HandleShipPlacement(int x, int y)
 {
-    bool result = 1;
-
-    bool rotate = mShips[mCurrShipId].rotate;
-
-    switch (mShips[mCurrShipId].mCellState)
+    if (mCurrShipId != -1)
     {
-    case CellState::SHIP_1:
-        if (IsAreaEmpty(x - 1, y - 1, 3, 3))
-        {
-            PlaceShip(mShips[mCurrShipId].mCellState, Vector2{x, y});
-            mShips.erase(mShips.begin() + mCurrShipId);
-            mCurrShipId = -1;
-        }
-        break;
+        bool rotate = mShips[mCurrShipId].rotate;
 
-    case CellState::SHIP_2:
+        int sizeOfShip = 0;
+
+        switch (mShips[mCurrShipId].mCellState)
+        {
+        case CellState::SHIP_1:
+            sizeOfShip = 1;
+            break;
+        case CellState::SHIP_2:
+            sizeOfShip = 2;
+            break;
+        case CellState::SHIP_3:
+            sizeOfShip = 3;
+            break;
+        case CellState::SHIP_4:
+            sizeOfShip = 4;
+            break;
+        }
+
         if (!rotate)
         {
-            if (x < 9)
+            if (x < 11 - sizeOfShip)
             {
-                if (IsAreaEmpty(x - 1, y - 1, 4, 3))
+                if (IsAreaEmpty(x - 1, y - 1, 2 + sizeOfShip, 3))
                 {
-                    PlaceShip(mShips[mCurrShipId].mCellState, Vector2{x, y});
-                    PlaceShip(mShips[mCurrShipId].mCellState, Vector2{x + 1, y});
+                    for (int i = 0; i < sizeOfShip; i++)
+                    {
+                        PlaceShip(mShips[mCurrShipId].mCellState, Vector2{x + i, y});
+                    }
                     mShips.erase(mShips.begin() + mCurrShipId);
                     mCurrShipId = -1;
                 }
@@ -190,83 +161,20 @@ bool Player::HandleShipPlacement(int x, int y)
         }
         else
         {
-            if (y < 9)
+            if (y < 11 - sizeOfShip)
             {
-                if (IsAreaEmpty(x - 1, y - 1, 3, 4))
+                if (IsAreaEmpty(x - 1, y - 1, 3, 2 + sizeOfShip))
                 {
-                    PlaceShip(mShips[mCurrShipId].mCellState, Vector2{x, y});
-                    PlaceShip(mShips[mCurrShipId].mCellState, Vector2{x, y + 1});
+                    for (int i = 0; i < sizeOfShip; i++)
+                    {
+                        PlaceShip(mShips[mCurrShipId].mCellState, Vector2{x, y + i});
+                    }
                     mShips.erase(mShips.begin() + mCurrShipId);
                     mCurrShipId = -1;
                 }
             }
         }
-        break;
-
-    case CellState::SHIP_3:
-        if (!rotate)
-        {
-            if (x < 8)
-            {
-                if (IsAreaEmpty(x - 1, y - 1, 5, 3))
-                {
-                    PlaceShip(mShips[mCurrShipId].mCellState, Vector2{x, y});
-                    PlaceShip(mShips[mCurrShipId].mCellState, Vector2{x + 1, y});
-                    PlaceShip(mShips[mCurrShipId].mCellState, Vector2{x + 2, y});
-                    mShips.erase(mShips.begin() + mCurrShipId);
-                    mCurrShipId = -1;
-                }
-            }
-        }
-        else
-        {
-            if (y < 8)
-                if (IsAreaEmpty(x - 1, y - 1, 3, 5))
-                {
-                    PlaceShip(mShips[mCurrShipId].mCellState, Vector2{x, y});
-                    PlaceShip(mShips[mCurrShipId].mCellState, Vector2{x, y + 1});
-                    PlaceShip(mShips[mCurrShipId].mCellState, Vector2{x, y + 2});
-                    mShips.erase(mShips.begin() + mCurrShipId);
-                    mCurrShipId = -1;
-                }
-        }
-        break;
-
-    case CellState::SHIP_4:
-        if (!rotate)
-        {
-            if (x < 7)
-            {
-                if (IsAreaEmpty(x - 1, y - 1, 6, 3))
-                {
-                    PlaceShip(mShips[mCurrShipId].mCellState, Vector2{x, y});
-                    PlaceShip(mShips[mCurrShipId].mCellState, Vector2{x + 1, y});
-                    PlaceShip(mShips[mCurrShipId].mCellState, Vector2{x + 2, y});
-                    PlaceShip(mShips[mCurrShipId].mCellState, Vector2{x + 3, y});
-                    mShips.erase(mShips.begin() + mCurrShipId);
-                    mCurrShipId = -1;
-                }
-            }
-        }
-        else
-        {
-            if (y < 7)
-            {
-                if (IsAreaEmpty(x - 1, y - 1, 3, 6))
-                {
-                    PlaceShip(mShips[mCurrShipId].mCellState, Vector2{x, y});
-                    PlaceShip(mShips[mCurrShipId].mCellState, Vector2{x, y + 1});
-                    PlaceShip(mShips[mCurrShipId].mCellState, Vector2{x, y + 2});
-                    PlaceShip(mShips[mCurrShipId].mCellState, Vector2{x, y + 3});
-                    mShips.erase(mShips.begin() + mCurrShipId);
-                    mCurrShipId = -1;
-                }
-            }
-        }
-        break;
     }
-
-    return result;
 }
 
 void Player::UpdateCurrShip()
@@ -296,58 +204,40 @@ void Player::HandleShipSelection()
             CellState type = mShips[i].mCellState;
             bool rotate = mShips[i].rotate;
 
+            float sizeOfShip = 0;
+
             switch (type)
             {
             case CellState::SHIP_1:
-                if (CheckCollisionPointRec(GetMousePosition(),
-                                           Rectangle{pos.x, pos.y, (Global::sizeOfTile - 1), (Global::sizeOfTile - 1)}))
-                    mCurrShipId = i;
+                sizeOfShip = 1;
                 break;
-
             case CellState::SHIP_2:
-                if (!rotate)
-                {
-                    if (CheckCollisionPointRec(GetMousePosition(), Rectangle{pos.x, pos.y, (Global::sizeOfTile * 2 - 1),
-                                                                             (Global::sizeOfTile - 1)}))
-                        mCurrShipId = i;
-                }
-                else
-                {
-                    if (CheckCollisionPointRec(GetMousePosition(), Rectangle{pos.x, pos.y, (Global::sizeOfTile - 1),
-                                                                             (Global::sizeOfTile * 2 - 1)}))
-                        mCurrShipId = i;
-                }
+                sizeOfShip = 2;
                 break;
-
             case CellState::SHIP_3:
-                if (!rotate)
-                {
-                    if (CheckCollisionPointRec(GetMousePosition(), Rectangle{pos.x, pos.y, (Global::sizeOfTile * 3 - 1),
-                                                                             (Global::sizeOfTile - 1)}))
-                        mCurrShipId = i;
-                }
-                else
-                {
-                    if (CheckCollisionPointRec(GetMousePosition(), Rectangle{pos.x, pos.y, (Global::sizeOfTile - 1),
-                                                                             (Global::sizeOfTile * 3 - 1)}))
-                        mCurrShipId = i;
-                }
+                sizeOfShip = 3;
                 break;
-
             case CellState::SHIP_4:
-                if (!rotate)
-                {
-                    if (CheckCollisionPointRec(GetMousePosition(), Rectangle{pos.x, pos.y, (Global::sizeOfTile * 4 - 1),
-                                                                             (Global::sizeOfTile - 1)}))
-                        mCurrShipId = i;
-                }
-                else
-                {
-                    if (CheckCollisionPointRec(GetMousePosition(), Rectangle{pos.x, pos.y, (Global::sizeOfTile - 1),
-                                                                             (Global::sizeOfTile * 4 - 1)}))
-                        mCurrShipId = i;
-                }
+                sizeOfShip = 4;
                 break;
+            }
+
+            if (!rotate)
+            {
+                if (CheckCollisionPointRec(
+                        GetMousePosition(),
+                        Rectangle{pos.x, pos.y, (Global::sizeOfTile * sizeOfShip - 1), (Global::sizeOfTile - 1)}))
+                {
+                    mCurrShipId = i;
+                }
+            }
+            else
+            {
+                if (CheckCollisionPointRec(GetMousePosition(), Rectangle{pos.x, pos.y, (Global::sizeOfTile - 1),
+                                                                         (Global::sizeOfTile * sizeOfShip - 1)}))
+                {
+                    mCurrShipId = i;
+                }
             }
         }
     }
