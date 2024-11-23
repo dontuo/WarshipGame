@@ -122,8 +122,12 @@ void App::UpdateGame()
 }
 void App::DrawGame(){
 BeginDrawing();
-ClearBackground(WHITE);
-
+    ClearBackground(Global::backgroundColor);
+    mPlayers[0].Draw(100, 100, 0);
+    mPlayers[1].Draw(700, 100, 0);
+    DrawText(mPlayers[0].mName.c_str(), 100, 50, 50, WHITE);
+    DrawText(mPlayers[1].mName.c_str(), 700, 50, 50, WHITE);
+    DrawTexture(mCrosshairTexture, GetMouseX() - 10, GetMouseY() - 10, WHITE);
 EndDrawing();
 }
 void App::GameInputHandler(){}
@@ -148,7 +152,7 @@ App::App()
     LoadTextures();
 
     mPlayers.push_back(Player("Player 1"));
-    mPlayers.push_back(Player("Player 2"));https://discordstyles.github.io/DarkMatter/DarkMatter.theme.css
+    mPlayers.push_back(Player("Player 2"));
 
     mCurrPlayer = &mPlayers[0];
 }
