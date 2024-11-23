@@ -1,5 +1,7 @@
 #pragma once
 #include <raylib.h>
+#include "gamestate.hpp"
+
 namespace Global
 {
 static int windowWidth = 1280;
@@ -12,4 +14,5 @@ static int offsetX = 100;
 static int offsetY = 150;
 
 static Color backgroundColor{36, 33, 68, 255};
+static GameState gameState = GameState::MENU;
 } // namespace Global

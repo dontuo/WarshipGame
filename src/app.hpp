@@ -20,17 +20,21 @@ class App
     void Run();
 
   private:
-    void UpdateGame();
-    void DrawGame();
-    void GameInputHandler();
-
     void UpdateMenu();
     void DrawMenu(Button &menuButton);
     void MenuInputHandler(Button &menuButton);
 
+    void UpdateShipPlacement();
+    void DrawShipPlacement();
+    void ShipPlacementInputHandler();
+    
+    void UpdateGame();
+    void DrawGame();
+    void GameInputHandler();
+
     void InitShips();
 
-    bool mShouldDrawMenu = 1;
+    //bool mShouldDrawMenu = 1;
 
     Texture2D mCrosshairTexture;
 

@@ -1,4 +1,5 @@
 #include "app.hpp"
+#include "gamestate.hpp"
 #include "global.hpp"
 #include "raylib.h"
 
@@ -6,33 +7,51 @@ void App::Run()
 {
     while (!WindowShouldClose())
     {
-        if (mShouldDrawMenu)
-        { // drawing menu untill play button is pressed
-            UpdateMenu();
-        }
-        else
+        switch(Global::gameState)
         {
-            // drawing game itself
-            UpdateGame();
+        case GameState::MENU:
+            UpdateMenu();
+            break;
+        case GameState::PLACING_SHIPS:
             /*int row = 10;
             int column = 10;
             int size = 40;
             static int offsetX = 100;
             static int offsetY = 250;*/
+            UpdateShipPlacement();
+            break;
+        case GameState::GAME:
+            UpdateGame();
+            break;
         }
+            /*
+        if (mShouldDrawMenu)
+        { // drawing menu untill play button is pressed
+        }
+        else
+        {
+            // drawing game itself
+            
+        }*/
     }
 }
 
-void App::UpdateGame()
+void App::UpdateShipPlacement()
 {
-    DrawGame();
-    GameInputHandler();
+    DrawShipPlacement();
+    ShipPlacementInputHandler();
 }
 
-void App::DrawGame()
+void App::DrawShipPlacement()
 {
     BeginDrawing();
     ClearBackground(Global::backgroundColor);
+    if (mCurrPlayer->mShips.size() == 0)
+    {
+        Button button = Button(Rectangle{Global::windowWidth - 227, Global::windowHeight - 75, 154, 52});
+        button.Draw(BLACK);
+        DrawText("Ready", Global::windowWidth - 225, Global::windowHeight - 75, 50, WHITE);
+    }
 
     mCurrPlayer->Draw(Global::offsetX, Global::offsetY, 0);
     DrawText(mCurrPlayer->mName.c_str(), 20, 0, 50, WHITE);
@@ -42,7 +61,7 @@ void App::DrawGame()
     EndDrawing();
 }
 
-void App::GameInputHandler()
+void App::ShipPlacementInputHandler()
 {
     mCurrPlayer->UpdateCurrShip();
     if (IsMouseButtonReleased(MOUSE_BUTTON_LEFT))
@@ -55,8 +74,14 @@ void App::GameInputHandler()
     }
     if (mCurrPlayer->mShips.size() == 0)
     {
-        Button(Rectangle{Global::windowWidth - 227, Global::windowHeight - 75, 154, 52}).Draw(BLACK);
-        DrawText("Ready", Global::windowWidth - 225, Global::windowHeight - 75, 50, WHITE);
+        Button button = Button(Rectangle{Global::windowWidth - 227, Global::windowHeight - 75, 154, 52});
+
+        if(button.IsButtonPressed(MOUSE_BUTTON_LEFT) && mCurrPlayer == &mPlayers[1])
+                Global::gameState = GameState::GAME;
+        else if(button.IsButtonPressed(MOUSE_BUTTON_LEFT))
+        {
+            mCurrPlayer = &mPlayers[1];
+        }
     }
     mCurrPlayer->HandleShipSelection();
 }
@@ -80,7 +105,7 @@ void App::DrawMenu(Button &menuButton)
 void App::MenuInputHandler(Button &menuButton)
 {
     if (menuButton.IsButtonPressed(MOUSE_BUTTON_LEFT))
-        mShouldDrawMenu = 0;
+        Global::gameState = GameState::PLACING_SHIPS;
 }
 
 void App::UpdateMenu()
@@ -89,6 +114,19 @@ void App::UpdateMenu()
     MenuInputHandler(menuButton);
     DrawMenu(menuButton);
 }
+
+void App::UpdateGame()
+{
+    GameInputHandler();
+    DrawGame();
+}
+void App::DrawGame(){
+BeginDrawing();
+ClearBackground(WHITE);
+
+EndDrawing();
+}
+void App::GameInputHandler(){}
 
 App::App()
 {
@@ -110,7 +148,7 @@ App::App()
     LoadTextures();
 
     mPlayers.push_back(Player("Player 1"));
-    mPlayers.push_back(Player("Player 2"));
+    mPlayers.push_back(Player("Player 2"));https://discordstyles.github.io/DarkMatter/DarkMatter.theme.css
 
     mCurrPlayer = &mPlayers[0];
 }
