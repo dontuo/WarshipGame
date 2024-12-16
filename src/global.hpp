@@ -1,18 +1,18 @@
 #pragma once
-#include <raylib.h>
 #include "gamestate.hpp"
+#include <raylib.h>
 
 namespace Global
 {
-static int windowWidth = 1280;
-static int windowHeight = 720;
+inline int windowWidth = 1280;
+inline int windowHeight = 720;
 
 // size of 1 tile (literally size of texture)
-constexpr int sizeOfTile = 45;
+inline int sizeOfTile = 45;
 // offset for drawing grid
-static int offsetX = 100;
-static int offsetY = 150;
+inline int offsetX = 100;
+inline int offsetY = 150;
 
-static Color backgroundColor{36, 33, 68, 255};
-static GameState gameState = GameState::MENU;
+inline Color backgroundColor{36, 33, 68, 255};
+inline GameState gameState = GameState::MENU;
 } // namespace Global
