@@ -217,7 +217,6 @@ bool Board::IsAreaEmpty(int x, int y, int width, int height)
 Rectangle ClampRectangleToBounds(int x, int y, int width, int height)
 {
 
-    Rectangle result = {x, y, 0, 0};
     while (y < 0 or x < 0 or x + width > 10 or y + height > 10)
     {
         if (y < 0)
@@ -246,8 +245,7 @@ Rectangle ClampRectangleToBounds(int x, int y, int width, int height)
         }
     }
 
-    result.width = width;
-    result.height = height;
+    Rectangle result = {x, y, width, height};
 
     return result;
 }
