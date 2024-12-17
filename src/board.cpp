@@ -1,4 +1,5 @@
 #include "board.hpp"
+#include "raylib.h"
 
 Board::Board(int offsetX, int offsetY) : mOffset{(float)offsetX, (float)offsetY}
 {
@@ -188,7 +189,9 @@ bool Board::IsAreaEmpty(int x, int y, int width, int height)
         }
 
         if (x < 0 || y < 0)
+        {
             continue;
+        }
 
         if (x + width > 10)
         {
@@ -209,4 +212,42 @@ bool Board::IsAreaEmpty(int x, int y, int width, int height)
         }
     }
     return true;
+}
+
+Rectangle ClampRectangleToBounds(int x, int y, int width, int height)
+{
+
+    Rectangle result = {x, y, 0, 0};
+    while (y < 0 or x < 0 or x + width > 10 or y + height > 10)
+    {
+        if (y < 0)
+        {
+            y++;
+            height--;
+        }
+        if (x < 0)
+        {
+            x++;
+            width--;
+        }
+
+        if (x < 0 || y < 0)
+        {
+            continue;
+        }
+
+        if (x + width > 10)
+        {
+            width--;
+        }
+        if (y + height > 10)
+        {
+            height--;
+        }
+    }
+
+    result.width = width;
+    result.height = height;
+
+    return result;
 }

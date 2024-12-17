@@ -7,6 +7,8 @@
 #include <raylib.h>
 #include <vector>
 
+Rectangle ClampRectangleToBounds(int x, int y, int width, int height);
+
 class Board
 {
   public:
