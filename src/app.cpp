@@ -134,35 +134,51 @@ void App::GameInputHandler()
         {
             for (int y = 0; y < 10; y++)
             {
-                if(mPlayers[!mCurrPlayerTurn ? 0 : 1].CheckCellCollision(GetMousePosition(), Vector2 {x,y}))
+                if (mPlayers[!mCurrPlayerTurn ? 0 : 1].CheckCellCollision(GetMousePosition(), Vector2{x, y}))
                 {
-                    switch(mPlayers[!mCurrPlayerTurn ? 0 : 1].mCells[x][y])
+                    switch (mPlayers[!mCurrPlayerTurn ? 0 : 1].mCells[x][y])
                     {
-                        case CellState::SHIP_1:
-                            mPlayers[!mCurrPlayerTurn ? 0 : 1].mCells[x][y] = CellState::SHIP_1_HITTED;
-                        break;
-                        case CellState::SHIP_2:
-                            mPlayers[!mCurrPlayerTurn ? 0 : 1].mCells[x][y] = CellState::SHIP_2_HITTED;
-                        break;
-                        case CellState::SHIP_3:
-                            mPlayers[!mCurrPlayerTurn ? 0 : 1].mCells[x][y] = CellState::SHIP_3_HITTED;
-                        break;
-                        case CellState::SHIP_4:
-                            mPlayers[!mCurrPlayerTurn ? 0 : 1].mCells[x][y] = CellState::SHIP_4_HITTED;
-                        break;
-                        
-                        //saw in someone's code something like this. Didn't know that I can do it like that :D
-                        case CellState::SHIP_1_HITTED:
-                        case CellState::SHIP_2_HITTED:
-                        case CellState::SHIP_3_HITTED:
-                        case CellState::SHIP_4_HITTED:
-                        case CellState::HIT:
-                        case CellState::MISSED:
+                    case CellState::SHIP_1: {
+                        mPlayers[!mCurrPlayerTurn ? 0 : 1].mCells[x][y] = CellState::SHIP_1_HITTED;
+
+                        int width = 3;
+                        int height = 3;
+
+                        Rectangle bounds = ClampRectangleToBounds(x - 1, y - 1, width, height);
+
+                        for (int i = 0; i < bounds.width; i++)
+                            for (int j = 0; j < bounds.height; j++)
+                            {
+                                if (mPlayers[!mCurrPlayerTurn ? 0 : 1].mCells[static_cast<int>(bounds.x) + i][static_cast<int>(bounds.y) + j] != CellState::SHIP_1_HITTED)
+                                    mPlayers[!mCurrPlayerTurn ? 0 : 1].mCells[static_cast<int>(bounds.x) + i][static_cast<int>(bounds.y) + j] = CellState::MISSED;
+                            }
+                    }
+                    break;
+
+                    case CellState::SHIP_2:
+                        mPlayers[!mCurrPlayerTurn ? 0 : 1].mCells[x][y] = CellState::SHIP_2_HITTED;
                         break;
 
-                        default:
-                            mPlayers[!mCurrPlayerTurn ? 0 : 1].mCells[x][y] = CellState::MISSED;
-                            mCurrPlayerTurn = !mCurrPlayerTurn;
+                    case CellState::SHIP_3:
+                        mPlayers[!mCurrPlayerTurn ? 0 : 1].mCells[x][y] = CellState::SHIP_3_HITTED;
+                        break;
+
+                    case CellState::SHIP_4:
+                        mPlayers[!mCurrPlayerTurn ? 0 : 1].mCells[x][y] = CellState::SHIP_4_HITTED;
+                        break;
+
+                    // saw in someone's code this. Didn't know that I can do that :D
+                    case CellState::SHIP_1_HITTED:
+                    case CellState::SHIP_2_HITTED:
+                    case CellState::SHIP_3_HITTED:
+                    case CellState::SHIP_4_HITTED:
+                    case CellState::HIT:
+                    case CellState::MISSED:
+                        break;
+
+                    default:
+                        mPlayers[!mCurrPlayerTurn ? 0 : 1].mCells[x][y] = CellState::MISSED;
+                        mCurrPlayerTurn = !mCurrPlayerTurn;
                         break;
                     }
                 }
