@@ -1,13 +1,15 @@
 #include "app.hpp"
+#include "cell.hpp"
 #include "gamestate.hpp"
 #include "global.hpp"
 #include "raylib.h"
+#include "raymath.h"
 
 void App::Run()
 {
     while (!WindowShouldClose())
     {
-        switch(Global::gameState)
+        switch (Global::gameState)
         {
         case GameState::MENU:
             UpdateMenu();
@@ -24,15 +26,6 @@ void App::Run()
             UpdateGame();
             break;
         }
-            /*
-        if (mShouldDrawMenu)
-        { // drawing menu untill play button is pressed
-        }
-        else
-        {
-            // drawing game itself
-            
-        }*/
     }
 }
 
@@ -76,9 +69,9 @@ void App::ShipPlacementInputHandler()
     {
         Button button = Button(Rectangle{Global::windowWidth - 227, Global::windowHeight - 75, 154, 52});
 
-        if(button.IsButtonPressed(MOUSE_BUTTON_LEFT) && mCurrPlayer == &mPlayers[1])
-                Global::gameState = GameState::GAME;
-        else if(button.IsButtonPressed(MOUSE_BUTTON_LEFT))
+        if (button.IsButtonPressed(MOUSE_BUTTON_LEFT) && mCurrPlayer == &mPlayers[1])
+            Global::gameState = GameState::GAME;
+        else if (button.IsButtonPressed(MOUSE_BUTTON_LEFT))
         {
             mCurrPlayer = &mPlayers[1];
         }
@@ -120,17 +113,63 @@ void App::UpdateGame()
     GameInputHandler();
     DrawGame();
 }
-void App::DrawGame(){
-BeginDrawing();
+void App::DrawGame()
+{
+    BeginDrawing();
     ClearBackground(Global::backgroundColor);
-    mPlayers[0].Draw(100, 100, 0);
-    mPlayers[1].Draw(700, 100, 0);
+    mPlayers[0].Draw(100, 100, 1);
+    mPlayers[1].Draw(700, 100, 1);
     DrawText(mPlayers[0].mName.c_str(), 100, 50, 50, WHITE);
     DrawText(mPlayers[1].mName.c_str(), 700, 50, 50, WHITE);
     DrawTexture(mCrosshairTexture, GetMouseX() - 10, GetMouseY() - 10, WHITE);
-EndDrawing();
+
+    DrawText((mPlayers[mCurrPlayerTurn ? 0 : 1].mName + " turn").c_str(), 100, 600, 50, WHITE);
+    EndDrawing();
 }
-void App::GameInputHandler(){}
+void App::GameInputHandler()
+{
+    if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT))
+    {
+        for (int x = 0; x < 10; x++)
+        {
+            for (int y = 0; y < 10; y++)
+            {
+                if(mPlayers[!mCurrPlayerTurn ? 0 : 1].CheckCellCollision(GetMousePosition(), Vector2 {x,y}))
+                {
+                    switch(mPlayers[!mCurrPlayerTurn ? 0 : 1].mCells[x][y])
+                    {
+                        case CellState::SHIP_1:
+                            mPlayers[!mCurrPlayerTurn ? 0 : 1].mCells[x][y] = CellState::SHIP_1_HITTED;
+                        break;
+                        case CellState::SHIP_2:
+                            mPlayers[!mCurrPlayerTurn ? 0 : 1].mCells[x][y] = CellState::SHIP_2_HITTED;
+                        break;
+                        case CellState::SHIP_3:
+                            mPlayers[!mCurrPlayerTurn ? 0 : 1].mCells[x][y] = CellState::SHIP_3_HITTED;
+                        break;
+                        case CellState::SHIP_4:
+                            mPlayers[!mCurrPlayerTurn ? 0 : 1].mCells[x][y] = CellState::SHIP_4_HITTED;
+                        break;
+                        
+                        //saw in someone's code something like this. Didn't know that I can do it like that :D
+                        case CellState::SHIP_1_HITTED:
+                        case CellState::SHIP_2_HITTED:
+                        case CellState::SHIP_3_HITTED:
+                        case CellState::SHIP_4_HITTED:
+                        case CellState::HIT:
+                        case CellState::MISSED:
+                        break;
+
+                        default:
+                            mPlayers[!mCurrPlayerTurn ? 0 : 1].mCells[x][y] = CellState::MISSED;
+                            mCurrPlayerTurn = !mCurrPlayerTurn;
+                        break;
+                    }
+                }
+            }
+        }
+    }
+}
 
 App::App()
 {

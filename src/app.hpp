@@ -1,6 +1,7 @@
 #include "board.hpp"
 #include "button.hpp"
 #include "cell.hpp"
+#include "gamestate.hpp"
 #include "global.hpp"
 #include "grid.hpp"
 #include "player.hpp"
@@ -27,14 +28,14 @@ class App
     void UpdateShipPlacement();
     void DrawShipPlacement();
     void ShipPlacementInputHandler();
-    
+
     void UpdateGame();
     void DrawGame();
     void GameInputHandler();
 
     void InitShips();
 
-    //bool mShouldDrawMenu = 1;
+    // bool mShouldDrawMenu = 1;
 
     Texture2D mCrosshairTexture;
 
@@ -44,4 +45,7 @@ class App
     std::vector<Player> mPlayers{};
 
     Player *mCurrPlayer;
+
+    // 0 - first player, 1 - second player
+    bool mCurrPlayerTurn = 1;
 };
