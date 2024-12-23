@@ -1,4 +1,5 @@
 #include "app.hpp"
+#include "board.hpp"
 #include "cell.hpp"
 #include "gamestate.hpp"
 #include "global.hpp"
@@ -155,13 +156,164 @@ void App::GameInputHandler()
                     }
                     break;
 
-                    case CellState::SHIP_2:
+                    case CellState::SHIP_2: {
                         mPlayers[!mCurrPlayerTurn ? 0 : 1].mCells[x][y] = CellState::SHIP_2_HITTED;
-                        break;
+                        // if(mPlayers[!mCurrPlayerTurn ? 0 : 1].CountCellsInArea(Rectangle{x - 1, y - 1, 3, 3}, CellState::SHIP_2_HITTED) == 2)
+                        {
+                            int countOfShip2Hitted = 0;
+                            bool rotated = false;
+                            bool onTop = false;
+                            bool onLeft = false;
+                            if (x - 1 >= 0)
+                                if (mPlayers[!mCurrPlayerTurn ? 0 : 1].mCells[x - 1][y] == CellState::SHIP_2_HITTED)
+                                {
+                                    onLeft = true;
+                                    countOfShip2Hitted++;
+                                }
+                            if (x + 1 < 10)
+                                if (mPlayers[!mCurrPlayerTurn ? 0 : 1].mCells[x + 1][y] == CellState::SHIP_2_HITTED)
+                                    countOfShip2Hitted++;
+                            if (y - 1 >= 0)
+                                if (mPlayers[!mCurrPlayerTurn ? 0 : 1].mCells[x][y - 1] == CellState::SHIP_2_HITTED)
+                                {
+                                    countOfShip2Hitted++;
+                                    rotated = true;
+                                    onTop = true;
+                                }
+                            if (y + 1 < 10)
+                                if (mPlayers[!mCurrPlayerTurn ? 0 : 1].mCells[x][y + 1] == CellState::SHIP_2_HITTED)
+                                {
+                                    countOfShip2Hitted++;
+                                    rotated = true;
+                                }
 
-                    case CellState::SHIP_3:
+                            if (countOfShip2Hitted)
+                            {
+                                if (rotated)
+                                {
+                                    Rectangle rect = ClampRectangleToBounds(x - 1, y - 1 - (onTop ? 1 : 0), 3, 4);
+                                    for (int i = 0; i < rect.width; i++)
+                                        for (int j = 0; j < rect.height; j++)
+                                        {
+                                            if (mPlayers[!mCurrPlayerTurn ? 0 : 1].mCells[(int)rect.x + i][(int)rect.y + j] != CellState::SHIP_2_HITTED)
+                                                mPlayers[!mCurrPlayerTurn ? 0 : 1].mCells[(int)rect.x + i][(int)rect.y + j] = CellState::MISSED;
+                                        }
+                                }
+                                else
+                                {
+                                    Rectangle rect = ClampRectangleToBounds(x - 1 - (onLeft ? 1 : 0), y - 1, 4, 3);
+                                    for (int i = 0; i < rect.width; i++)
+                                        for (int j = 0; j < rect.height; j++)
+                                        {
+                                            if (mPlayers[!mCurrPlayerTurn ? 0 : 1].mCells[(int)rect.x + i][(int)rect.y + j] != CellState::SHIP_2_HITTED)
+                                                mPlayers[!mCurrPlayerTurn ? 0 : 1].mCells[(int)rect.x + i][(int)rect.y + j] = CellState::MISSED;
+                                        }
+                                }
+                                // mPlayers[!mCurrPlayerTurn ? 0 : 1].mCells[x + 1][y + 1] = CellState::MISSED;
+                            }
+                        }
+                    }
+                    break;
+
+                    case CellState::SHIP_3: {
                         mPlayers[!mCurrPlayerTurn ? 0 : 1].mCells[x][y] = CellState::SHIP_3_HITTED;
-                        break;
+                        int countOfShip3Hitted = 0;
+                        bool rotated = false;
+                        bool onTop = false;
+                        bool lastPartOfShip = false;
+                        Rectangle rect = {};
+
+                        Rectangle clamped = {};
+
+                        clamped = ClampRectangleToBounds(x, y, 3, 1);
+
+                        // that's fucking shit
+                        if ((x - 1 >= 0) && (x + 1 < 10))
+                        {
+                            if (mPlayers[!mCurrPlayerTurn ? 0 : 1].mCells[x - 1][y] == CellState::SHIP_3_HITTED && mPlayers[!mCurrPlayerTurn ? 0 : 1].mCells[x + 1][y] == CellState::SHIP_3_HITTED)
+                            {
+                                rect = ClampRectangleToBounds(x - 2, y - 1, 5, 3);
+                            }
+                        }
+                        if ((x - 2 >= 0) && (x + 1 < 10))
+                        {
+                            if (mPlayers[!mCurrPlayerTurn ? 0 : 1].mCells[x - 1][y] == CellState::SHIP_3_HITTED && mPlayers[!mCurrPlayerTurn ? 0 : 1].mCells[x - 2][y] == CellState::SHIP_3_HITTED && mPlayers[!mCurrPlayerTurn ? 0 : 1].mCells[x + 1][y] != CellState::SHIP_3_HITTED)
+                            {
+                                rect = ClampRectangleToBounds(x - 3, y - 1, 5, 3);
+                            }
+                        }
+                        else if ((x - 2 >= 0) && !(x + 1 < 10))
+                        {
+                            if (mPlayers[!mCurrPlayerTurn ? 0 : 1].mCells[x - 1][y] == CellState::SHIP_3_HITTED && mPlayers[!mCurrPlayerTurn ? 0 : 1].mCells[x - 2][y] == CellState::SHIP_3_HITTED)
+                            {
+                                rect = ClampRectangleToBounds(x - 3, y - 1, 5, 3);
+                            }
+                        }
+
+                        if ((x - 1 >= 0) && (x + 2 < 10))
+                        {
+                            if (mPlayers[!mCurrPlayerTurn ? 0 : 1].mCells[x - 1][y] != CellState::SHIP_3 && mPlayers[!mCurrPlayerTurn ? 0 : 1].mCells[x + 1][y] == CellState::SHIP_3_HITTED && mPlayers[!mCurrPlayerTurn ? 0 : 1].mCells[x + 2][y] == CellState::SHIP_3_HITTED)
+                            {
+                                rect = ClampRectangleToBounds(x - 1, y - 1, 5, 3);
+                            }
+                        }
+                        else if (!(x - 1 >= 0) && (x + 2 < 10))
+                        {
+                            if (mPlayers[!mCurrPlayerTurn ? 0 : 1].mCells[x + 1][y] == CellState::SHIP_3_HITTED && mPlayers[!mCurrPlayerTurn ? 0 : 1].mCells[x + 2][y] == CellState::SHIP_3_HITTED)
+                            {
+                                rect = ClampRectangleToBounds(x - 1, y - 1, 5, 3);
+                            }
+                        }
+
+                        if ((y - 1 >= 0) && (y + 1 < 10))
+                        {
+                            if (mPlayers[!mCurrPlayerTurn ? 0 : 1].mCells[x][y - 1] == CellState::SHIP_3_HITTED && mPlayers[!mCurrPlayerTurn ? 0 : 1].mCells[x][y + 1] == CellState::SHIP_3_HITTED)
+                            {
+                                rect = ClampRectangleToBounds(x - 1, y - 2, 3, 5);
+                            }
+                        }
+
+                        if ((y - 2 >= 0) && (y + 1 < 10))
+                        {
+                            if (mPlayers[!mCurrPlayerTurn ? 0 : 1].mCells[x][y - 1] == CellState::SHIP_3_HITTED && mPlayers[!mCurrPlayerTurn ? 0 : 1].mCells[x][y - 2] == CellState::SHIP_3_HITTED && mPlayers[!mCurrPlayerTurn ? 0 : 1].mCells[x][y + 1] != CellState::SHIP_3_HITTED)
+                            {
+                                rect = ClampRectangleToBounds(x - 1, y - 3, 3, 5);
+                            }
+                        }
+                        else if ((y - 2 >= 0) && (y + 1 < 10))
+                        {
+                            if (mPlayers[!mCurrPlayerTurn ? 0 : 1].mCells[x][y - 1] == CellState::SHIP_3_HITTED && mPlayers[!mCurrPlayerTurn ? 0 : 1].mCells[x][y - 2] == CellState::SHIP_3_HITTED)
+                            {
+                                rect = ClampRectangleToBounds(x - 1, y - 3, 3, 5);
+                            }
+                        }
+
+                        if ((y - 1 >= 0) && (y + 2 < 10))
+                        {
+                            if (mPlayers[!mCurrPlayerTurn ? 0 : 1].mCells[x][y - 1] != CellState::SHIP_3 && mPlayers[!mCurrPlayerTurn ? 0 : 1].mCells[x][y + 1] == CellState::SHIP_3_HITTED && mPlayers[!mCurrPlayerTurn ? 0 : 1].mCells[x][y + 2] == CellState::SHIP_3_HITTED)
+                            {
+                                rect = ClampRectangleToBounds(x - 1, y - 1, 3, 5);
+                            }
+                        }
+                        if (!(y - 1 >= 0) && (y + 2 < 10))
+                        {
+                            if (mPlayers[!mCurrPlayerTurn ? 0 : 1].mCells[x][y + 1] == CellState::SHIP_3_HITTED && mPlayers[!mCurrPlayerTurn ? 0 : 1].mCells[x][y + 2] == CellState::SHIP_3_HITTED)
+                            {
+                                rect = ClampRectangleToBounds(x - 1, y - 1, 3, 5);
+                            }
+                        }
+
+                        // someone who reads this code, please, make it better :3
+
+                        if (rect.width != 0 && rect.height != 0)
+                            for (int i = 0; i < rect.width; i++)
+                                for (int j = 0; j < rect.height; j++)
+                                {
+                                    if (mPlayers[!mCurrPlayerTurn ? 0 : 1].mCells[(int)rect.x + i][(int)rect.y + j] != CellState::SHIP_3_HITTED)
+                                        mPlayers[!mCurrPlayerTurn ? 0 : 1].mCells[(int)rect.x + i][(int)rect.y + j] = CellState::MISSED;
+                                }
+                    }
+                    break;
 
                     case CellState::SHIP_4:
                         mPlayers[!mCurrPlayerTurn ? 0 : 1].mCells[x][y] = CellState::SHIP_4_HITTED;
