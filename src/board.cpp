@@ -1,4 +1,5 @@
 #include "board.hpp"
+#include "cell.hpp"
 #include "raylib.h"
 
 Board::Board(int offsetX, int offsetY) : mOffset{(float)offsetX, (float)offsetY}
@@ -224,4 +225,24 @@ Rectangle ClampRectangleToBounds(int x, int y, int width, int height)
     }
 
     return Rectangle{x, y, width, height};
+}
+
+int Board::CountCellsInArea(Rectangle area, CellState type)
+{
+    Rectangle clampedArea = ClampRectangleToBounds(area.x, area.y, area.width, area.height);
+
+    int result = 0;
+
+    int x = area.x;
+    int y = area.y;
+    int width = area.width;
+    int height = area.height;
+    for (int i = 0; i < width; i++)
+        for (int j = 0; j < height; j++)
+        {
+            if (mCells[x + i][y + j] == type)
+                result++;
+        }
+
+    return result;
 }

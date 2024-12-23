@@ -20,7 +20,7 @@ class Board
     // void HightlighTheBoat(CellState type, Vector2 position);
 
     bool PlaceShip(CellState type, Vector2 position);
-
+    int CountCellsInArea(Rectangle area, CellState type);
     CellState GetCellState(int x, int y);
     CellState GetCellState(Vector2 pos);
 
