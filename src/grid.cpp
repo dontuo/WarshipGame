@@ -1,7 +1,6 @@
 #include "grid.hpp"
 
-Grid::Grid(int row, int column, int size, int offsetX, int offsetY)
-    : mRow(row), mColumn(column), mSize(size), mOffsetX(offsetX), mOffsetY(offsetY)
+Grid::Grid(int row, int column, int size, int offsetX, int offsetY) : mRow(row), mColumn(column), mSize(size), mOffsetX(offsetX), mOffsetY(offsetY)
 {
 }
 
