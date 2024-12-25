@@ -4,7 +4,8 @@ project(WarshipGame)
 set(CMAKE_CXX_STANDARD 17)
 
 #raylib 
-set(GLFW_BUILD_WAYLAND ON)
+# uncomment this for wayland support 
+#set(GLFW_BUILD_WAYLAND ON)
 add_subdirectory(libs/raylib)
 include_directories(libs/raylib/src)
 
