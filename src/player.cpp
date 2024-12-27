@@ -12,24 +12,24 @@ void Player::InitShips()
 
     int x = Global::windowWidth - 500;
     int y = 150;
+    
+        for (int i = 0; i < 4; i++)
+        {
+            mShips.push_back(Ship{Vector2{x, y}, CellState::SHIP_1});
 
-    for (int i = 0; i < 4; i++)
-    {
-        mShips.push_back(Ship{Vector2{x, y}, CellState::SHIP_1});
+            x += 100;
+        }
+         x = Global::windowWidth - 500;
+         y = 225; // boat 1x2, 3 pieces only: ##
+         for (int i = 0; i < 3; i++)
+         {
+             mShips.push_back(Ship{Vector2{x, y}, CellState::SHIP_2});
 
-        x += 100;
-    }
-    x = Global::windowWidth - 500;
-    y = 225; // boat 1 by 2, 3 pieces only: ##
-    for (int i = 0; i < 3; i++)
-    {
-        mShips.push_back(Ship{Vector2{x, y}, CellState::SHIP_2});
-
-        x += 100 + (Global::sizeOfTile - 1);
-    }
+             x += 100 + (Global::sizeOfTile - 1);
+         }
     x = Global::windowWidth - 500;
     y = 300;
-    // boat 1 by 3, 2 pieces only: ###
+    // boat 1x3, 2 pieces only: ###
     for (int i = 0; i < 2; i++)
     {
 
@@ -37,10 +37,11 @@ void Player::InitShips()
 
         x += 100 + (Global::sizeOfTile - 1) * 2;
     }
+
     x = Global::windowWidth - 500;
     y = 375;
 
-    // boat 1 by 4, 1 pieces only: ####
+    // boat 1x4, 1 pieces only: ####
     for (int i = 0; i < 1; i++)
     {
         mShips.push_back(Ship{Vector2{x, y}, CellState::SHIP_4});
@@ -89,24 +90,20 @@ void Player::Draw(int offsetX, int offsetY, bool hide = 0)
                         if (x < 11 - sizeOfShip)
                             if (!IsAreaEmpty(x - 1, y - 1, 2 + sizeOfShip, 3))
                             {
-                                DrawShip(mShips[mCurrShipId], x * sizeOfTile + mOffset.x,
-                                         y * sizeOfTile + 1 + mOffset.y, RED);
+                                DrawShip(mShips[mCurrShipId], x * sizeOfTile + mOffset.x, y * sizeOfTile + 1 + mOffset.y, RED);
                             }
                             else
                             {
-                                DrawShip(mShips[mCurrShipId], x * sizeOfTile + mOffset.x,
-                                         y * sizeOfTile + 1 + mOffset.y, GREEN);
+                                DrawShip(mShips[mCurrShipId], x * sizeOfTile + mOffset.x, y * sizeOfTile + 1 + mOffset.y, GREEN);
                             }
                     }
                     else
                     {
                         if (y < 11 - sizeOfShip)
                             if (!IsAreaEmpty(x - 1, y - 1, 3, 2 + sizeOfShip))
-                                DrawShip(mShips[mCurrShipId], x * sizeOfTile + mOffset.x,
-                                         y * sizeOfTile + 1 + mOffset.y, RED);
+                                DrawShip(mShips[mCurrShipId], x * sizeOfTile + mOffset.x, y * sizeOfTile + 1 + mOffset.y, RED);
                             else
-                                DrawShip(mShips[mCurrShipId], x * sizeOfTile + mOffset.x,
-                                         y * sizeOfTile + 1 + mOffset.y, GREEN);
+                                DrawShip(mShips[mCurrShipId], x * sizeOfTile + mOffset.x, y * sizeOfTile + 1 + mOffset.y, GREEN);
                     }
                 }
             }
@@ -224,17 +221,14 @@ void Player::HandleShipSelection()
 
             if (!rotate)
             {
-                if (CheckCollisionPointRec(
-                        GetMousePosition(),
-                        Rectangle{pos.x, pos.y, (Global::sizeOfTile * sizeOfShip - 1), (Global::sizeOfTile - 1)}))
+                if (CheckCollisionPointRec(GetMousePosition(), Rectangle{pos.x, pos.y, (Global::sizeOfTile * sizeOfShip - 1), (Global::sizeOfTile - 1)}))
                 {
                     mCurrShipId = i;
                 }
             }
             else
             {
-                if (CheckCollisionPointRec(GetMousePosition(), Rectangle{pos.x, pos.y, (Global::sizeOfTile - 1),
-                                                                         (Global::sizeOfTile * sizeOfShip - 1)}))
+                if (CheckCollisionPointRec(GetMousePosition(), Rectangle{pos.x, pos.y, (Global::sizeOfTile - 1), (Global::sizeOfTile * sizeOfShip - 1)}))
                 {
                     mCurrShipId = i;
                 }
