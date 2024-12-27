@@ -88,8 +88,8 @@ void App::DrawMenu(Button &menuButton)
     if (menuButton.IsMouseOverButton())
         menuButton.Draw(DARKBLUE);
 
-    DrawText("Warship Game", GetScreenWidth() / 3.5f, GetScreenHeight() / 3, 50, WHITE);
-    DrawText("Play", GetScreenWidth() / 2.f, GetScreenHeight() / 2, 50, WHITE);
+    DrawText("Warship Game", Global::windowWidth / 3.5f, Global::windowHeight / 3, 50, WHITE);
+    DrawText("Play", Global::windowWidth / 3.5f, Global::windowHeight / 2, 50, WHITE);
 
     DrawTexture(mCrosshairTexture, GetMouseX() - 10, GetMouseY() - 10, WHITE);
 
@@ -104,7 +104,7 @@ void App::MenuInputHandler(Button &menuButton)
 
 void App::UpdateMenu()
 {
-    static Button menuButton(Rectangle{GetScreenWidth() / 2.f - 2, GetScreenHeight() / 2.f + 3, 109, 49});
+    static Button menuButton(Rectangle{Global::windowWidth / 3.5f - 2,Global::windowHeight / 2.f + 3, 109, 49});
     MenuInputHandler(menuButton);
     DrawMenu(menuButton);
 }
