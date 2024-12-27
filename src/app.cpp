@@ -235,6 +235,7 @@ void App::GameInputHandler()
                                 rect = ClampRectangleToBounds(x - 2, y - 1, 5, 3);
                             }
                         }
+
                         if ((x - 2 >= 0) && (x + 1 < 10))
                         {
                             if (mPlayers[!mCurrPlayerTurn ? 0 : 1].mCells[x - 1][y] == CellState::SHIP_3_HITTED && mPlayers[!mCurrPlayerTurn ? 0 : 1].mCells[x - 2][y] == CellState::SHIP_3_HITTED && mPlayers[!mCurrPlayerTurn ? 0 : 1].mCells[x + 1][y] != CellState::SHIP_3_HITTED)
@@ -295,7 +296,7 @@ void App::GameInputHandler()
                                 rect = ClampRectangleToBounds(x - 1, y - 1, 3, 5);
                             }
                         }
-                        if (!(y - 1 >= 0) && (y + 2 < 10))
+                        else if (!(y - 1 >= 0) && (y + 2 < 10))
                         {
                             if (mPlayers[!mCurrPlayerTurn ? 0 : 1].mCells[x][y + 1] == CellState::SHIP_3_HITTED && mPlayers[!mCurrPlayerTurn ? 0 : 1].mCells[x][y + 2] == CellState::SHIP_3_HITTED)
                             {
@@ -315,9 +316,148 @@ void App::GameInputHandler()
                     }
                     break;
 
-                    case CellState::SHIP_4:
+                    case CellState::SHIP_4: {
+                        Rectangle rect = {};
                         mPlayers[!mCurrPlayerTurn ? 0 : 1].mCells[x][y] = CellState::SHIP_4_HITTED;
-                        break;
+
+                        if ((x - 1 >= 0) && (x + 3 < 10))
+                        {
+                            int count = 0;
+                            for (int i = -1; i < 4; i++)
+                                if (mPlayers[!mCurrPlayerTurn ? 0 : 1].mCells[x + i][y] == CellState::SHIP_4_HITTED)
+                                    count++;
+
+                            if (count == 4)
+                                rect = ClampRectangleToBounds(x - 1, y - 1, 6, 3);
+                        }
+                        else if (!(x - 1 >= 0) && (x + 3 < 10))
+                        {
+                            int count = 0;
+                            for (int i = 0; i < 4; i++)
+                                if (mPlayers[!mCurrPlayer ? 0 : 1].mCells[x + i][y] == CellState::SHIP_4_HITTED)
+                                    count++;
+
+                            if (count == 4)
+                                rect = ClampRectangleToBounds(x - 1, y - 1, 6, 3);
+                        }
+
+                        if ((x - 1 >= 0) && (x + 2 < 10))
+                        {
+                            int count = 0;
+                            for (int i = -1; i < 3; i++)
+                                if (mPlayers[!mCurrPlayerTurn ? 0 : 1].mCells[x + i][y] == CellState::SHIP_4_HITTED)
+                                    count++;
+
+                            if (count == 4)
+                                rect = ClampRectangleToBounds(x - 2, y - 1, 6, 3);
+                        }
+
+                        if ((x - 2 >= 0) && (x + 1 < 10))
+                        {
+                            int count = 0;
+                            for (int i = -2; i < 2; i++)
+                                if (mPlayers[!mCurrPlayerTurn ? 0 : 1].mCells[x + i][y] == CellState::SHIP_4_HITTED)
+                                    count++;
+
+                            if (count == 4)
+                                rect = ClampRectangleToBounds(x - 4, y - 1, 6, 3);
+                        }
+
+                        if ((x - 3 >= 0) && (x + 1 < 10))
+                        {
+                            int count = 0;
+                            for (int i = -3; i < 2; i++)
+                                if (mPlayers[!mCurrPlayerTurn ? 0 : 1].mCells[x + i][y] == CellState::SHIP_4_HITTED)
+                                    count++;
+
+                            if (count == 4)
+                                rect = ClampRectangleToBounds(x - 4, y - 1, 6, 3);
+                        }
+                        else if ((x - 3 >= 0) && !(x + 1 < 10))
+                        {
+                            int count = 0;
+                            for (int i = -3; i < 1; i++)
+                                if (mPlayers[!mCurrPlayerTurn ? 0 : 1].mCells[x + i][y] == CellState::SHIP_4_HITTED)
+                                    count++;
+
+                            if (count == 4)
+                                rect = ClampRectangleToBounds(x - 4, y - 1, 6, 3);
+                        }
+
+                        //
+                        if ((y - 1 >= 0) && (y + 3 < 10))
+                        {
+                            int count = 0;
+                            for (int i = -1; i < 4; i++)
+                                if (mPlayers[!mCurrPlayerTurn ? 0 : 1].mCells[x][y + i] == CellState::SHIP_4_HITTED)
+                                    count++;
+
+                            if (count == 4)
+                                rect = ClampRectangleToBounds(x - 1, y - 1, 3, 6);
+                        }
+                        else if (!(y - 1 >= 0) && (y + 3 < 10))
+                        {
+                            int count = 0;
+                            for (int i = 0; i < 4; i++)
+                                if (mPlayers[!mCurrPlayer ? 0 : 1].mCells[x][y + i] == CellState::SHIP_4_HITTED)
+                                    count++;
+
+                            if (count == 4)
+                                rect = ClampRectangleToBounds(x - 1, y - 1, 3, 6);
+                        }
+
+                        if ((y - 1 >= 0) && (y + 2 < 10))
+                        {
+                            int count = 0;
+                            for (int i = -1; i < 3; i++)
+                                if (mPlayers[!mCurrPlayerTurn ? 0 : 1].mCells[x][y + i] == CellState::SHIP_4_HITTED)
+                                    count++;
+
+                            if (count == 4)
+                                rect = ClampRectangleToBounds(x - 1, y - 2, 3, 6);
+                        }
+
+                        if ((y - 2 >= 0) && (y + 1 < 10))
+                        {
+                            int count = 0;
+                            for (int i = -2; i < 2; i++)
+                                if (mPlayers[!mCurrPlayerTurn ? 0 : 1].mCells[x][y + i] == CellState::SHIP_4_HITTED)
+                                    count++;
+
+                            if (count == 4)
+                                rect = ClampRectangleToBounds(x - 1, y - 4, 3, 6);
+                        }
+
+                        if ((y - 3 >= 0) && (y + 1 < 10))
+                        {
+                            int count = 0;
+                            for (int i = -3; i < 2; i++)
+                                if (mPlayers[!mCurrPlayerTurn ? 0 : 1].mCells[x][y + i] == CellState::SHIP_4_HITTED)
+                                    count++;
+
+                            if (count == 4)
+                                rect = ClampRectangleToBounds(x - 1, y - 4, 3, 6);
+                        }
+                        else if ((y - 3 >= 0) && !(y + 1 < 10))
+                        {
+                            int count = 0;
+                            for (int i = -3; i < 1; i++)
+                                if (mPlayers[!mCurrPlayerTurn ? 0 : 1].mCells[x][y + i] == CellState::SHIP_4_HITTED)
+                                    count++;
+
+                            if (count == 4)
+                                rect = ClampRectangleToBounds(x - 1, y - 4, 3, 6);
+                        }
+
+                        if (rect.width != 0 && rect.height != 0)
+                            for (int i = 0; i < rect.width; i++)
+                                for (int j = 0; j < rect.height; j++)
+                                {
+                                    if (mPlayers[!mCurrPlayerTurn ? 0 : 1].mCells[(int)rect.x + i][(int)rect.y + j] != CellState::SHIP_4_HITTED && mPlayers[!mCurrPlayerTurn ? 0 : 1].mCells[(int)rect.x + i][(int)rect.y + j] != CellState::SHIP_4)
+                                        mPlayers[!mCurrPlayerTurn ? 0 : 1].mCells[(int)rect.x + i][(int)rect.y + j] = CellState::MISSED;
+                                }
+                    }
+                    break;
 
                     // saw in someone's code this. Didn't know that I can do that :D
                     case CellState::SHIP_1_HITTED:
