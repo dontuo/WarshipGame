@@ -10,7 +10,7 @@ A game that I wanted to implement. This game was kinda popular in my class.
 ### Windows
 ```Install Visual Studio and open Visual Studio in project folder ```
 
-### Linux / *bsd / mac (unix-like systems (haven't tried it on *bsd, mac but should build))
+### Linux 
 ```bash 
 mkdir build
 cd build
