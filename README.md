@@ -2,7 +2,6 @@
 # Warship Game
 
 A game that I wanted to implement. This game was kinda popular in my class.
-# Some screenshots
 
 # How to build
 
@@ -18,7 +17,7 @@ cmake ..
 make
 ```
 
-## Some screenshots of a game
+# Some screenshots
 
 ![screenshot1](screenshots/screenshot_1.png)
 ![screenshot2](screenshots/screenshot_2.png)
