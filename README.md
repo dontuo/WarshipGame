@@ -1,7 +1,7 @@
 
 # Warship Game
 
-A game that I wanted to implement. This game was kinda popular in my class.
+A game that I wanted to implement.
 
 # How to build
 

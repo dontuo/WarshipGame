@@ -33,6 +33,12 @@ class App
     void DrawGame();
     void GameInputHandler();
 
+    void HandleShip1Hit(Player &targetPlayer, int x, int y);
+    void HandleShip2Hit(Player &targetPlayer, int x, int y);
+    void HandleShip3Hit(Player &targetPlayer, int x, int y);
+    void HandleShip4Hit(Player &targetPlayer, int x, int y);
+
+    Rectangle CalculateShip3Bounds(Player &player, int x, int y);
     void InitShips();
 
     // bool mShouldDrawMenu = 1;
