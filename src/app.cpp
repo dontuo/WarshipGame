@@ -26,6 +26,9 @@ void App::Run()
         case GameState::GAME:
             UpdateGame();
             break;
+
+        case GameState::END_GAME:
+            UpdateEndGame();
         }
     }
 }
@@ -177,6 +180,26 @@ void App::GameInputHandler()
             }
         }
     }
+
+    if(CheckGameOver(targetPlayer))
+    {
+        Global::gameState = GameState::END_GAME;
+    }
+}
+
+bool App::CheckGameOver(const Player& player) {
+    for (int x = 0; x < 10; x++) {
+        for (int y = 0; y < 10; y++) {
+            switch (player.mCells[x][y]) {
+                case CellState::SHIP_1:
+                case CellState::SHIP_2:
+                case CellState::SHIP_3:
+                case CellState::SHIP_4:
+                    return false;
+            }
+        }
+    }
+    return true;
 }
 
 App::App()
@@ -469,3 +492,23 @@ void App::HandleShip4Hit(Player &targetPlayer, int x, int y)
                     targetPlayer.mCells[(int)rect.x + i][(int)rect.y + j] = CellState::MISSED;
             }
 }
+
+
+
+void App::UpdateEndGame()
+{
+    EndGameInputHandler();
+    DrawEndGame();
+}
+
+void App::EndGameInputHandler()
+{
+}
+void App::DrawEndGame(){
+    BeginDrawing();
+    ClearBackground(Global::backgroundColor);
+    DrawText((mPlayers[!mCurrPlayerTurn ? 1 : 0].mName + " won").c_str(), 300, 100, 50, BLACK);
+    EndDrawing();
+}
+
+

@@ -33,14 +33,18 @@ class App
     void DrawGame();
     void GameInputHandler();
 
+    void UpdateEndGame();
+    void DrawEndGame();
+    void EndGameInputHandler();
+
     void HandleShip1Hit(Player &targetPlayer, int x, int y);
     void HandleShip2Hit(Player &targetPlayer, int x, int y);
     void HandleShip3Hit(Player &targetPlayer, int x, int y);
     void HandleShip4Hit(Player &targetPlayer, int x, int y);
 
-    Rectangle CalculateShip3Bounds(Player &player, int x, int y);
+    bool CheckGameOver(const Player& player);
     void InitShips();
-
+    
     // bool mShouldDrawMenu = 1;
 
     Texture2D mCrosshairTexture;
