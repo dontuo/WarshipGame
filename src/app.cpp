@@ -33,56 +33,6 @@ void App::Run()
     }
 }
 
-void App::UpdateShipPlacement()
-{
-    DrawShipPlacement();
-    ShipPlacementInputHandler();
-}
-
-void App::DrawShipPlacement()
-{
-    BeginDrawing();
-    ClearBackground(Global::backgroundColor);
-    if (mCurrPlayer->mShips.size() == 0)
-    {
-        Button button = Button(Rectangle{Global::windowWidth - 227, Global::windowHeight - 75, 154, 52});
-        button.Draw(BLACK);
-        DrawText("Ready", Global::windowWidth - 225, Global::windowHeight - 75, 50, WHITE);
-    }
-
-    mCurrPlayer->Draw(Global::offsetX, Global::offsetY, 0);
-    DrawText(mCurrPlayer->mName.c_str(), 20, 0, 50, WHITE);
-
-    DrawTexture(mCrosshairTexture, GetMouseX() - 10, GetMouseY() - 10, WHITE);
-
-    EndDrawing();
-}
-
-void App::ShipPlacementInputHandler()
-{
-    mCurrPlayer->UpdateCurrShip();
-    if (IsMouseButtonReleased(MOUSE_BUTTON_LEFT))
-    {
-
-        for (int x = 0; x < 10; x++)
-            for (int y = 0; y < 10; y++)
-                if (mCurrPlayer->CheckCellCollision(GetMousePosition(), Vector2{x, y}))
-                    mCurrPlayer->HandleShipPlacement(x, y);
-    }
-    if (mCurrPlayer->mShips.size() == 0)
-    {
-        Button button = Button(Rectangle{Global::windowWidth - 227, Global::windowHeight - 75, 154, 52});
-
-        if (button.IsButtonPressed(MOUSE_BUTTON_LEFT) && mCurrPlayer == &mPlayers[1])
-            Global::gameState = GameState::GAME;
-        else if (button.IsButtonPressed(MOUSE_BUTTON_LEFT))
-        {
-            mCurrPlayer = &mPlayers[1];
-        }
-    }
-    mCurrPlayer->HandleShipSelection();
-}
-
 void App::DrawMenu(Button &menuButton)
 {
     BeginDrawing();
@@ -112,24 +62,78 @@ void App::UpdateMenu()
     DrawMenu(menuButton);
 }
 
+
+void App::UpdateShipPlacement()
+{
+    DrawShipPlacement();
+    ShipPlacementInputHandler();
+}
+
+void App::DrawShipPlacement()
+{
+    BeginDrawing();
+    ClearBackground(Global::backgroundColor);
+    if (mCurrPlayer->mUnplacedShips.size() == 0)
+    {
+        Button button = Button(Rectangle{Global::windowWidth - 227, Global::windowHeight - 75, 154, 52});
+        button.Draw(BLACK);
+        DrawText("Ready", Global::windowWidth - 225, Global::windowHeight - 75, 50, WHITE);
+    }
+
+    mCurrPlayer->Draw(Global::offsetX, Global::offsetY, 0);
+    DrawText(mCurrPlayer->mPlayerName.c_str(), 20, 0, 50, WHITE);
+
+    DrawTexture(mCrosshairTexture, GetMouseX() - 10, GetMouseY() - 10, WHITE);
+
+    EndDrawing();
+}
+
+void App::ShipPlacementInputHandler()
+{
+    mCurrPlayer->UpdateCurrShip();
+    if (IsMouseButtonReleased(MOUSE_BUTTON_LEFT))
+    {
+
+        for (int x = 0; x < 10; x++)
+            for (int y = 0; y < 10; y++)
+                if (mCurrPlayer->CheckCellCollision(GetMousePosition(), Vector2{x, y}))
+                    mCurrPlayer->HandleShipPlacement(x, y);
+    }
+    if (mCurrPlayer->mUnplacedShips.size() == 0)
+    {
+        Button button = Button(Rectangle{Global::windowWidth - 227, Global::windowHeight - 75, 154, 52});
+
+        if (button.IsButtonPressed(MOUSE_BUTTON_LEFT) && mCurrPlayer == &mPlayers[1])
+            Global::gameState = GameState::GAME;
+        else if (button.IsButtonPressed(MOUSE_BUTTON_LEFT))
+        {
+            mCurrPlayer = &mPlayers[1];
+        }
+    }
+    mCurrPlayer->HandleShipSelection();
+}
+
+
 void App::UpdateGame()
 {
     GameInputHandler();
     DrawGame();
 }
+
 void App::DrawGame()
 {
     BeginDrawing();
     ClearBackground(Global::backgroundColor);
     mPlayers[0].Draw(100, 100, 1);
     mPlayers[1].Draw(700, 100, 1);
-    DrawText(mPlayers[0].mName.c_str(), 100, 50, 50, WHITE);
-    DrawText(mPlayers[1].mName.c_str(), 700, 50, 50, WHITE);
+    DrawText(mPlayers[0].mPlayerName.c_str(), 100, 50, 50, WHITE);
+    DrawText(mPlayers[1].mPlayerName.c_str(), 700, 50, 50, WHITE);
     DrawTexture(mCrosshairTexture, GetMouseX() - 10, GetMouseY() - 10, WHITE);
 
-    DrawText((mPlayers[mCurrPlayerTurn ? 0 : 1].mName + " turn").c_str(), 100, 600, 50, WHITE);
+    DrawText((mPlayers[mCurrPlayerTurn ? 0 : 1].mPlayerName + " turn").c_str(), 100, 600, 50, WHITE);
     EndDrawing();
 }
+
 void App::GameInputHandler()
 {
 
@@ -187,7 +191,8 @@ void App::GameInputHandler()
     }
 }
 
-bool App::CheckGameOver(const Player& player) {
+bool App::CheckGameOver(const Player& player) 
+{
     for (int x = 0; x < 10; x++) {
         for (int y = 0; y < 10; y++) {
             switch (player.mCells[x][y]) {
@@ -319,7 +324,7 @@ void App::HandleShip3Hit(Player &targetPlayer, int x, int y)
         if (targetPlayer.mCells[x][y - 1] == CellState::HIT && targetPlayer.mCells[x][y - 2] == CellState::HIT && targetPlayer.mCells[x][y + 1] != CellState::SHIP_3)
             rect = ClampRectangleToBounds(x - 1, y - 3, 3, 5);
     }
-    else if ((y - 2 >= 0) && (y + 1 < 10))
+    else if ((y - 2 >= 0) && !(y + 1 < 10))
     {
         if (targetPlayer.mCells[x][y - 1] == CellState::HIT && targetPlayer.mCells[x][y - 2] == CellState::HIT)
             rect = ClampRectangleToBounds(x - 1, y - 3, 3, 5);
@@ -493,8 +498,6 @@ void App::HandleShip4Hit(Player &targetPlayer, int x, int y)
             }
 }
 
-
-
 void App::UpdateEndGame()
 {
     EndGameInputHandler();
@@ -504,11 +507,13 @@ void App::UpdateEndGame()
 void App::EndGameInputHandler()
 {
 }
-void App::DrawEndGame(){
+
+void App::DrawEndGame()
+{
     BeginDrawing();
     ClearBackground(Global::backgroundColor);
-    DrawText((mPlayers[!mCurrPlayerTurn ? 1 : 0].mName + " won").c_str(), 300, 100, 50, BLACK);
+    mPlayers[mCurrPlayerTurn ? 1 : 0].Draw(100,100, 0);
+
+    DrawText((mPlayers[!mCurrPlayerTurn ? 1 : 0].mPlayerName + " won").c_str(), 700, 100, 50, WHITE);
     EndDrawing();
 }
-
-
