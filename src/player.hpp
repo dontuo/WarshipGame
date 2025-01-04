@@ -17,8 +17,8 @@ class Player : public Board
 
     void InitShips();
 
-    std::string mName;
-    std::vector<Ship> mShips;
+    std::string mPlayerName;
+    std::vector<Ship> mUnplacedShips;
 
     void HandleShipPlacement(int x, int y);
     void HandleShipSelection();
