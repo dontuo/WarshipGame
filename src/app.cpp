@@ -96,8 +96,12 @@ void App::ShipPlacementInputHandler()
 
         for (int x = 0; x < 10; x++)
             for (int y = 0; y < 10; y++)
+            {
                 if (mCurrPlayer->CheckCellCollision(GetMousePosition(), Vector2{x, y}))
                     mCurrPlayer->HandleShipPlacement(x, y);
+                else
+                    mCurrPlayer->mUnplacedShips[mCurrPlayer->mCurrShipId].mPos =  mCurrPlayer->mUnplacedShips[mCurrPlayer->mCurrShipId].mOriginPlace;
+            }
     }
     if (mCurrPlayer->mUnplacedShips.size() == 0)
     {

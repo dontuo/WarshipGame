@@ -17,6 +17,7 @@ void LoadTextures();
 
 struct Ship
 {
+    Vector2 mOriginPlace;
     Vector2 mPos;
     CellState mCellState;
     bool rotate = 0;

@@ -15,7 +15,7 @@ void Player::InitShips()
 
     for (int i = 0; i < 4; i++)
     {
-        mUnplacedShips.push_back(Ship{Vector2{x, y}, CellState::SHIP_1});
+        mUnplacedShips.push_back(Ship{Vector2{x, y},Vector2{x, y}, CellState::SHIP_1});
 
         x += 100;
     }
@@ -23,7 +23,7 @@ void Player::InitShips()
     y = 225; // boat 1x2, 3 pieces only: ##
     for (int i = 0; i < 3; i++)
     {
-        mUnplacedShips.push_back(Ship{Vector2{x, y}, CellState::SHIP_2});
+        mUnplacedShips.push_back(Ship{Vector2{x, y},Vector2{x, y}, CellState::SHIP_2});
 
         x += 100 + (Global::sizeOfTile - 1);
     }
@@ -33,7 +33,7 @@ void Player::InitShips()
     for (int i = 0; i < 2; i++)
     {
 
-        mUnplacedShips.push_back(Ship{Vector2{x, y}, CellState::SHIP_3});
+        mUnplacedShips.push_back(Ship{Vector2{x, y},Vector2{x, y}, CellState::SHIP_3});
 
         x += 100 + (Global::sizeOfTile - 1) * 2;
     }
@@ -44,7 +44,7 @@ void Player::InitShips()
     // boat 1x4, 1 pieces only: ####
     for (int i = 0; i < 1; i++)
     {
-        mUnplacedShips.push_back(Ship{Vector2{x, y}, CellState::SHIP_4});
+        mUnplacedShips.push_back(Ship{Vector2{x, y},Vector2{x, y}, CellState::SHIP_4});
 
         x += 100 + (Global::sizeOfTile - 1) * 3;
     }
