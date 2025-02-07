@@ -91,6 +91,9 @@ void App::DrawShipPlacement()
 void App::ShipPlacementInputHandler()
 {
     mCurrPlayer->UpdateCurrShip();
+
+    Vector2 &shipPose = mCurrPlayer->mUnplacedShips[mCurrPlayer->mCurrShipId].mPos;
+    Vector2 &originPlace = mCurrPlayer->mUnplacedShips[mCurrPlayer->mCurrShipId].mOriginPlace;
     if (IsMouseButtonReleased(MOUSE_BUTTON_LEFT))
     {
 
@@ -100,7 +103,7 @@ void App::ShipPlacementInputHandler()
                 if (mCurrPlayer->CheckCellCollision(GetMousePosition(), Vector2{x, y}))
                     mCurrPlayer->HandleShipPlacement(x, y);
                 else
-                    mCurrPlayer->mUnplacedShips[mCurrPlayer->mCurrShipId].mPos =  mCurrPlayer->mUnplacedShips[mCurrPlayer->mCurrShipId].mOriginPlace;
+                    shipPose = originPlace;
             }
     }
     if (mCurrPlayer->mUnplacedShips.size() == 0)
