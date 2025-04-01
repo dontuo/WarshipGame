@@ -21,13 +21,22 @@ class Board
 
     bool PlaceShip(CellState type, Vector2 position);
     int CountCellsInArea(Rectangle area, CellState type);
+
     CellState GetCellState(int x, int y);
     CellState GetCellState(Vector2 pos);
+
+    void SetCellState(int x, int y, CellState state);
+    void SetCellState(Vector2 pos, CellState state);
+
+    Vector2 GetOffset();
+    void SetOffset(Vector2 offset);
+    void SetOffset(float offsetX, float offsetY);
 
     bool IsAreaEmpty(int x, int y, int width, int height);
     bool CheckCellCollision(Vector2 pos, Vector2 cell);
     bool CheckHit(Vector2 pos);
 
+private:
     CellState mCells[10][10] = {CellState::EMPTY};
     Vector2 mOffset;
 };

@@ -42,7 +42,7 @@ class App
     void HandleShip3Hit(Player &targetPlayer, int x, int y);
     void HandleShip4Hit(Player &targetPlayer, int x, int y);
 
-    bool CheckGameOver(const Player& player);
+    bool CheckGameOver(Player& player);
     void InitShips();
     
     // bool mShouldDrawMenu = 1;

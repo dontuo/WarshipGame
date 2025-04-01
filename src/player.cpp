@@ -52,8 +52,8 @@ void Player::InitShips()
 
 void Player::Draw(int offsetX, int offsetY, bool hide = 0)
 {
-    mOffset.x = offsetX;
-    mOffset.y = offsetY;
+    SetOffset(offsetX, offsetY);
+
     Board::Draw(hide);
 
     using namespace Global; // for sizeOfTile
@@ -90,20 +90,20 @@ void Player::Draw(int offsetX, int offsetY, bool hide = 0)
                         if (x < 11 - sizeOfShip)
                             if (!IsAreaEmpty(x - 1, y - 1, 2 + sizeOfShip, 3))
                             {
-                                DrawShip(mUnplacedShips[mCurrShipId], x * sizeOfTile + mOffset.x, y * sizeOfTile + 1 + mOffset.y, RED);
+                                DrawShip(mUnplacedShips[mCurrShipId], x * sizeOfTile + GetOffset().x, y * sizeOfTile + 1 + GetOffset().y, RED);
                             }
                             else
                             {
-                                DrawShip(mUnplacedShips[mCurrShipId], x * sizeOfTile + mOffset.x, y * sizeOfTile + 1 + mOffset.y, GREEN);
+                                DrawShip(mUnplacedShips[mCurrShipId], x * sizeOfTile + GetOffset().x, y * sizeOfTile + 1 + GetOffset().y, GREEN);
                             }
                     }
                     else
                     {
                         if (y < 11 - sizeOfShip)
                             if (!IsAreaEmpty(x - 1, y - 1, 3, 2 + sizeOfShip))
-                                DrawShip(mUnplacedShips[mCurrShipId], x * sizeOfTile + mOffset.x, y * sizeOfTile + 1 + mOffset.y, RED);
+                                DrawShip(mUnplacedShips[mCurrShipId], x * sizeOfTile + GetOffset().x, y * sizeOfTile + 1 + GetOffset().y, RED);
                             else
-                                DrawShip(mUnplacedShips[mCurrShipId], x * sizeOfTile + mOffset.x, y * sizeOfTile + 1 + mOffset.y, GREEN);
+                                DrawShip(mUnplacedShips[mCurrShipId], x * sizeOfTile + GetOffset().x, y * sizeOfTile + 1 + GetOffset().y, GREEN);
                     }
                 }
             }

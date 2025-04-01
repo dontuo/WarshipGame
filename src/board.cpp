@@ -1,6 +1,7 @@
 #include "board.hpp"
 #include "cell.hpp"
 #include "raylib.h"
+#include <string>
 
 Board::Board(int offsetX, int offsetY) : mOffset{(float)offsetX, (float)offsetY}
 {
@@ -143,6 +144,8 @@ bool Board::CheckCellCollision(Vector2 pos, Vector2 cell)
 
 CellState Board::GetCellState(int x, int y)
 {
+    if(x >= 10 or x < 0 or y>= 10 or y < 0)
+        throw std::string("out of borders");
     return mCells[x][y];
 }
 
@@ -150,6 +153,33 @@ CellState Board::GetCellState(Vector2 pos)
 {
     return mCells[static_cast<int>(pos.x)][static_cast<int>(pos.y)];
 }
+
+void Board::SetCellState(int x, int y, CellState state)
+{
+    mCells[x][y] = state;
+}
+void Board::SetCellState(Vector2 pos, CellState state)
+{
+    mCells[static_cast<int>(pos.x)][static_cast<int>(pos.y)] = state;
+}
+
+
+Vector2 Board::GetOffset()
+{
+    return mOffset;
+}
+
+void Board::SetOffset(Vector2 offset)
+{
+    mOffset = offset;
+}
+
+void Board::SetOffset(float offsetX, float offsetY)
+{
+    mOffset.x = offsetX;
+    mOffset.y = offsetY;
+}
+
 
 bool Board::IsAreaEmpty(int x, int y, int width, int height)
 {
