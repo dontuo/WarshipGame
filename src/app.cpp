@@ -398,7 +398,7 @@ void App::HandleShip4Hit(Player &targetPlayer, int x, int y)
     {
         int count = 0;
         for (int i = 0; i < 4; i++)
-            if (mPlayers[!mCurrPlayer ? 0 : 1].GetCellState(x + i, y) == CellState::HIT)
+            if (targetPlayer.GetCellState(x + i, y) == CellState::HIT)
                 count++;
 
         if (count == 4)
@@ -462,7 +462,7 @@ void App::HandleShip4Hit(Player &targetPlayer, int x, int y)
     {
         int count = 0;
         for (int i = 0; i < 4; i++)
-            if (mPlayers[!mCurrPlayer ? 0 : 1].GetCellState(x, y + i) == CellState::HIT)
+            if (targetPlayer.GetCellState(x, y + i) == CellState::HIT)
                 count++;
 
         if (count == 4)
