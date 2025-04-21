@@ -7,6 +7,8 @@
 #include <raylib.h>
 #include <vector>
 
+constexpr int BOARD_SIZE = 10;
+
 Rectangle ClampRectangleToBounds(int x, int y, int width, int height);
 
 class Board
@@ -16,11 +18,6 @@ class Board
     Board(Vector2 offset);
 
     void Draw(bool Hide = 0);
-
-    // void HightlighTheBoat(CellState type, Vector2 position);
-
-    bool PlaceShip(CellState type, Vector2 position);
-    int CountCellsInArea(Rectangle area, CellState type);
 
     CellState GetCellState(int x, int y);
     CellState GetCellState(Vector2 pos);
@@ -34,7 +31,11 @@ class Board
 
     bool IsAreaEmpty(int x, int y, int width, int height);
     bool CheckCellCollision(Vector2 pos, Vector2 cell);
-    bool CheckHit(Vector2 pos);
+
+    void markSurroundings(const std::vector<Vector2>& shipCoord);
+    bool IsInBounds(int x, int y);
+
+    void processHits();
 
 private:
     CellState mCells[10][10] = {CellState::EMPTY};

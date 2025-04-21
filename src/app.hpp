@@ -21,21 +21,27 @@ class App
     void Run();
 
   private:
+    // main menu
     void UpdateMenu();
     void DrawMenu(Button &menuButton);
     void MenuInputHandler(Button &menuButton);
 
+    // placing ships
     void UpdateShipPlacement();
     void DrawShipPlacement();
     void ShipPlacementInputHandler();
 
+    // game
     void UpdateGame();
     void DrawGame();
     void GameInputHandler();
 
+    // end menu
     void UpdateEndGame();
     void DrawEndGame();
     void EndGameInputHandler();
+
+    void processHits();
 
     void HandleShip1Hit(Player &targetPlayer, int x, int y);
     void HandleShip2Hit(Player &targetPlayer, int x, int y);
@@ -44,6 +50,7 @@ class App
 
     bool CheckGameOver(Player& player);
     void InitShips();
+
     
     // bool mShouldDrawMenu = 1;
 

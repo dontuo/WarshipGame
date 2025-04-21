@@ -149,7 +149,7 @@ void Player::HandleShipPlacement(int x, int y)
                 {
                     for (int i = 0; i < sizeOfShip; i++)
                     {
-                        PlaceShip(mUnplacedShips[mCurrShipId].mCellState, Vector2{x + i, y});
+                        SetCellState(Vector2{x + i, y}, mUnplacedShips[mCurrShipId].mCellState);
                     }
                     mUnplacedShips.erase(mUnplacedShips.begin() + mCurrShipId);
                     mCurrShipId = -1;
@@ -164,7 +164,7 @@ void Player::HandleShipPlacement(int x, int y)
                 {
                     for (int i = 0; i < sizeOfShip; i++)
                     {
-                        PlaceShip(mUnplacedShips[mCurrShipId].mCellState, Vector2{x, y + i});
+                        SetCellState(Vector2{x, y + i}, mUnplacedShips[mCurrShipId].mCellState);
                     }
                     mUnplacedShips.erase(mUnplacedShips.begin() + mCurrShipId);
                     mCurrShipId = -1;

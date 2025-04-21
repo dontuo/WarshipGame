@@ -115,8 +115,6 @@ void App::ShipPlacementInputHandler()
         for (int x = 0; x < 10; x++)
             for (int y = 0; y < 10; y++)
             {
-               
-
                 if (mCurrPlayer->CheckCellCollision(GetMousePosition(), Vector2{x, y}))
                 {
                     mCurrPlayer->HandleShipPlacement(x, y);
@@ -125,8 +123,6 @@ void App::ShipPlacementInputHandler()
                 {
                     shipPose = originPlace;
                 }
-
-                
             }
     }
     
@@ -161,39 +157,39 @@ void App::DrawGame()
 
 void App::GameInputHandler()
 {
+    Player &targetPlayer = mPlayers[!mCurrPlayerTurn ? 0 : 1];
 
+    if(CheckGameOver(targetPlayer))
+    {
+        Global::gameState = GameState::END_GAME;
+    }
+    
     if (!IsMouseButtonPressed(MOUSE_BUTTON_LEFT))
         return;
 
-    Player &targetPlayer = mPlayers[!mCurrPlayerTurn ? 0 : 1];
 
     for (int x = 0; x < 10; x++)
     {
         for (int y = 0; y < 10; y++)
         {
-
             if (!targetPlayer.CheckCellCollision(GetMousePosition(), Vector2{x, y}))
                 continue;
 
             switch (targetPlayer.GetCellState(x, y))
             {
             case CellState::SHIP_1:
-                HandleShip1Hit(targetPlayer, x, y);
-                break;
-
+                targetPlayer.SetCellState(x,y, CellState::HIT);
+            break;
             case CellState::SHIP_2:
-                HandleShip2Hit(targetPlayer, x, y);
-                break;
-
+                targetPlayer.SetCellState(x,y, CellState::HIT);
+            break;
             case CellState::SHIP_3:
-                HandleShip3Hit(targetPlayer, x, y);
-                break;
-
+                targetPlayer.SetCellState(x,y, CellState::HIT);
+            break;
             case CellState::SHIP_4:
-                HandleShip4Hit(targetPlayer, x, y);
-                break;
+                targetPlayer.SetCellState(x,y, CellState::HIT);
+            break;
 
-            // saw in someone's code this. Didn't know that I can do that :D
             case CellState::SHIP_1_HITTED:
             case CellState::SHIP_2_HITTED:
             case CellState::SHIP_3_HITTED:
@@ -210,10 +206,7 @@ void App::GameInputHandler()
         }
     }
 
-    if(CheckGameOver(targetPlayer))
-    {
-        Global::gameState = GameState::END_GAME;
-    }
+    targetPlayer.processHits();
 }
 
 bool App::CheckGameOver(Player& player) 
@@ -234,7 +227,8 @@ bool App::CheckGameOver(Player& player)
 
 App::App()
 {
-    // TODO a resizable window in future updates
+    // TODO: a resizable window in future updates
+    
     // SetConfigFlags(FLAG_WINDOW_RESIZABLE);
     InitWindow(800, 600, "Warship game");
     // InitWindow(mWindowWidth, mWindowHeight, "Warship game");
@@ -255,272 +249,6 @@ App::App()
     mPlayers.push_back(Player("Player 2"));
 
     mCurrPlayer = &mPlayers[0];
-}
-
-void App::HandleShip1Hit(Player &targetPlayer, int x, int y)
-{
-    targetPlayer.SetCellState(x, y, CellState::SHIP_1_HITTED);
-
-    int width = 3;
-    int height = 3;
-
-    Rectangle bounds = ClampRectangleToBounds(x - 1, y - 1, width, height);
-
-    for (int i = 0; i < bounds.width; i++)
-        for (int j = 0; j < bounds.height; j++)
-        {
-            if (targetPlayer.GetCellState(bounds.x + i,bounds.y + j) != CellState::SHIP_1_HITTED)
-                targetPlayer.SetCellState(bounds.x + i,bounds.y + j, CellState::MISSED);
-        }
-}
-
-void App::HandleShip2Hit(Player &targetPlayer, int x, int y)
-{
-    targetPlayer.SetCellState(x, y, CellState::HIT);
-    Rectangle rect = {};
-
-    if ((x - 1 >= 0) && (targetPlayer.GetCellState(x - 1, y) == CellState::HIT))
-        rect = ClampRectangleToBounds(x - 2, y - 1, 4, 3);
-    if ((x + 1 < 10) && (targetPlayer.GetCellState(x + 1, y) == CellState::HIT))
-        rect = ClampRectangleToBounds(x - 1, y - 1, 4, 3);
-
-    if ((y - 1 >= 0) && (targetPlayer.GetCellState(x, y - 1) == CellState::HIT))
-        rect = ClampRectangleToBounds(x - 1, y - 2, 3, 4);
-
-    if ((y + 1 < 10) && targetPlayer.GetCellState(x, y + 1) == CellState::HIT)
-        rect = ClampRectangleToBounds(x - 1, y - 1, 3, 4);
-
-    if (rect.width != 0 && rect.height != 0)
-    {
-        for (int i = 0; i < rect.width; i++)
-            for (int j = 0; j < rect.height; j++)
-            {
-                if (targetPlayer.GetCellState(rect.x + i, rect.y + j) == CellState::HIT)
-                    targetPlayer.SetCellState(rect.x + i, rect.y + j, CellState::SHIP_2_HITTED);
-                else
-                    targetPlayer.SetCellState(rect.x + i,rect.y + j, CellState::MISSED);
-            }
-    }
-}
-void App::HandleShip3Hit(Player &targetPlayer, int x, int y)
-{
-    targetPlayer.SetCellState(x, y, CellState::HIT);
-    Rectangle rect = {};
-
-    // that's fucking shit
-    if ((x - 1 >= 0) && (x + 1 < 10))
-    {
-        int count = 0;
-        for (int i = -1; i < 2; i++)
-            if (targetPlayer.GetCellState(x - 1,y) == CellState::HIT && targetPlayer.GetCellState(x + 1, y) == CellState::HIT)
-                rect = ClampRectangleToBounds(x - 2, y - 1, 5, 3);
-    }
-
-    if ((x - 2 >= 0) && (x + 1 < 10))
-    {
-        if (targetPlayer.GetCellState(x - 1, y) == CellState::HIT && targetPlayer.GetCellState(x - 2, y) == CellState::HIT && targetPlayer.GetCellState(x + 1, y) != CellState::SHIP_3)
-            rect = ClampRectangleToBounds(x - 3, y - 1, 5, 3);
-    }
-    else if ((x - 2 >= 0) && !(x + 1 < 10))
-    {
-        if (targetPlayer.GetCellState(x - 1, y) == CellState::HIT && targetPlayer.GetCellState(x - 2,y) == CellState::HIT)
-            rect = ClampRectangleToBounds(x - 3, y - 1, 5, 3);
-    }
-
-    if ((x - 1 >= 0) && (x + 2 < 10))
-    {
-        if (targetPlayer.GetCellState(x - 1,y) != CellState::SHIP_3 && targetPlayer.GetCellState(x + 1, y) == CellState::HIT && targetPlayer.GetCellState(x + 2,y) == CellState::HIT)
-            rect = ClampRectangleToBounds(x - 1, y - 1, 5, 3);
-    }
-    else if (!(x - 1 >= 0) && (x + 2 < 10))
-    {
-        if (targetPlayer.GetCellState(x + 1,y) == CellState::HIT && targetPlayer.GetCellState(x + 2, y) == CellState::HIT)
-            rect = ClampRectangleToBounds(x - 1, y - 1, 5, 3);
-    }
-
-    if ((y - 1 >= 0) && (y + 1 < 10))
-    {
-        if (targetPlayer.GetCellState(x, y - 1) == CellState::HIT && targetPlayer.GetCellState(x, y + 1) == CellState::HIT)
-            rect = ClampRectangleToBounds(x - 1, y - 2, 3, 5);
-    }
-
-    if ((y - 2 >= 0) && (y + 1 < 10))
-    {
-        if (targetPlayer.GetCellState(x, y - 1) == CellState::HIT && targetPlayer.GetCellState(x, y - 2) == CellState::HIT && targetPlayer.GetCellState(x, y + 1) != CellState::SHIP_3)
-            rect = ClampRectangleToBounds(x - 1, y - 3, 3, 5);
-    }
-    else if ((y - 2 >= 0) && !(y + 1 < 10))
-    {
-        if (targetPlayer.GetCellState(x, y - 1) == CellState::HIT && targetPlayer.GetCellState(x, y - 2) == CellState::HIT)
-            rect = ClampRectangleToBounds(x - 1, y - 3, 3, 5);
-    }
-
-    if ((y - 1 >= 0) && (y + 2 < 10))
-    {
-        if (targetPlayer.GetCellState(x, y - 1) != CellState::SHIP_3 && targetPlayer.GetCellState(x, y + 1) == CellState::HIT && targetPlayer.GetCellState(x, y + 2) == CellState::HIT)
-            rect = ClampRectangleToBounds(x - 1, y - 1, 3, 5);
-    }
-    else if (!(y - 1 >= 0) && (y + 2 < 10))
-    {
-        if (targetPlayer.GetCellState(x, y + 1) == CellState::HIT && targetPlayer.GetCellState(x, y + 2) == CellState::HIT)
-            rect = ClampRectangleToBounds(x - 1, y - 1, 3, 5);
-    }
-
-    // someone who reads this code, please, make it better :3
-
-    if (rect.width != 0 && rect.height != 0)
-        for (int i = 0; i < rect.width; i++)
-            for (int j = 0; j < rect.height; j++)
-            {
-                if (targetPlayer.GetCellState(rect.x + i,rect.y + j) == CellState::HIT)
-                    targetPlayer.SetCellState(rect.x + i, (int)rect.y + j, CellState::SHIP_3_HITTED);
-                else
-                    targetPlayer.SetCellState(rect.x + i, rect.y + j, CellState::MISSED);
-            }
-}
-
-void App::HandleShip4Hit(Player &targetPlayer, int x, int y)
-{
-    Rectangle rect = {};
-    targetPlayer.SetCellState(x, y, CellState::HIT);
-
-    if ((x - 1 >= 0) && (x + 3 < 10))
-    {
-        int count = 0;
-        for (int i = -1; i < 4; i++)
-            if (targetPlayer.GetCellState(x + i,y) == CellState::HIT)
-                count++;
-
-        if (count == 4)
-            rect = ClampRectangleToBounds(x - 1, y - 1, 6, 3);
-    }
-    else if (!(x - 1 >= 0) && (x + 3 < 10))
-    {
-        int count = 0;
-        for (int i = 0; i < 4; i++)
-            if (targetPlayer.GetCellState(x + i, y) == CellState::HIT)
-                count++;
-
-        if (count == 4)
-            rect = ClampRectangleToBounds(x - 1, y - 1, 6, 3);
-    }
-
-    if ((x - 1 >= 0) && (x + 2 < 10))
-    {
-        int count = 0;
-        for (int i = -1; i < 3; i++)
-            if (targetPlayer.GetCellState(x + i, y) == CellState::HIT)
-                count++;
-
-        if (count == 4)
-            rect = ClampRectangleToBounds(x - 2, y - 1, 6, 3);
-    }
-
-    if ((x - 2 >= 0) && (x + 1 < 10))
-    {
-        int count = 0;
-        for (int i = -2; i < 2; i++)
-            if (targetPlayer.GetCellState(x + i, y) == CellState::HIT)
-                count++;
-
-        if (count == 4)
-            rect = ClampRectangleToBounds(x - 4, y - 1, 6, 3);
-    }
-
-    if ((x - 3 >= 0) && (x + 1 < 10))
-    {
-        int count = 0;
-        for (int i = -3; i < 2; i++)
-            if (targetPlayer.GetCellState(x + i, y) == CellState::HIT)
-                count++;
-
-        if (count == 4)
-            rect = ClampRectangleToBounds(x - 4, y - 1, 6, 3);
-    }
-    else if ((x - 3 >= 0) && !(x + 1 < 10))
-    {
-        int count = 0;
-        for (int i = -3; i < 1; i++)
-            if (targetPlayer.GetCellState(x + i, y) == CellState::HIT)
-                count++;
-
-        if (count == 4)
-            rect = ClampRectangleToBounds(x - 4, y - 1, 6, 3);
-    }
-
-    if ((y - 1 >= 0) && (y + 3 < 10))
-    {
-        int count = 0;
-        for (int i = -1; i < 4; i++)
-            if (targetPlayer.GetCellState(x, y + i) == CellState::HIT)
-                count++;
-
-        if (count == 4)
-            rect = ClampRectangleToBounds(x - 1, y - 1, 3, 6);
-    }
-    else if (!(y - 1 >= 0) && (y + 3 < 10))
-    {
-        int count = 0;
-        for (int i = 0; i < 4; i++)
-            if (targetPlayer.GetCellState(x, y + i) == CellState::HIT)
-                count++;
-
-        if (count == 4)
-            rect = ClampRectangleToBounds(x - 1, y - 1, 3, 6);
-    }
-
-    if ((y - 1 >= 0) && (y + 2 < 10))
-    {
-        int count = 0;
-        for (int i = -1; i < 3; i++)
-            if (targetPlayer.GetCellState(x, y + i) == CellState::HIT)
-                count++;
-
-        if (count == 4)
-            rect = ClampRectangleToBounds(x - 1, y - 2, 3, 6);
-    }
-
-    if ((y - 2 >= 0) && (y + 1 < 10))
-    {
-        int count = 0;
-        for (int i = -2; i < 2; i++)
-            if (targetPlayer.GetCellState(x, y + i) == CellState::HIT)
-                count++;
-
-        if (count == 4)
-            rect = ClampRectangleToBounds(x - 1, y - 4, 3, 6);
-    }
-
-    if ((y - 3 >= 0) && (y + 1 < 10))
-    {
-        int count = 0;
-        for (int i = -3; i < 2; i++)
-            if (targetPlayer.GetCellState(x, y + i) == CellState::HIT)
-                count++;
-
-        if (count == 4)
-            rect = ClampRectangleToBounds(x - 1, y - 4, 3, 6);
-    }
-    else if ((y - 3 >= 0) && !(y + 1 < 10))
-    {
-        int count = 0;
-        for (int i = -3; i < 1; i++)
-            if (targetPlayer.GetCellState(x, y + i) == CellState::HIT)
-                count++;
-
-        if (count == 4)
-            rect = ClampRectangleToBounds(x - 1, y - 4, 3, 6);
-    }
-
-    if (rect.width != 0 && rect.height != 0)
-        for (int i = 0; i < rect.width; i++)
-            for (int j = 0; j < rect.height; j++)
-            {
-                if (targetPlayer.GetCellState(rect.x + i, rect.y + j) == CellState::HIT)
-                    targetPlayer.SetCellState(rect.x + i,rect.y + j, CellState::SHIP_4_HITTED);
-                else
-                    targetPlayer.SetCellState(rect.x + i, rect.y + j, CellState::MISSED);
-            }
 }
 
 void App::UpdateEndGame()
