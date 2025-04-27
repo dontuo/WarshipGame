@@ -43,21 +43,10 @@ class App
 
     void processHits();
 
-    void HandleShip1Hit(Player &targetPlayer, int x, int y);
-    void HandleShip2Hit(Player &targetPlayer, int x, int y);
-    void HandleShip3Hit(Player &targetPlayer, int x, int y);
-    void HandleShip4Hit(Player &targetPlayer, int x, int y);
-
-    bool CheckGameOver(Player& player);
+    bool IsPlayerDefeated(Player& player);
     void InitShips();
-
     
-    // bool mShouldDrawMenu = 1;
-
     Texture2D mCrosshairTexture;
-
-    // current cell id depend on cursor
-    Vector2 mCurrCursorCell = {-1, -1};
 
     std::vector<Player> mPlayers{};
 

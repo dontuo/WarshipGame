@@ -1,10 +1,4 @@
 #include "app.hpp"
-#include "board.hpp"
-#include "cell.hpp"
-#include "gamestate.hpp"
-#include "global.hpp"
-#include "raylib.h"
-#include "raymath.h"
 
 void App::Run()
 {
@@ -91,11 +85,10 @@ void App::DrawShipPlacement()
 void App::ShipPlacementInputHandler()
 {
     mCurrPlayer->UpdateCurrShip();
-
-    Vector2 &shipPose = mCurrPlayer->mUnplacedShips[mCurrPlayer->mCurrShipId].mPos;
-    Vector2 &originPlace = mCurrPlayer->mUnplacedShips[mCurrPlayer->mCurrShipId].mOriginPlace;
-    bool &rotate = mCurrPlayer->mUnplacedShips[mCurrPlayer->mCurrShipId].rotate;
-    
+    int currShipId = mCurrPlayer->mCurrShipId;
+    Vector2 &shipPose = mCurrPlayer->mUnplacedShips[currShipId].mPos;
+    Vector2 &originPlace = mCurrPlayer->mUnplacedShips[currShipId].mOriginPlace;
+    bool &rotate = mCurrPlayer->mUnplacedShips[currShipId].rotate;
     
     if (mCurrPlayer->mUnplacedShips.size() == 0)
     {
@@ -109,7 +102,6 @@ void App::ShipPlacementInputHandler()
         }
     }
     
-   
     if (IsMouseButtonReleased(MOUSE_BUTTON_LEFT))
     {
         for (int x = 0; x < 10; x++)
@@ -159,7 +151,7 @@ void App::GameInputHandler()
 {
     Player &targetPlayer = mPlayers[!mCurrPlayerTurn ? 0 : 1];
 
-    if(CheckGameOver(targetPlayer))
+    if(IsPlayerDefeated(targetPlayer))
     {
         Global::gameState = GameState::END_GAME;
     }
@@ -209,7 +201,7 @@ void App::GameInputHandler()
     targetPlayer.processHits();
 }
 
-bool App::CheckGameOver(Player& player) 
+bool App::IsPlayerDefeated(Player& player) 
 {
     for (int x = 0; x < 10; x++) {
         for (int y = 0; y < 10; y++) {
@@ -264,9 +256,12 @@ void App::EndGameInputHandler()
 void App::DrawEndGame()
 {
     BeginDrawing();
+
     ClearBackground(Global::backgroundColor);
     mPlayers[mCurrPlayerTurn ? 1 : 0].Draw(100,100, 0);
 
     DrawText((mPlayers[!mCurrPlayerTurn ? 1 : 0].mPlayerName + " won").c_str(), 700, 100, 50, WHITE);
+    DrawTexture(mCrosshairTexture, GetMouseX() - 10, GetMouseY() - 10, WHITE);
+
     EndDrawing();
 }
