@@ -122,7 +122,6 @@ void Board::Draw(bool Hide)
     }
 }
 
-
 bool CheckHit()
 {
     // yeah... In the future
@@ -213,24 +212,24 @@ Rectangle ClampRectangleToBounds(int x, int y, int width, int height)
 
 CellState Board::GetCellState(int x, int y)
 {
-    assert(!(x >= BOARD_SIZE or x < 0 or y>= BOARD_SIZE or y < 0));
+    assert(!(x >= BOARD_SIZE or x < 0 or y >= BOARD_SIZE or y < 0));
     return mCells[x][y];
 }
 
 CellState Board::GetCellState(Vector2 pos)
 {
-    assert(!(pos.x >= BOARD_SIZE or pos.x < 0 or pos.y>= BOARD_SIZE or pos.y < 0));
+    assert(!(pos.x >= BOARD_SIZE or pos.x < 0 or pos.y >= BOARD_SIZE or pos.y < 0));
     return mCells[static_cast<int>(pos.x)][static_cast<int>(pos.y)];
 }
 
 void Board::SetCellState(int x, int y, CellState state)
 {
-    assert(!(x >= BOARD_SIZE or x < 0 or y>= BOARD_SIZE or y < 0));
+    assert(!(x >= BOARD_SIZE or x < 0 or y >= BOARD_SIZE or y < 0));
     mCells[x][y] = state;
 }
 void Board::SetCellState(Vector2 pos, CellState state)
 {
-    assert(!(pos.x >= BOARD_SIZE or pos.x < 0 or pos.y>= BOARD_SIZE or pos.y < 0));
+    assert(!(pos.x >= BOARD_SIZE or pos.x < 0 or pos.y >= BOARD_SIZE or pos.y < 0));
     mCells[static_cast<int>(pos.x)][static_cast<int>(pos.y)] = state;
 }
 
@@ -250,10 +249,13 @@ void Board::SetOffset(float offsetX, float offsetY)
     mOffset.y = offsetY;
 }
 
-void Board::markSurroundings(const std::vector<Vector2>& shipCoord) {
-    for (auto [x, y] : shipCoord) {
+void Board::markSurroundings(const std::vector<Vector2> &shipCoord)
+{
+    for (auto [x, y] : shipCoord)
+    {
         for (int dx = -1; dx <= 1; dx++)
-            for (int dy = -1; dy <= 1; dy++) {
+            for (int dy = -1; dy <= 1; dy++)
+            {
                 int nx = x + dx, ny = y + dy;
                 if (IsInBounds(nx, ny) && mCells[nx][ny] == CellState::EMPTY)
                     mCells[nx][ny] = CellState::MISSED;
@@ -265,25 +267,35 @@ void Board::processHits()
 {
     bool visited[BOARD_SIZE][BOARD_SIZE] = {};
 
-    struct Coord{int x,y;};
+    struct Coord
+    {
+        int x, y;
+    };
 
-    for (int i = 0; i < BOARD_SIZE; i++) {
-        for (int j = 0; j < BOARD_SIZE; j++) {
-            if (mCells[i][j] == CellState::HIT && !visited[i][j]) {
+    for (int i = 0; i < BOARD_SIZE; i++)
+    {
+        for (int j = 0; j < BOARD_SIZE; j++)
+        {
+            if (mCells[i][j] == CellState::HIT && !visited[i][j])
+            {
                 std::vector<Vector2> ship;
 
                 // горизонталь
                 int x = i, y = j;
-                while (IsInBounds(x, y) && mCells[x][y] == CellState::HIT) {
+                while (IsInBounds(x, y) && mCells[x][y] == CellState::HIT)
+                {
                     visited[x][y] = true;
                     ship.push_back({x, y});
                     y++;
                 }
 
-                if (ship.size() == 1) { // можливо вертикаль
+                if (ship.size() == 1)
+                { // можливо вертикаль
                     ship.clear();
-                    x = i; y = j;
-                    while (IsInBounds(x, y) && mCells[x][y] == CellState::HIT) {
+                    x = i;
+                    y = j;
+                    while (IsInBounds(x, y) && mCells[x][y] == CellState::HIT)
+                    {
                         visited[x][y] = true;
                         ship.push_back({x, y});
                         x++;
@@ -292,25 +304,32 @@ void Board::processHits()
 
                 // перевірити, чи поряд немає непотоплених частин
                 bool incomplete = false;
-                for (auto [x, y] : ship) {
+                for (auto [x, y] : ship)
+                {
                     for (int dx = -1; dx <= 1; dx++)
-                        for (int dy = -1; dy <= 1; dy++) {
+                        for (int dy = -1; dy <= 1; dy++)
+                        {
                             int nx = x + dx, ny = y + dy;
-                            if (IsInBounds(nx, ny)) {
+                            if (IsInBounds(nx, ny))
+                            {
                                 CellState s = mCells[nx][ny];
-                                if (s == CellState::SHIP_1 || s == CellState::SHIP_2 ||
-                                    s == CellState::SHIP_3 || s == CellState::SHIP_4) {
+                                if (s == CellState::SHIP_1 || s == CellState::SHIP_2 || s == CellState::SHIP_3 || s == CellState::SHIP_4)
+                                {
                                     incomplete = true;
                                 }
                             }
                         }
                 }
 
-                if (!incomplete) {
+                if (!incomplete)
+                {
                     CellState hitType = CellState::SHIP_1_HITTED;
-                    if (ship.size() == 2) hitType = CellState::SHIP_2_HITTED;
-                    else if (ship.size() == 3) hitType = CellState::SHIP_3_HITTED;
-                    else if (ship.size() == 4) hitType = CellState::SHIP_4_HITTED;
+                    if (ship.size() == 2)
+                        hitType = CellState::SHIP_2_HITTED;
+                    else if (ship.size() == 3)
+                        hitType = CellState::SHIP_3_HITTED;
+                    else if (ship.size() == 4)
+                        hitType = CellState::SHIP_4_HITTED;
 
                     for (auto [x, y] : ship)
                         mCells[(int)x][(int)y] = hitType;

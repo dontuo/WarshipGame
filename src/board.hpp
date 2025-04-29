@@ -32,12 +32,12 @@ class Board
     bool IsAreaEmpty(int x, int y, int width, int height);
     bool CheckCellCollision(Vector2 pos, Vector2 cell);
 
-    void markSurroundings(const std::vector<Vector2>& shipCoord);
+    void markSurroundings(const std::vector<Vector2> &shipCoord);
     bool IsInBounds(int x, int y);
 
     void processHits();
 
-private:
+  private:
     CellState mCells[10][10] = {CellState::EMPTY};
     Vector2 mOffset;
 };
