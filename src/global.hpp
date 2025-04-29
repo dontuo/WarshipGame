@@ -15,4 +15,10 @@ inline int offsetY = 150;
 
 inline Color backgroundColor{36, 33, 68, 255};
 inline GameState gameState = GameState::MENU;
+
+/*int row = 10;
+int column = 10;
+int size = 40;
+static int offsetX = 100;
+static int offsetY = 250;*/
 } // namespace Global

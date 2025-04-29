@@ -17,14 +17,15 @@ class App
 {
   public:
     App();
+    ~App();
 
     void Run();
 
   private:
     // main menu
     void UpdateMenu();
-    void DrawMenu(Button &menuButton);
-    void MenuInputHandler(Button &menuButton);
+    void DrawMenu();
+    void MenuInputHandler();
 
     // placing ships
     void UpdateShipPlacement();
@@ -43,14 +44,18 @@ class App
 
     void processHits();
 
-    bool IsPlayerDefeated(Player& player);
+    bool IsPlayerDefeated(Player &player);
     void InitShips();
-    
+
+    void UpdateClay();
+
     Texture2D mCrosshairTexture;
+    Texture2D mBackgroundTexture;
 
     std::vector<Player> mPlayers{};
 
     Player *mCurrPlayer;
+    Font fonts[1];
 
     // 0 - first player, 1 - second player
     bool mCurrPlayerTurn = 1;
