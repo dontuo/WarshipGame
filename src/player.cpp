@@ -19,6 +19,7 @@ void Player::InitShips()
 
         x += 100;
     }
+    /*
     x = Global::windowWidth - 500;
     y = 225; // boat 1x2, 3 pieces only: ##
     for (int i = 0; i < 3; i++)
@@ -47,7 +48,7 @@ void Player::InitShips()
         mUnplacedShips.push_back(Ship{Vector2{x, y}, Vector2{x, y}, CellState::SHIP_4});
 
         x += 100 + (Global::sizeOfTile - 1) * 3;
-    }
+    }*/
 }
 
 void Player::Draw(int offsetX, int offsetY, bool hide = 0)

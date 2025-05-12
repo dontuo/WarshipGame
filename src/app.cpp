@@ -1,4 +1,5 @@
 #include "app.hpp"
+#include "GLFW/glfw3.h"
 #include "gamestate.hpp"
 #include "global.hpp"
 #include "raylib.h"
@@ -51,7 +52,7 @@ void App::DrawMenu()
                 .childGap = 50,
                 .layoutDirection = CLAY_TOP_TO_BOTTOM,
             },
-        .image = {.imageData = &mBackgroundTexture, .sourceDimensions = {1024, 1536}},
+        .image = {.imageData = &mBackgroundTexture, .sourceDimensions = {512, 1536}},
     })
     {
         CLAY({
@@ -111,7 +112,7 @@ void App::DrawMenu()
     BeginDrawing();
 
     ClearBackground(DARKGRAY);
-    Clay_Raylib_Render(renderCommands, fonts);
+    Clay_Raylib_Render(renderCommands, mFonts);
     DrawTexture(mCrosshairTexture, GetMouseX() - 10, GetMouseY() - 10, WHITE);
 
     EndDrawing();
@@ -153,17 +154,88 @@ void App::UpdateShipPlacement()
 
 void App::DrawShipPlacement()
 {
+    Clay_Sizing layoutExpand = {.width = CLAY_SIZING_GROW(0), .height = CLAY_SIZING_GROW(0)};
+    Clay_BeginLayout();
+   
+    CLAY({
+        .id = CLAY_ID("background"),
+        .layout =
+            {
+                .sizing = layoutExpand,
+                .childGap = 50,
+                .layoutDirection = CLAY_TOP_TO_BOTTOM,
+            },
+        .image = {.imageData = &mBackgroundTexture, .sourceDimensions = {512, 1536}},
+    })
+    {
+        CLAY(
+                {
+                    .id = CLAY_ID("Player Name"),
+                    .layout = 
+                        {
+                            .sizing = layoutExpand,
+                            .childGap = 50,
+                            .layoutDirection = CLAY_TOP_TO_BOTTOM,
+                        },
+                        .floating = { .offset = {15, 15}, .zIndex = 1, .attachPoints = { CLAY_ATTACH_POINT_CENTER_TOP, CLAY_ATTACH_POINT_CENTER_TOP }, .attachTo = CLAY_ATTACH_TO_PARENT },
+                }
+            )
+        {
+        Clay_String playerName = {.isStaticallyAllocated = false, .length = mCurrPlayer->mPlayerName.length(), .chars = mCurrPlayer->mPlayerName.c_str()};
+        CLAY_TEXT(playerName, CLAY_TEXT_CONFIG({
+                                                          .textColor = {255, 255, 255, 255},
+                                                          .fontId = 0,
+                                                          .fontSize = 48,
+                                                          .letterSpacing = 0,
+                                                          .lineHeight = 0,
+                                                      }));   
+        };
+        
+        bool isShipsPlaced = mCurrPlayer->mUnplacedShips.size() == 0;
+
+        CLAY(
+                {
+                    .id = CLAY_ID("Ready button"),
+                    .layout = 
+                        {
+                            .sizing = {CLAY__SIZING_TYPE_FIT, CLAY__SIZING_TYPE_FIT},
+                            .childGap = 50,
+                            .layoutDirection = CLAY_TOP_TO_BOTTOM,
+                        },
+                        .backgroundColor = {18, 43, 68, isShipsPlaced ? Clay_Hovered() ? 255 : 200 : 0},
+                        .cornerRadius = 10,
+                        .floating = { .offset = {GetScreenWidth() - 130, GetScreenHeight() - 60}, .zIndex = 2, .attachPoints = { CLAY_ATTACH_POINT_LEFT_TOP, CLAY_ATTACH_POINT_LEFT_TOP}, .attachTo = CLAY_ATTACH_TO_PARENT },
+                }
+            )
+        {
+            if(isShipsPlaced)
+                CLAY_TEXT(CLAY_STRING("Ready"), CLAY_TEXT_CONFIG({
+                                                          .textColor = {255, 255, 255, 255},
+                                                          .fontId = 0,
+                                                          .fontSize = 48,
+                                                          .letterSpacing = 0,
+                                                          .lineHeight = 0,
+                                                      }));
+        }
+
+    };
+
+    
+
+    Clay_RenderCommandArray renderCommands = Clay_EndLayout();
+
     BeginDrawing();
     ClearBackground(Global::backgroundColor);
+    Clay_Raylib_Render(renderCommands, mFonts);
     if (mCurrPlayer->mUnplacedShips.size() == 0)
     {
         Button button = Button(Rectangle{Global::windowWidth - 227, Global::windowHeight - 75, 154, 52});
-        button.Draw(BLACK);
-        DrawText("Ready", Global::windowWidth - 225, Global::windowHeight - 75, 50, WHITE);
+        //button.Draw(BLACK);
+        //DrawText("Ready", Global::windowWidth - 225, Global::windowHeight - 75, 50, WHITE);
     }
 
     mCurrPlayer->Draw(Global::offsetX, Global::offsetY, 0);
-    DrawText(mCurrPlayer->mPlayerName.c_str(), 20, 0, 50, WHITE);
+    //DrawText(mCurrPlayer->mPlayerName.c_str(), 20, 0, 50, WHITE);
 
     DrawTexture(mCrosshairTexture, GetMouseX() - 10, GetMouseY() - 10, WHITE);
 
@@ -174,42 +246,49 @@ void App::ShipPlacementInputHandler()
 {
     UpdateClay();
     mCurrPlayer->UpdateCurrShip();
-    int currShipId = mCurrPlayer->mCurrShipId;
-    Vector2 &shipPose = mCurrPlayer->mUnplacedShips[currShipId].mPos;
-    Vector2 &originPlace = mCurrPlayer->mUnplacedShips[currShipId].mOriginPlace;
-    bool &rotate = mCurrPlayer->mUnplacedShips[currShipId].rotate;
+    
 
     if (mCurrPlayer->mUnplacedShips.size() == 0)
     {
-        Button button = Button(Rectangle{Global::windowWidth - 227, Global::windowHeight - 75, 154, 52});
+        bool readyButton = Clay_PointerOver(Clay_GetElementId(CLAY_STRING("Ready button"))) && IsMouseButtonPressed(MOUSE_BUTTON_LEFT);
 
-        if (button.IsButtonPressed(MOUSE_BUTTON_LEFT) && mCurrPlayer == &mPlayers[1])
+        if (readyButton && mCurrPlayer == &mPlayers[1])
             Global::gameState = GameState::GAME;
-        else if (button.IsButtonPressed(MOUSE_BUTTON_LEFT))
+        else if (readyButton)
         {
             mCurrPlayer = &mPlayers[1];
         }
     }
 
-    if (IsMouseButtonReleased(MOUSE_BUTTON_LEFT))
-    {
-        for (int x = 0; x < 10; x++)
-            for (int y = 0; y < 10; y++)
-            {
-                if (mCurrPlayer->CheckCellCollision(GetMousePosition(), Vector2{x, y}))
-                {
-                    mCurrPlayer->HandleShipPlacement(x, y);
-                }
-                else
-                {
-                    shipPose = originPlace;
-                }
-            }
-    }
+    
+    int currShipId = mCurrPlayer->mCurrShipId;
 
-    if (shipPose.x == originPlace.x && shipPose.y == originPlace.y)
+    if(currShipId != -1)
     {
-        rotate = 0;
+        Vector2 &shipPose = mCurrPlayer->mUnplacedShips[currShipId].mPos;
+        Vector2 &originPlace = mCurrPlayer->mUnplacedShips[currShipId].mOriginPlace;
+        bool &rotate = mCurrPlayer->mUnplacedShips[currShipId].rotate;
+
+        if (IsMouseButtonReleased(MOUSE_BUTTON_LEFT))
+        {
+            for (int x = 0; x < 10; x++)
+                for (int y = 0; y < 10; y++)
+                {
+                    if (mCurrPlayer->CheckCellCollision(GetMousePosition(), Vector2{x, y}))
+                    {
+                        mCurrPlayer->HandleShipPlacement(x, y);
+                    }
+                    else
+                    {
+                        shipPose = originPlace;
+                    }
+                }
+        }
+
+        if (shipPose.x == originPlace.x && shipPose.y == originPlace.y)
+        {
+            rotate = 0;
+        }
     }
 
     mCurrPlayer->HandleShipSelection();
@@ -338,9 +417,9 @@ App::App()
 
     LoadTextures();
 
-    fonts[0] = LoadFontEx("resources/RobotoMono-Medium.ttf", 48, 0, 400);
-    SetTextureFilter(fonts[0].texture, TEXTURE_FILTER_BILINEAR);
-    Clay_SetMeasureTextFunction(Raylib_MeasureText, fonts);
+    mFonts[0] = LoadFontEx("resources/RobotoMono-Medium.ttf", 48, 0, 400);
+    SetTextureFilter(mFonts[0].texture, TEXTURE_FILTER_BILINEAR);
+    Clay_SetMeasureTextFunction(Raylib_MeasureText, mFonts);
 
     mPlayers.push_back(Player("Player 1"));
     mPlayers.push_back(Player("Player 2"));

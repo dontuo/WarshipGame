@@ -27,7 +27,7 @@ void Board::Draw(bool Hide)
                 {
 
                 case CellState::EMPTY:
-                    DrawTexture(textures[CellState::EMPTY], mOffset.x + (Global::sizeOfTile * x), mOffset.y + (Global::sizeOfTile * y) + 1, WHITE);
+                    //DrawTexture(textures[CellState::EMPTY], mOffset.x + (Global::sizeOfTile * x), mOffset.y + (Global::sizeOfTile * y) + 1, WHITE);
                     break;
 
                 case CellState::SHIP_1_HITTED:
@@ -55,7 +55,7 @@ void Board::Draw(bool Hide)
                     break;
 
                 default:
-                    DrawTexture(textures[CellState::EMPTY], mOffset.x + (Global::sizeOfTile * x), mOffset.y + (Global::sizeOfTile * y) + 1, WHITE);
+                    //DrawTexture(textures[CellState::EMPTY], mOffset.x + (Global::sizeOfTile * x), mOffset.y + (Global::sizeOfTile * y) + 1, WHITE);
                     break;
                 }
             }
@@ -70,7 +70,7 @@ void Board::Draw(bool Hide)
                 switch (mCells[x][y])
                 {
                 case CellState::EMPTY:
-                    DrawTexture(textures[CellState::EMPTY], mOffset.x + (Global::sizeOfTile * x), mOffset.y + (Global::sizeOfTile * y) + 1, WHITE);
+                    //DrawTexture(textures[CellState::EMPTY], mOffset.x + (Global::sizeOfTile * x), mOffset.y + (Global::sizeOfTile * y) + 1, WHITE);
                     break;
 
                 case CellState::SHIP_1:
@@ -114,7 +114,7 @@ void Board::Draw(bool Hide)
                     break;
 
                 default:
-                    DrawRectangle(mOffset.x + (Global::sizeOfTile * x), mOffset.y + (Global::sizeOfTile * y) + 1, (Global::sizeOfTile - 1), (Global::sizeOfTile - 1), WHITE);
+                    //DrawRectangle(mOffset.x + (Global::sizeOfTile * x), mOffset.y + (Global::sizeOfTile * y) + 1, (Global::sizeOfTile - 1), (Global::sizeOfTile - 1), WHITE);
                     break;
                 }
             }

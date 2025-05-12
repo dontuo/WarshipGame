@@ -55,7 +55,7 @@ class App
     std::vector<Player> mPlayers{};
 
     Player *mCurrPlayer;
-    Font fonts[1];
+    Font mFonts[1];
 
     // 0 - first player, 1 - second player
     bool mCurrPlayerTurn = 1;
