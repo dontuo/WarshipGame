@@ -3,7 +3,9 @@
 #include "gamestate.hpp"
 #include "global.hpp"
 #include "raylib.h"
+#include "ship.hpp"
 #include <cstdint>
+#include <string>
 #define CLAY_IMPLEMENTATION
 #include <clay.h>
 #include <renderers/raylib/clay_renderer_raylib.c>
@@ -304,15 +306,48 @@ void App::UpdateGame()
 
 void App::DrawGame()
 {
+    static bool debugEnabled = 0;
+    if (IsKeyPressed(KEY_D))
+    {
+        debugEnabled = !debugEnabled;
+        Clay_SetDebugModeEnabled(debugEnabled);
+    }
+    UpdateClay();
+
+    Clay_Sizing layoutExpand = {.width = CLAY_SIZING_GROW(0), .height = CLAY_SIZING_GROW(0)};
+
+    Clay_BeginLayout();
+
+    CLAY({
+        .id = CLAY_ID("background"),
+        .layout =
+            {
+                .sizing = layoutExpand,
+                .padding = {100,100, 50, 100},
+                .childGap = 150,
+                //.layoutDirection = CLAY_TOP_TO_BOTTOM,
+            },
+        .image = {.imageData = &mBackgroundTexture, .sourceDimensions = {512, 1536}},
+    }){};
+
+    Clay_RenderCommandArray renderCommands = Clay_EndLayout();
+
+
     BeginDrawing();
     ClearBackground(Global::backgroundColor);
+    Clay_Raylib_Render(renderCommands, mFonts);
     mPlayers[0].Draw(100, 100, 1);
     mPlayers[1].Draw(700, 100, 1);
     DrawText(mPlayers[0].mPlayerName.c_str(), 100, 50, 50, WHITE);
     DrawText(mPlayers[1].mPlayerName.c_str(), 700, 50, 50, WHITE);
     DrawTexture(mCrosshairTexture, GetMouseX() - 10, GetMouseY() - 10, WHITE);
+    int relativeX = 600;
+    int relativeY = 250;
+    if(mCurrPlayerTurn)
+        DrawTriangle({relativeX,relativeY},{relativeX,relativeY + 100},{relativeX + 50,relativeY + 50},{18, 70, 68, 200});
+    else
+        DrawTriangle({relativeX,relativeY + 50},{relativeX + 50,relativeY + 100},{relativeX + 50,relativeY},{18, 70, 68, 200});
 
-    DrawText((mPlayers[mCurrPlayerTurn ? 0 : 1].mPlayerName + " turn").c_str(), 100, 600, 50, WHITE);
     EndDrawing();
 }
 
@@ -439,12 +474,35 @@ void App::EndGameInputHandler()
 
 void App::DrawEndGame()
 {
+    UpdateClay();
+
+    Clay_Sizing layoutExpand = {.width = CLAY_SIZING_GROW(0), .height = CLAY_SIZING_GROW(0)};
+
+    Clay_BeginLayout();
+
+    CLAY({
+        .id = CLAY_ID("background"),
+        .layout =
+            {
+                .sizing = layoutExpand,
+                .padding = {100,100, 50, 100},
+                .childGap = 150,
+                //.layoutDirection = CLAY_TOP_TO_BOTTOM,
+            },
+        .image = {.imageData = &mBackgroundTexture, .sourceDimensions = {512, 1536}},
+    }){};
+
+
+    Clay_RenderCommandArray renderCommands = Clay_EndLayout();
     BeginDrawing();
 
+    Clay_Raylib_Render(renderCommands, mFonts);
     ClearBackground(Global::backgroundColor);
-    mPlayers[mCurrPlayerTurn ? 1 : 0].Draw(100, 100, 0);
+    mPlayers[0].Draw(100, 100, 0);
+    mPlayers[1].Draw(700, 100, 0);
 
-    DrawText((mPlayers[!mCurrPlayerTurn ? 1 : 0].mPlayerName + " won").c_str(), 700, 100, 50, WHITE);
+    DrawText((mPlayers[!mCurrPlayerTurn ? 1 : 0].mPlayerName + " won").c_str(), mCurrPlayerTurn ? 100 : 700, 50, 50, WHITE);
+    //DrawText(mPlayers[1].mPlayerName.c_str(), 700, 50, 50, WHITE);
     DrawTexture(mCrosshairTexture, GetMouseX() - 10, GetMouseY() - 10, WHITE);
 
     EndDrawing();

@@ -14,7 +14,7 @@ inline int offsetX = 100;
 inline int offsetY = 150;
 
 inline Color backgroundColor{36, 33, 68, 255};
-inline GameState gameState = GameState::MENU;
+inline GameState gameState = GameState::GAME;
 
 /*int row = 10;
 int column = 10;

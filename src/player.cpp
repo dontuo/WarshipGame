@@ -13,12 +13,14 @@ void Player::InitShips()
     int x = Global::windowWidth - 500;
     int y = 150;
 
-    for (int i = 0; i < 4; i++)
+    for (int i = 0; i < 0; i++)
     {
         mUnplacedShips.push_back(Ship{Vector2{x, y}, Vector2{x, y}, CellState::SHIP_1});
 
         x += 100;
     }
+
+    SetCellState(0,0, CellState::SHIP_1);
     /*
     x = Global::windowWidth - 500;
     y = 225; // boat 1x2, 3 pieces only: ##
